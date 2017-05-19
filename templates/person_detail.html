@@ -1,0 +1,67 @@
+{% extends "default.html" %}
+
+{% block content %}
+
+    <div class="container section">
+        <div class="card grey lighten-4 hoverable ">
+            <div class="row" id="advisor-row">
+                <div class="col s12">
+                    <div class="card-content">
+                    {% for each in advisorConnection.advisor.all %}
+                        <span class="card-title tooltipped" data-position="left" data-tooltip="PhD Supervisor"><a href="/detail/{{ each.URL_for_detail }}">{{ each.firstName }} {{ each.lastName }}</a></span>
+                        {{ each.school.name }} ({{ each.yearOfPhD }})
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" id="person-row">
+                <div class="col s12">
+                    <div class="card-content" id="person-card-content">
+                        <div class="card amber lighten-3 hoverable">
+                            <div class="row no-margin-bottom">
+                                <div class="col s12">
+                                   <div class="card-content" id="person-card-content">
+                                    <div class="row">
+                                        <div class="col s12">
+                                           <h3>{{ thePerson.firstName }} {{ thePerson.lastName }}</h3>
+                                           <p>{{ thePerson.school }} ({{ thePerson.yearOfPhD }})</p>
+                                       </div>
+                                    </div>
+                                   <div class="row">
+                                       <div class="col s12">
+                                           {% if thePerson.specialization.iterator.length > 0 %}<h5>Specializations</h5>{% endif %}
+                                           {% for special in thePerson.specialization.iterator %}
+                                               <div class="chip white-text blue darken-1">{{ special }}</div>
+                                        {% endfor %}
+                                       </div>
+                                   </div>
+
+                                   </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col s12">
+                                {% for studentCon in studentConnections.iterator %}
+                                    <div class="col s12 m6">
+                                        <div class="card hoverable">
+                                            <div class="card-content">
+                                                <span class="card-title"><a href="/detail/{{ studentCon.student.URL_for_detail }}">{{ studentCon.student.firstName }} {{ studentCon.student.lastName }}</a></span>
+                                                <p>{{ studentCon.student.school }} ({{ studentCon.student.yearOfPhD }})</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

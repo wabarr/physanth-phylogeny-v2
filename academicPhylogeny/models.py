@@ -1,0 +1,133 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.db import models
+
+class frequently_asked_question(models.Model):
+    heading = models.CharField(max_length = 50)
+    displayOrder = models.IntegerField()
+    text = models.TextField(max_length = 2000,verbose_name ="HTML text")
+    published = models.BooleanField(default=False)
+    def __unicode__(self):
+        return self.heading
+    class Meta:
+        ordering=["displayOrder"]
+        verbose_name ="Frequently Asked Question"
+
+class school(models.Model):
+    name = models.CharField(max_length = 100, unique=True)
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+            db_table = 'school'
+            ordering = ['name']
+
+class specialization(models.Model):
+    name=models.CharField(max_length=100)
+    def __unicode__(self):
+        return self.name
+    class Meta:
+        ordering = ['name']
+
+class PhD(models.Model):
+    firstName = models.CharField(max_length=100, blank=True, null=True)
+    lastName = models.CharField(max_length=100, blank=True, null=True)
+    year = models.IntegerField(max_length=4, blank=True, null=True)
+    school = models.ForeignKey(school)
+    advisor = models.ManyToManyField(PhD, null=True, blank=True)
+    specialization = models.ManyToManyField(specialization, null=True, blank=True)
+    URL_for_detail = models.CharField(max_length=200, null=True)
+
+    def __unicode__(self):
+        name = self.firstName + " " + self.lastName
+        return name
+
+    def save(self):  # custom save method for person to update detail URL
+        self.URL_for_detail = (self.firstName + "_" + self.lastName).replace(" ", "_")
+
+        # call the normal person save method
+        super(person, self).save()
+
+    class Meta:
+        db_table = 'person'
+        unique_together = (("firstName", "lastName"),)
+        ordering = ['lastName']
+        verbose_name_plural = 'people'
+
+class person(models.Model):
+    firstName = models.CharField(max_length = 100,blank=True,null=True)
+    middleName = models.CharField(max_length = 100,blank=True,null=True)
+    lastName = models.CharField(max_length = 100,blank=True,null=True)
+    yearOfPhD = models.IntegerField(max_length= 4, blank=True,null=True)
+    school = models.ForeignKey(school)
+    specialization = models.ManyToManyField(specialization,null=True,blank=True)
+    URL_for_detail = models.CharField(max_length = 200,null=True)
+    #shareImageURL = models.URLField(max_length=200, null=True, blank=True)
+    featureImage = models.FileField(max_length=255, blank=True, upload_to="people/images/", null=True)
+    featureBlurb = models.TextField(max_length=2000, null=True, blank=True, help_text="formatted with with <\p> tags")
+    isFeatured = models.NullBooleanField()
+    dateFeatured = models.DateField(null=True, blank=True)
+    def get_absolute_url(self):
+        return reverse('academicPhylogeny.views.detail', args=[self.URL_for_detail])
+
+    def __unicode__(self):
+            name = self.firstName + " " + self.lastName
+            return name
+
+    def save(self):#custom save method for person to update detail URL
+        self.URL_for_detail = (self.firstName + "_" + self.lastName).replace(" ","_")
+
+        #call the normal person save method
+        super(person, self).save()
+
+    class Meta:
+            db_table = 'person'
+            unique_together = (("firstName", "lastName"),)
+            ordering = ['lastName']
+            verbose_name_plural = 'people'
+
+
+
+class connection(models.Model):
+    advisor = models.ManyToManyField(person,related_name="a+")
+    student = models.ForeignKey(person)
+
+    def student_First_Name(self):
+        return(self.student.firstName)
+    student_First_Name.admin_order_field = 'student__firstName'
+
+    def student_Last_Name(self):
+        return(unicode(self.student.lastName))
+    student_Last_Name.admin_order_field = 'student__lastName'
+
+    def student_Year_Of_PhD(self):
+        return(str(self.student.yearOfPhD))
+    student_Year_Of_PhD.admin_order_field = 'student__yearOfPhD'
+
+    def advisor_name(self):
+        allAdvisors = []
+        for each in self.advisor.all():
+            allAdvisors.append(unicode(each.lastName))
+
+        advisorNames = "/".join(allAdvisors)
+        return(unicode(advisorNames))
+    advisor_name.admin_order_field = 'advisor__lastName'
+
+    def connectionJSON(self):
+        allAdvisors = []
+        try:
+            for each in self.advisor.all():
+                allAdvisors.append(unicode(each.firstName) + " " +  unicode(each.lastName))
+            to_be_formatted = '{"source":"' + allAdvisors[0] + '", "target":"' + unicode(self.student.firstName) + " " + unicode(self.student.lastName) + '"}'
+        except IndexError:
+            to_be_formatted = '{"source":"' + "Unknown" + '", "target":"' + unicode(self.student.firstName) + " " + unicode(self.student.lastName) + '"}'
+        return to_be_formatted.replace("None","Unknown")
+    def __unicode__(self):
+        return self.advisor_name() + "-->>" + self.student.firstName + " " + self.student.lastName + " (" + str(self.student.yearOfPhD) + ")"
+
+    class Meta:
+        db_table = "connection"
+        unique_together = ('student',)
+        ordering = ('student',)

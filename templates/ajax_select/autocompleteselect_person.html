@@ -1,0 +1,14 @@
+{% extends "ajax_select/autocompleteselect.html" %}
+
+{% block extra_script %}
+<script type="text/javascript">
+    $("#{{html_id}}_on_deck").bind('added', function() {
+      params = {}
+      params["pk"]=$("#{{html_id}}").val();
+      window.location.href="/detail/"+ $("#{{html_id}}").val()
+    });
+    $("#{{html_id}}_on_deck").bind('killed', function() {
+      cleanUp();
+    });
+</script>
+{% endblock %}
