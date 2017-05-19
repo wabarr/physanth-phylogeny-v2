@@ -17,3 +17,4 @@ class FAQadmin(admin.ModelAdmin):
 admin.site.register(frequently_asked_question,FAQadmin)
 admin.site.register(school, SchoolAdmin)
 admin.site.register(person, admin.ModelAdmin)
+admin.site.register(PhD, admin.ModelAdmin)
