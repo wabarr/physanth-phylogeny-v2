@@ -31,31 +31,6 @@ class specialization(models.Model):
     class Meta:
         ordering = ['name']
 
-class PhD(models.Model):
-    firstName = models.CharField(max_length=100, blank=True, null=True)
-    lastName = models.CharField(max_length=100, blank=True, null=True)
-    year = models.IntegerField(max_length=4, blank=True, null=True)
-    school = models.ForeignKey(school)
-    advisor = models.ManyToManyField(PhD, null=True, blank=True)
-    specialization = models.ManyToManyField(specialization, null=True, blank=True)
-    URL_for_detail = models.CharField(max_length=200, null=True)
-
-    def __unicode__(self):
-        name = self.firstName + " " + self.lastName
-        return name
-
-    def save(self):  # custom save method for person to update detail URL
-        self.URL_for_detail = (self.firstName + "_" + self.lastName).replace(" ", "_")
-
-        # call the normal person save method
-        super(person, self).save()
-
-    class Meta:
-        db_table = 'person'
-        unique_together = (("firstName", "lastName"),)
-        ordering = ['lastName']
-        verbose_name_plural = 'people'
-
 class person(models.Model):
     firstName = models.CharField(max_length = 100,blank=True,null=True)
     middleName = models.CharField(max_length = 100,blank=True,null=True)
@@ -131,3 +106,28 @@ class connection(models.Model):
         db_table = "connection"
         unique_together = ('student',)
         ordering = ('student',)
+
+class PhD(models.Model):
+    firstName = models.CharField(max_length=100, blank=True, null=True)
+    lastName = models.CharField(max_length=100, blank=True, null=True)
+    year = models.IntegerField(max_length=4, blank=True, null=True)
+    school = models.ForeignKey(school)
+    advisor = models.ManyToManyField("self", null=True, blank=True)
+    specialization = models.ManyToManyField(specialization, null=True, blank=True)
+    URL_for_detail = models.CharField(max_length=200, null=True)
+
+    def __unicode__(self):
+        name = self.firstName + " " + self.lastName
+        return name
+
+    def save(self):  # custom save method for person to update detail URL
+        self.URL_for_detail = (self.firstName + "_" + self.lastName).replace(" ", "_")
+
+        # call the normal person save method
+        super(person, self).save()
+
+    class Meta:
+        db_table = 'PhD'
+        unique_together = (("firstName", "lastName"),)
+        ordering = ['lastName']
+        verbose_name_plural = 'PhDs'
