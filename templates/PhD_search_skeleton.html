@@ -9,7 +9,7 @@
                 <div class="card">
                     <div class="card-content">
                         <span class="card-title">Search by Person</span>
-                        {{ PersonForm }}
+                        {{ PhDForm }}
                     </div>
                 </div>
             </div>
@@ -68,6 +68,10 @@ function cleanUp(){
 
 $("input").on("click touchstart", function(){
     cleanUp();
+});
+
+$(".input-field").on("focusin", function(){
+    $('.results_on_deck').html("")
 });
 
 $('select').on('change', function(){

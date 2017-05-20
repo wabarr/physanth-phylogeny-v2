@@ -4,7 +4,7 @@ wich are dynamically inserted via ajax from the person_list.html template -->
     <div class="col s12 l6">
         <div class="card amber lighten-3 hoverable person-card">
             <div class="card-content">
-                <span class="card-title">{{ object.firstName }} {{ object.lastName }} ({{ object.yearOfPhD }})</a></span>
+                <span class="card-title">{{ object.firstName }} {{ object.lastName }} ({{ object.year }})</a></span>
                 <div class="chip white">{{ object.school }}</div>
                 {% for special in object.specialization.iterator %}
                     <div class="chip white-text blue darken-1">{{ special }}</div>

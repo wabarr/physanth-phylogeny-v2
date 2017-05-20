@@ -1,5 +1,5 @@
 from ajax_select import register, LookupChannel
-from .models import school, person
+from .models import school, PhD, specialization
 from django.db.models import Value
 from django.db.models.functions import Concat
 
@@ -14,14 +14,22 @@ class TagLookup(LookupChannel):
     def format_item_display(self, item):
         return u"<div class='chip school-chip'>%s</div>" % item.name
 
-@register('person')
-class PersonLookup(LookupChannel):
+@register('PhD')
+class PhDLookup(LookupChannel):
 
-    model = person
+    model = PhD
 
     def get_query(self, q, request):
-        queryset = person.objects.annotate(fullName=Concat('firstName',Value(' '),'lastName'))
+        queryset = PhD.objects.annotate(fullName=Concat('firstName',Value(' '),'lastName'))
         return queryset.filter(fullName__icontains=q)
 
     def format_item_display(self, item):
         return u"<div class='chip'>%s %s</div>" % (item.firstName, item.lastName)
+
+@register('specialization')
+class SpecializationLookup(LookupChannel):
+
+    model = specialization
+
+    def get_query(self, q, request):
+        return self.model.objects.filter(name__contains=q)

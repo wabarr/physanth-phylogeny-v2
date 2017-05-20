@@ -5,14 +5,14 @@
     <div class="container section">
         <div class="card grey lighten-4 hoverable ">
             <div class="row" id="advisor-row">
-                <div class="col s12">
+                {% for each in thePhD.advisor.all %}
+                <div class="col s12 m6">
                     <div class="card-content">
-                    {% for each in advisorConnection.advisor.all %}
                         <span class="card-title tooltipped" data-position="left" data-tooltip="PhD Supervisor"><a href="/detail/{{ each.URL_for_detail }}">{{ each.firstName }} {{ each.lastName }}</a></span>
-                        {{ each.school.name }} ({{ each.yearOfPhD }})
-                    {% endfor %}
+                        {{ each.school.name }} ({{ each.year }})
                     </div>
                 </div>
+                {% endfor %}
             </div>
 
             <div class="row" id="person-row">
@@ -24,14 +24,14 @@
                                    <div class="card-content" id="person-card-content">
                                     <div class="row">
                                         <div class="col s12">
-                                           <h3>{{ thePerson.firstName }} {{ thePerson.lastName }}</h3>
-                                           <p>{{ thePerson.school }} ({{ thePerson.yearOfPhD }})</p>
+                                           <h3>{{ thePhD.firstName }} {{ thePhD.lastName }}</h3>
+                                           <p>{{ thePhD.school }} ({{ thePhD.year }})</p>
                                        </div>
                                     </div>
                                    <div class="row">
                                        <div class="col s12">
-                                           {% if thePerson.specialization.iterator.length > 0 %}<h5>Specializations</h5>{% endif %}
-                                           {% for special in thePerson.specialization.iterator %}
+                                           {% if thePhD.specialization.iterator.length > 0 %}<h5>Specializations</h5>{% endif %}
+                                           {% for special in thePhD.specialization.iterator %}
                                                <div class="chip white-text blue darken-1">{{ special }}</div>
                                         {% endfor %}
                                        </div>
@@ -43,12 +43,12 @@
 
                             <div class="row">
                                 <div class="col s12">
-                                {% for studentCon in studentConnections.iterator %}
+                                {% for student in students.iterator %}
                                     <div class="col s12 m6">
                                         <div class="card hoverable">
                                             <div class="card-content">
-                                                <span class="card-title"><a href="/detail/{{ studentCon.student.URL_for_detail }}">{{ studentCon.student.firstName }} {{ studentCon.student.lastName }}</a></span>
-                                                <p>{{ studentCon.student.school }} ({{ studentCon.student.yearOfPhD }})</p>
+                                                <span class="card-title"><a href="/detail/{{ student.URL_for_detail }}">{{ student.firstName }} {{ student.lastName }}</a></span>
+                                                <p>{{ student.school }} ({{ student.year }})</p>
                                             </div>
                                         </div>
                                     </div>

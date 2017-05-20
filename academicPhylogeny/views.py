@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from models import frequently_asked_question, connection, person, specialization
+from models import frequently_asked_question, specialization, PhD
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 from django.views.generic import DetailView
@@ -8,26 +8,26 @@ from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
-from forms import SchoolForm, PersonForm
+from forms import SchoolForm, PhDForm
 
 # Create your views here.
 class HomePageView(TemplateView):
     template_name = "splash.html"
 
-class PersonTemplateView(TemplateView):
-    template_name = "person_search_skeleton.html"
+class PhDTemplateView(TemplateView):
+    template_name = "PhD_search_skeleton.html"
 
     def get_context_data(self, **kwargs):
-        context=super(PersonTemplateView, self).get_context_data(**kwargs)
+        context=super(PhDTemplateView, self).get_context_data(**kwargs)
         context["SchoolForm"]=SchoolForm()
-        context["PersonForm"]=PersonForm()
+        context["PhDForm"]=PhDForm()
         context["specializations"] = specialization.objects.all()
         return context
 
 
-class PersonListView(ListView):
-    template_name = "person_search_results.html"
-    model = person
+class PhDListView(ListView):
+    template_name = "PhD_search_results.html"
+    model = PhD
 
     def get_queryset(self, **kwargs):
         filterArgs = {}
@@ -35,42 +35,32 @@ class PersonListView(ListView):
             if value:
                 if value <> "":
                     filterArgs[key] = value
-        return person.objects.filter(**filterArgs)
+        return PhD.objects.filter(**filterArgs)
 
-def person_numeric_detail_view(request, pk):
+def PhD_numeric_detail_view(request, pk):
     ##if you ask for a detail view with a numeric parameter, translate it and
     ## return corresponding non numeric view
     try:
-        requestedPerson=person.objects.get(pk=pk)
+        requestedPerson=PhD.objects.get(pk=pk)
     except:
         return HttpResponseRedirect("/people/")
     return HttpResponseRedirect("/detail/" + requestedPerson.URL_for_detail)
 
 
-class PersonDetailView(TemplateView):
-    template_name = "person_detail.html"
+class PhDDetailView(TemplateView):
+    template_name = "PhD_detail.html"
 
     def get_context_data(self, **kwargs):
         URL_for_detail = self.kwargs["URL_for_detail"]
         try:
-            thePerson = person.objects.get(URL_for_detail__exact=URL_for_detail)
+            thePhD = PhD.objects.get(URL_for_detail__exact=URL_for_detail)
         except ObjectDoesNotExist:
-            thePerson = None
+            thePhD = None
+        students = PhD.objects.filter(advisor__id=thePhD.id)
 
-        try:
-            advisorConnection = connection.objects.get(student__id=thePerson.id)
-        except:
-            advisorConnection = None
-
-        try:
-            studentConnections = connection.objects.filter(advisor__id=thePerson.id).order_by("student__yearOfPhD")
-        except:
-            studentConnections = None
-
-        context = super(PersonDetailView, self).get_context_data(**kwargs)
-        context["thePerson"] = thePerson
-        context["advisorConnection"] = advisorConnection
-        context["studentConnections"] = studentConnections
+        context = super(PhDDetailView, self).get_context_data(**kwargs)
+        context["thePhD"] = thePhD
+        context["students"] = students
         return context
 
 class AboutView(TemplateView):
