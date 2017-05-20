@@ -22,6 +22,7 @@ def person2PhD(apps, schema_editor):
             firstName=" ".join(first_middle),
             year=person.yearOfPhD,
             school=person.school,
+            URL_for_detail = (person.firstName + "_" + person.lastName).replace(" ", "_")
                     )
         newObject.save()
         for specialization in person.specialization.all():
