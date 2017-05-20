@@ -114,7 +114,8 @@ class PhD(models.Model):
     school = models.ForeignKey(school)
     advisor = models.ManyToManyField("self", null=True, blank=True)
     specialization = models.ManyToManyField(specialization, null=True, blank=True)
-    URL_for_detail = models.CharField(max_length=200, null=True)
+    URL_for_detail = models.CharField(max_length=200, null=True, blank=True)
+    validated = models.NullBooleanField(default=False, blank=True)
 
     def __unicode__(self):
         name = self.firstName + " " + self.lastName
@@ -124,7 +125,7 @@ class PhD(models.Model):
         self.URL_for_detail = (self.firstName + "_" + self.lastName).replace(" ", "_")
 
         # call the normal person save method
-        super(person, self).save()
+        super(PhD, self).save()
 
     class Meta:
         db_table = 'PhD'
