@@ -24,7 +24,13 @@ class FAQadmin(admin.ModelAdmin):
     list_filter = ("published",)
     list_editable = ("published","displayOrder")
 
+class SuggestedPhDTexaUpdateAdmin(admin.ModelAdmin):
+    form = make_ajax_form(suggestedPhDTextUpdate, {
+        'PhD': 'PhD'
+    })
+
 admin.site.register(frequently_asked_question,FAQadmin)
 admin.site.register(school, SchoolAdmin)
 #admin.site.register(person, admin.ModelAdmin)
 admin.site.register(PhD, PhDAdmin)
+admin.site.register(suggestedPhDTextUpdate, SuggestedPhDTexaUpdateAdmin)

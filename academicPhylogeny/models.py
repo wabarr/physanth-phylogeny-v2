@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.contrib.auth.models import User
 
 class frequently_asked_question(models.Model):
     heading = models.CharField(max_length = 50)
@@ -132,3 +133,12 @@ class PhD(models.Model):
         unique_together = (("firstName", "lastName"),)
         ordering = ['lastName']
         verbose_name_plural = 'PhDs'
+
+
+class suggestedPhDTextUpdate(models.Model):
+    ## deals with user suggested updates for fields that can be stored as text
+    PhD = models.ForeignKey(PhD)
+    field = models.CharField(choices=[("firstName","firstName"), ("lastName", "lastName"),("year", "year")], max_length=100)
+    value = models.CharField(max_length=100)
+    moderator_approved = models.BooleanField(default=False)
+    approver = models.ForeignKey(User)
