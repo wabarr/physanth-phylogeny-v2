@@ -86,6 +86,10 @@ $(document).on("click", ".person-card", function() {
     window.location.href = URLdetail
 });
 
+function redirect2detail(id) {
+      window.location.href="/detail/"+ id
+    }
+
 function fetchResults(GETparams){
     // If you try to fetchResults with no parameters you get nothing
     if (typeof GETparams === 'undefined') {
