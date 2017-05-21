@@ -6,7 +6,7 @@ from django.db import migrations
 
 def deleteFAQ(apps,schema_editor):
     FAQ = apps.get_model("academicPhylogeny", "frequently_asked_question")
-    toDelete = FAQ.objects.get(pk=2)
+    toDelete = FAQ.objects.filter(pk__in=[1,2])
     toDelete.delete()
 
 class Migration(migrations.Migration):
