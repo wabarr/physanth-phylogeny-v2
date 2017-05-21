@@ -3,10 +3,13 @@
 {% block extra_script %}
 <script type="text/javascript">
     $("#{{html_id}}_on_deck").bind('added', function() {
-      params = {}
-      params["school"]=$("#{{html_id}}").val();
-      fetchResults(params);
-      checkResultsVisibleAndScrollIfNeeded();
+        if(window.location.pathname === "/people/"){
+            params = {}
+            params["school"]=$("#{{html_id}}").val();
+            fetchResults(params);
+            checkResultsVisibleAndScrollIfNeeded();
+        }
+
     });
     $("#{{html_id}}_on_deck").bind('killed', function() {
       cleanUp();
