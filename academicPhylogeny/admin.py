@@ -25,6 +25,7 @@ class FAQadmin(admin.ModelAdmin):
     list_editable = ("published","displayOrder")
 
 class SuggestedPhDTexaUpdateAdmin(admin.ModelAdmin):
+    list_display = ["PhD", "field", "value", "moderator_approved", "approver"]
     form = make_ajax_form(suggestedPhDTextUpdate, {
         'PhD': 'PhD'
     })

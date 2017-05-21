@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
-from ajax_select.fields import AutoCompleteSelectField
-from .models import school, PhD
+from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultipleField
+from .models import *
 
 class SchoolForm(ModelForm):
 
@@ -11,7 +11,14 @@ class SchoolForm(ModelForm):
 
     search_by_school = AutoCompleteSelectField("school",required=False, help_text=None)
 
-class PhDForm(ModelForm):
+class PhDAddForm(ModelForm):
+    class Meta:
+        model = PhD
+        fields = ["firstName","lastName","year","school","advisor","specialization"]
+    school = AutoCompleteSelectField("school", help_text=None)
+    advisor = AutoCompleteSelectMultipleField("PhD", required=True, help_text=None)
+
+class PhD_form_for_ajax_selects_search(ModelForm):
 
     class Meta:
         model = PhD
@@ -19,3 +26,11 @@ class PhDForm(ModelForm):
 
     search_by_name = AutoCompleteSelectField("PhD",required=False, help_text=None)
 
+class suggestedPhDTextUpdateForm(ModelForm):
+
+    class Meta:
+        model = suggestedPhDTextUpdate
+        fields = ["PhD", "field", "value"]
+
+    PhD = AutoCompleteSelectField("PhD",required=True, help_text=None)
+    field = forms.ChoiceField(choices = CHOICES_editable_fields)

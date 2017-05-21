@@ -1,16 +1,20 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from models import frequently_asked_question, specialization, PhD
+from models import frequently_asked_question, specialization, PhD, suggestedPhDTextUpdate
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
-from django.views.generic import DetailView
+from django.views.generic import CreateView
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
-from forms import SchoolForm, PhDForm
+from forms import SchoolForm, PhD_form_for_ajax_selects_search, suggestedPhDTextUpdateForm, PhDAddForm
 
 # Create your views here.
+
+class ThanksView(TemplateView):
+    template_name = "thanks.html"
+
 class HomePageView(TemplateView):
     template_name = "splash.html"
 
@@ -20,10 +24,19 @@ class PhDTemplateView(TemplateView):
     def get_context_data(self, **kwargs):
         context=super(PhDTemplateView, self).get_context_data(**kwargs)
         context["SchoolForm"]=SchoolForm()
-        context["PhDForm"]=PhDForm()
+        context["PhD_form_for_ajax_selects_search"]=PhD_form_for_ajax_selects_search()
         context["specializations"] = specialization.objects.all()
         return context
 
+class suggestedPhDTextUpdateCreateView(CreateView):
+    model = suggestedPhDTextUpdate
+    form_class = suggestedPhDTextUpdateForm
+    success_url = "/"
+
+class AddPhDView(CreateView):
+    model = PhD
+    form_class = PhDAddForm
+    success_url = "/thanks/"
 
 class PhDListView(ListView):
     template_name = "PhD_search_results.html"
@@ -45,7 +58,6 @@ def PhD_numeric_detail_view(request, pk):
     except:
         return HttpResponseRedirect("/people/")
     return HttpResponseRedirect("/detail/" + requestedPerson.URL_for_detail)
-
 
 class PhDDetailView(TemplateView):
     template_name = "PhD_detail.html"

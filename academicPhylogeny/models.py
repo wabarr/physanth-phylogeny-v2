@@ -109,10 +109,10 @@ class specialization(models.Model):
 #         ordering = ('student',)
 
 class PhD(models.Model):
-    firstName = models.CharField(max_length=100, blank=True, null=True)
-    lastName = models.CharField(max_length=100, blank=True, null=True)
-    year = models.IntegerField(max_length=4, blank=True, null=True)
-    school = models.ForeignKey(school)
+    firstName = models.CharField(max_length=100,  null=True, verbose_name="First Name")
+    lastName = models.CharField(max_length=100, null=True,  verbose_name="Last Name")
+    year = models.IntegerField(max_length=4, blank=True, null=True, verbose_name="Year PhD Awarded")
+    school = models.ForeignKey(school, null=True, blank=True)
     advisor = models.ManyToManyField("self", null=True, blank=True)
     specialization = models.ManyToManyField(specialization, null=True, blank=True)
     URL_for_detail = models.CharField(max_length=200, null=True, blank=True)
@@ -121,6 +121,9 @@ class PhD(models.Model):
     def __unicode__(self):
         name = self.firstName + " " + self.lastName
         return name
+
+    def get_absolute_url(self):
+        return reverse('PhD-detail-view', kwargs={'URL_for_detail': self.URL_for_detail})
 
     def save(self):  # custom save method for person to update detail URL
         self.URL_for_detail = (self.firstName + "_" + self.lastName).replace(" ", "_")
@@ -134,11 +137,11 @@ class PhD(models.Model):
         ordering = ['lastName']
         verbose_name_plural = 'PhDs'
 
-
+CHOICES_editable_fields=[("firstName","firstName"), ("lastName", "lastName"),("year", "year")]
 class suggestedPhDTextUpdate(models.Model):
     ## deals with user suggested updates for fields that can be stored as text
     PhD = models.ForeignKey(PhD)
-    field = models.CharField(choices=[("firstName","firstName"), ("lastName", "lastName"),("year", "year")], max_length=100)
+    field = models.CharField(choices=CHOICES_editable_fields, max_length=100)
     value = models.CharField(max_length=100)
     moderator_approved = models.BooleanField(default=False)
-    approver = models.ForeignKey(User)
+    approver = models.ForeignKey(User, default=1)
