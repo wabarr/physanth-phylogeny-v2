@@ -3,12 +3,15 @@
 {% block content %}
 
     <div class="container" id="search-bar-container">
-    {{ SchoolForm.media }}
+    <div class="card">
+        <div class="card-content">
+            <span class="card-title">Search for People</span>
+            {{ SchoolForm.media }}
         <div class="row">
             <div class="col s12 m6">
                 <div class="card">
                     <div class="card-content">
-                        <span class="card-title">Search by Person</span>
+                        <span class="card-title">By Name</span>
                         {{ PhD_form_for_ajax_selects_search }}
                     </div>
                 </div>
@@ -16,7 +19,7 @@
             <div class="col s12 m6">
                 <div class="card">
                     <div class="card-content">
-                        <span class="card-title">Search by School</span>
+                        <span class="card-title">By School</span>
                         {{ SchoolForm }}
                     </div>
                 </div>
@@ -24,7 +27,7 @@
             <div class="col s12 m6 input-field">
                 <div class="card">
                     <div class="card-content">
-                        <span class="card-title">Search by Specialization</span>
+                        <span class="card-title">By Specialization</span>
                         <select id="select-specialization">
                             <option value="" disabled selected>Choose specialization</option>
                             {% for specialization in specializations %}
@@ -35,12 +38,11 @@
                 </div>
             </div>
         </div>
-    </div>
 
 
-    <div class="container" id="search-results-container">
         <div class="row">
-            <div class="card grey lighten-4">
+            <div class="col s12">
+               <div class="card grey lighten-4" id="search-results">
                 <div class="card-content">
                     <span class="card-title">Search Results <span id="query"></span></span>
                     <div class="row" id="people-search-results">
@@ -48,8 +50,14 @@
                     </div>
                 </div>
             </div>
+            </div>
+
+        </div>
+
         </div>
     </div>
+</div>
+
 
 {% endblock %}
 
@@ -109,8 +117,8 @@ function fetchResults(GETparams){
 }
 
 function checkResultsVisibleAndScrollIfNeeded() {
-    var top_of_element = $("#search-results-container").offset().top;
-    var bottom_of_element = $("#search-results-container").offset().top + $("#search-results-container").outerHeight();
+    var top_of_element = $("#search-results").offset().top;
+    var bottom_of_element = $("#search-results").offset().top + $("#search-results").outerHeight();
     var bottom_of_screen = $(window).scrollTop() + $(window).height();
     var top_of_screen = $(window).scrollTop();
 
@@ -119,7 +127,7 @@ function checkResultsVisibleAndScrollIfNeeded() {
     }
     else {
         $('html, body').animate({
-            scrollTop: ($('#search-results-container').offset().top)
+            scrollTop: ($('#search-results').offset().top)
         },1000);
     }
 }
