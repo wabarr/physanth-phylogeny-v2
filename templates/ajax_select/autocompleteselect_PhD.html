@@ -3,10 +3,8 @@
 {% block extra_script %}
 <script type="text/javascript">
     $("#{{html_id}}_on_deck").bind('added', function() {
-        //the function redirect2detail is defined in the PhD_search_skeleton template
-        //the if statement ensures that this redirect behavior is done only on that page,
-        // and not in other usages of this django ajax autoselect
-        if (typeof redirect2detail == 'function') {
+        // only redirect if called from the search page
+        if (window.location.pathname === '/people/') {
             redirect2detail($("#{{html_id}}").val());
         }
 
