@@ -131,6 +131,29 @@ class PhD(models.Model):
         # call the normal person save method
         super(PhD, self).save()
 
+    @property
+    def find_root_ancestors(self):
+        parents = []
+        current_advisor = [advisor for advisor in self.advisor.all()]
+        while current_advisor is not None:
+            next_advisor = []
+            for eachAdvisor in current_advisor:
+                parents.append(eachAdvisor)
+                for each in eachAdvisor.advisor.all():
+                    next_advisor.append(each)
+            if next_advisor:
+                current_advisor = next_advisor
+            else:
+                current_advisor = None
+        #get parents that are roots for their tree
+        roots = []
+        for parent in parents:
+            if parent.advisor.all():
+                pass
+            else:
+                roots.append(parent)
+        return roots
+
     class Meta:
         db_table = 'PhD'
         unique_together = (("firstName", "lastName"),)
