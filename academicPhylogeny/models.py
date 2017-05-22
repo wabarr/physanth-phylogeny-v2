@@ -112,7 +112,7 @@ class PhD(models.Model):
     firstName = models.CharField(max_length=100,  null=True, verbose_name="First Name")
     lastName = models.CharField(max_length=100, null=True,  verbose_name="Last Name")
     year = models.IntegerField(max_length=4, blank=True, null=True, verbose_name="Year PhD Awarded")
-    school = models.ForeignKey(school, null=True, blank=True)
+    school = models.ForeignKey(school)
     advisor = models.ManyToManyField("self", null=True, blank=True)
     specialization = models.ManyToManyField(specialization, null=True, blank=True)
     URL_for_detail = models.CharField(max_length=200, null=True, blank=True)
