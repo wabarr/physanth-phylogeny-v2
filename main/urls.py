@@ -20,6 +20,7 @@ from ajax_select import urls as ajax_select_urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^debug/', debug_view),
     url(r'^ajax_select/', include(ajax_select_urls)),
     url(r'^thanks/$', ThanksView.as_view()),
     url(r'^FAQ/', FAQView.as_view()),
@@ -28,10 +29,10 @@ urlpatterns = [
     url(r'^people_ajax/', PhDListView.as_view()),
     url(r'^add_PhD/$', AddPhDView.as_view()),
     url(r'^suggest_change_PhD_text/$', suggestedPhDTextUpdateCreateView.as_view()),
-    url(r'^getJSONconnections/(?P<selectedNameID>\d+)/$', JSONstream),
-    url(r'^getJSONconnections/$', JSONstream),
-    url(r'^tree/$', TreeView.as_view()),
-    url(r'^tree/(?P<selectedNameID>\d+)/$',TreeView.as_view()),
+#    url(r'^getJSONconnections/(?P<selectedNameID>\d+)/$', JSONstream),
+#    url(r'^getJSONconnections/$', JSONstream),
+    url(r'^tree_JSON/(?P<pk>\d+)/$', tree_JSON),
+    url(r'^tree/(?P<pk>\d+)/$', TreeView.as_view()),
     url(r'^detail/(?P<pk>\d+)/$', PhD_numeric_detail_view, name="PhD-numeric-detail-view"),
     url(r'^detail/(?P<URL_for_detail>[\w\-\_\.]+)/$', PhDDetailView.as_view(), name="PhD-detail-view"),
     url(r'^$', HomePageView.as_view()),
