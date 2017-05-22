@@ -100,6 +100,7 @@ class TreeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(TreeView, self).get_context_data(**kwargs)
         context['pk'] = self.kwargs["pk"]
+        context['selectedName'] = PhD.objects.get(pk=self.kwargs["pk"]).__unicode__()
         return context
 
 
