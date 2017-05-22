@@ -154,6 +154,15 @@ class PhD(models.Model):
                 roots.append(parent)
         return roots
 
+    @property
+    def get_nested_tree_dict(self):
+        theDict = {}
+        theDict["name"]=self.__unicode__()
+        theDict["children"]=[]
+        for each in PhD.objects.filter(advisor=self):
+            theDict["children"].append(each.get_nested_tree_dict)
+        return theDict
+
     class Meta:
         db_table = 'PhD'
         unique_together = (("firstName", "lastName"),)
