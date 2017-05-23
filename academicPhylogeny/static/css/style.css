@@ -33,6 +33,8 @@ nav {
     height:60px;
 }
 
+/* Tree CSS*/
+
 .node {
   cursor: pointer;
 }
@@ -67,4 +69,23 @@ nav {
 
 .hidden-url-for-detail {
     display:none;
+}
+
+
+
+.node {
+    cursor: pointer;
+}
+.node text {
+  font: 13px sans-serif;
+}
+
+#selectedName {
+    font: 16px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
 }

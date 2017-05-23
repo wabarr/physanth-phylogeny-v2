@@ -161,6 +161,8 @@ class PhD(models.Model):
         theDict["children"]=[]
         for each in PhD.objects.filter(advisor=self):
             theDict["children"].append(each.get_nested_tree_dict)
+        if len(theDict["children"])==0:
+            del theDict["children"]
         return theDict
 
     class Meta:
@@ -168,6 +170,7 @@ class PhD(models.Model):
         unique_together = (("firstName", "lastName"),)
         ordering = ['lastName']
         verbose_name_plural = 'PhDs'
+        verbose_name = "PhD"
 
 CHOICES_editable_fields=[("firstName","firstName"), ("lastName", "lastName"),("year", "year")]
 class suggestedPhDTextUpdate(models.Model):

@@ -1,40 +1,4 @@
-{% extends "default.html" %}
-{% load static %}
-
-
-{% block content %}
-    <div id="container">
-        <div class="row">
-            <div class="col s12 m4 offset-m4">
-                <div class="card">
-                    <div class="card-content">
-                        <span class="card-title">Phylogeny of {{ selectedName }}</span>
-                        <div class="row">
-                            <div class="col s12 m4 offset-m4" id="scroll2selected"><i class="material-icons medium">arrow_downward</i></div>
-                        </div>
-                        <div class="row">
-                            <div class="progress" id="progress-div">
-                                <div class="indeterminate"></div>
-                            </div>
-                            <div class="row">
-                            <div class="col s12" id="scroll_instructions" style="display:none;">Click arrow to automatically scroll</div>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col s12">
-                <div id="thetree"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Load in d3 and the tree -->
-    <script src="//d3js.org/d3.v3.min.js"></script>
-    <script>
-    var pk = document.getElementById("#hidden-pk-for-js")
+var pk = document.getElementById("#hidden-pk-for-js")
 
 var margin = {top: 20, right: 120, bottom: 20, left: 120},
     width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
@@ -56,7 +20,7 @@ var svg = d3.select("#thetree").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.json("/tree_JSON/{% if pk %}{{ pk }}{% endif %}", function(error, tree) {
+d3.json("/tree_JSON/" + 1, function(error, tree) {
   if (error) throw error;
   $("#progress-div").hide();
   $("#scroll_instructions").show();
@@ -209,27 +173,3 @@ var nodes = tree.nodes(root).reverse(),
   //}
   //update(d);
 //}
-
-    </script>
-
-{% endblock %}
-
-{% block javascript_doc_ready %}
-<script>
-$(document).ready(function(){
-    function scroll2selected() {
-        var viewportHeight = $(window).height(),
-            selected = $('#selectedName'),
-            elOffset = selected.offset(),
-            elHeight = selected.height();
-            $('body,html').animate({
-                scrollTop: elOffset.top + (elHeight/2) - (viewportHeight/2)
-            }, 1200);
-    }
-    $("#scroll2selected").on("click", function(){
-        scroll2selected();
-    });
-})
-</script>
-
-{% endblock %}
