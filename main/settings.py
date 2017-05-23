@@ -38,8 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'academicPhylogeny',
-    'ajax_select',
-    'graphos'
+    'ajax_select'
 ]
 
 MIDDLEWARE = [
