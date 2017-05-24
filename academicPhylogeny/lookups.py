@@ -12,7 +12,7 @@ class TagLookup(LookupChannel):
         return self.model.objects.filter(name__contains=q)
 
     def format_item_display(self, item):
-        return u"<div class='chip school-chip'>%s</div>" % item.name
+        return u"<div class='chip blue darken-1 white-text'>%s</div>" % item.name
 
     def check_auth(self, request):
             return True
