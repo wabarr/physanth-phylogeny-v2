@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^about/', AboutView.as_view()),
     url(r'^people/', PhDTemplateView.as_view()),
     url(r'^people_ajax/', PhDListView.as_view()),
-    url(r'^add_PhD/$', AddPhDView.as_view()),
+    url(r'^submit/$', AddPhDView.as_view()),
     url(r'^suggest_change_PhD_text/$', suggestedPhDTextUpdateCreateView.as_view()),
 #    url(r'^getJSONconnections/(?P<selectedNameID>\d+)/$', JSONstream),
 #    url(r'^getJSONconnections/$', JSONstream),
