@@ -94,7 +94,7 @@ class PhDDetailView(TemplateView):
         URL_for_detail = self.kwargs["URL_for_detail"]
         try:
             thePhD = PhD.objects.exclude(validated=False).get(URL_for_detail__exact=URL_for_detail)
-            students = PhD.objects.filter(advisor__id=thePhD.id)
+            students = PhD.objects.filter(advisor__id=thePhD.id).order_by("year")
         except:
             thePhD = None
             students = None
