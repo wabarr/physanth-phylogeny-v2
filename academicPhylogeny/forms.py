@@ -34,3 +34,8 @@ class suggestedPhDTextUpdateForm(ModelForm):
 
     PhD = AutoCompleteSelectField("PhD",required=True, help_text=None)
     field = forms.ChoiceField(choices = CHOICES_editable_fields)
+
+class UserContactAddForm(ModelForm):
+    class Meta:
+        model=userContact
+        exclude=["dealt_with","admin_notes","date_last_modified","date_sent"]

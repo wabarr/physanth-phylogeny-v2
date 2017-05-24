@@ -89,3 +89,11 @@ nav {
   stroke: #ccc;
   stroke-width: 1.5px;
 }
+
+rect {
+    fill:#2196F3;
+}
+
+rect:hover {
+    fill:#ffe082;
+}

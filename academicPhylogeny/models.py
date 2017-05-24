@@ -180,3 +180,22 @@ class suggestedPhDTextUpdate(models.Model):
     value = models.CharField(max_length=100)
     moderator_approved = models.BooleanField(default=False)
     approver = models.ForeignKey(User, default=1)
+
+class userContact(models.Model):
+    email = models.EmailField(verbose_name="Your Email Address")
+    first_name = models.CharField(max_length=100,verbose_name="Your First Name")
+    last_name = models.CharField(max_length=100,verbose_name="Your Last Name")
+    affiliation = models.CharField(max_length=100,verbose_name="Your Institutional Affiliation")
+    message = models.TextField(max_length=2000,verbose_name="Your message")
+    dealt_with = models.BooleanField(default=False)
+    admin_notes = models.TextField(max_length=1000)
+    date_sent = models.DateTimeField(auto_now_add=True)
+    date_last_modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ('dealt_with','-date_sent')
+
+    def __unicode__(self):
+        display = "%s %s - (sent on %s)" % (self.first_name, self.last_name, self.date_sent.strftime("%Y-%m-%d")
+)
+        return display

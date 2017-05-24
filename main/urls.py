@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^debug/', debug_view),
     url(r'^ajax_select/', include(ajax_select_urls)),
+    url(r'^contact/$', ContactView.as_view()),
     url(r'^thanks/$', ThanksView.as_view()),
     url(r'^trends/$', TrendsView.as_view()),
     url(r'^FAQ/', FAQView.as_view()),

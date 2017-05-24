@@ -6,6 +6,10 @@ from ajax_select import make_ajax_form
 
 # Register your models here.
 
+class UserContactAdmin(admin.ModelAdmin):
+    search_fields = ["last_name","first_name","message", "email"]
+    list_display = ["last_name","first_name","date_sent",'dealt_with']
+
 class PhDAdmin(admin.ModelAdmin):
     search_fields = ["lastName","firstName"]
     list_filter = ["school"]
@@ -16,7 +20,8 @@ class PhDAdmin(admin.ModelAdmin):
         'specialization': 'specialization'
     })
 class SchoolAdmin(admin.ModelAdmin):
-    search_fields = ["Name",]
+    search_fields = ["name",]
+    list_display = ["id","name"]
 
 
 class FAQadmin(admin.ModelAdmin):
@@ -34,4 +39,5 @@ admin.site.register(frequently_asked_question,FAQadmin)
 admin.site.register(school, SchoolAdmin)
 #admin.site.register(person, admin.ModelAdmin)
 admin.site.register(PhD, PhDAdmin)
+admin.site.register(userContact, UserContactAdmin)
 admin.site.register(suggestedPhDTextUpdate, SuggestedPhDTexaUpdateAdmin)

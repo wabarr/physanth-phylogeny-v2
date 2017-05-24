@@ -6,8 +6,27 @@
     <div class="container">
         <div class="row">
             <div class="col s12">
-                <h3>PhD Count Per Year</h3>
+                <h3>Yearly</h3>
+                <p>This graph shows the number of people earning PhD degrees in biological anthropology every year
+                since 1960 based on our data.</p>
                 <div id="phds-per-year" style="height: 250px;"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <h3>School</h3>
+                <p>This graph shows the schools which have granted 15 or more PhDs in biological
+                    anthropology based on our data.</p>
+                <div id="school-counts" style="height: 250px;"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <h3>Specialization</h3>
+                <p>This graph shows the number of PhDs claiming each topical specialization based on our data.</p>
+                <div id="specialization-counts" style="height: 250px;"></div>
             </div>
         </div>
     </div>
@@ -15,17 +34,33 @@
 
 {% block javascript_doc_ready %}
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
-    <script>
-   new Morris.Bar({
+<script>
+
+new Morris.Bar({
   element: 'phds-per-year',
-  data: {% autoescape off %}{{ chartData }}{% endautoescape %},
+  data: {% autoescape off %}{{ phdYearChartData }}{% endautoescape %},
   xkey: 'year',
   ykeys: ['year__count'],
   ymax: 120,
   labels: ['PhD Count']
 });
-   </script>
+
+new Morris.Bar({
+  element: 'school-counts',
+  data: {% autoescape off %}{{ schoolCounts }}{% endautoescape %},
+  xkey: 'name',
+  ykeys: ['num_phds'],
+  labels: ['Count']
+});
+
+new Morris.Bar({
+  element: 'specialization-counts',
+  data: {% autoescape off %}{{ specializationCounts }}{% endautoescape %},
+  xkey: 'name',
+  ykeys: ['count'],
+  labels: ['Count']
+});
+</script>
 {% endblock %}

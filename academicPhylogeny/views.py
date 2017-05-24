@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from models import frequently_asked_question, specialization, PhD, suggestedPhDTextUpdate
+from models import frequently_asked_question, specialization, PhD, suggestedPhDTextUpdate, school, userContact
 from django.db.models import Count
 from django.views.generic import CreateView
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
-from forms import SchoolForm, PhD_form_for_ajax_selects_search, suggestedPhDTextUpdateForm, PhDAddForm
+from forms import SchoolForm, PhD_form_for_ajax_selects_search, suggestedPhDTextUpdateForm, PhDAddForm, UserContactAddForm
 import json
 
 
@@ -22,8 +22,17 @@ class TrendsView(TemplateView):
     template_name = "trends.html"
     def get_context_data(self, **kwargs):
         context = super(TrendsView, self).get_context_data(**kwargs)
-        queryset = PhD.objects.filter(validated=True).exclude(year__isnull=True).values('year').order_by('year').annotate(Count('year'))
-        context["chartData"] = json.dumps(list(queryset))
+        # PhD per Year
+        PhDsPerYear = PhD.objects.filter(validated=True, year__gt=1959).exclude(year__isnull=True).values('year').order_by('year').annotate(Count('year'))
+        context["phdYearChartData"] = json.dumps(list(PhDsPerYear))
+
+        #schools
+        schoolCounts = school.objects.exclude(name="Unknown").annotate(num_phds=Count('phd')).filter(num_phds__gt=14).order_by("-num_phds").values()
+        context["schoolCounts"] = json.dumps(list(schoolCounts))
+
+        # specializations
+        specializationCounts = specialization.objects.all().annotate(count=Count("phd")).order_by("-count").values()
+        context["specializationCounts"] = json.dumps(list(specializationCounts))
         return context
 
 class ThanksView(TemplateView):
@@ -46,6 +55,11 @@ class suggestedPhDTextUpdateCreateView(CreateView):
     model = suggestedPhDTextUpdate
     form_class = suggestedPhDTextUpdateForm
     success_url = "/"
+
+class ContactView(CreateView):
+    model = userContact
+    form_class = UserContactAddForm
+    success_url = "/thanks/"
 
 class AddPhDView(CreateView):
     model = PhD
