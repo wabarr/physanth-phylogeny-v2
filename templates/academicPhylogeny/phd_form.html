@@ -11,36 +11,36 @@
                         <form action="/submit/" method="post" novalidate >{% csrf_token %}
                             {{ form.non_field_errors }}
                             <div class="row">
-                                <div class="col s12 m6 fieldWrapper">
+                                <div class="col s12 m6">
                                     {{ form.firstName.errors }}
                                     {{ form.firstName.label_tag }}
                                     {{ form.firstName }}
                                 </div>
-                                <div class="col s12 m6 fieldWrapper">
+                                <div class="col s12 m6">
                                     {{ form.lastName.errors }}
                                     {{ form.lastName.label_tag }}
                                     {{ form.lastName }}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col s12 m6 fieldWrapper">
+                                <div class="col s12 m6">
                                     {{ form.year.errors }}
                                     {{ form.year.label_tag }}
                                     {{ form.year }}
                                 </div>
-                                <div class="col s12 m6 fieldWrapper">
+                                <div class="col s12 m6 ">
                                     {{ form.school.errors }}
                                     {{ form.school.label_tag }}
                                     {{ form.school }}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col s12 m6 fieldWrapper">
+                                <div class="col s12 m6">
                                     {{ form.specialization.errors }}
                                     {{ form.specialization.label_tag }}
                                     {{ form.specialization }}
                                 </div>
-                                <div class="col s12 m6 fieldWrapper ">
+                                <div class="col s12 m6 ">
                                     {{ form.advisor.errors }}
                                     {{ form.advisor.label_tag }}
                                     {{ form.advisor }}
