@@ -6,27 +6,34 @@
     <div class="container">
         <div class="row">
             <div class="col s12">
-                <h3>Yearly</h3>
-                <p>This graph shows the number of people earning PhD degrees in biological anthropology every year
-                since 1960 based on our data.</p>
-                <div id="phds-per-year" style="height: 250px;"></div>
+                <h3>Trends</h3>
+                <p>These graphs allow for graphical exploration of the data in our database. First we show the number of
+                    biological athropology PhDs awarded per year. Next, we tabulate the number of bioanth PhDs produced by
+                    the most prolific graduate programs. Finally, we count the number of individuals identified as
+                    each of the various topical specializations in our database.</p>
+            </div>
+            <div class="col s12">
+                <h4>Yearly</h4>
+                <p>Number of people earning PhD degrees in biological anthropology every year
+                since 1960.</p>
+                <div id="phds-per-year" style="height: 400px;"></div>
             </div>
         </div>
 
         <div class="row">
             <div class="col s12">
-                <h3>School</h3>
-                <p>This graph shows the schools which have granted 15 or more PhDs in biological
-                    anthropology based on our data.</p>
-                <div id="school-counts" style="height: 250px;"></div>
+                <h4>School</h4>
+                <p>Schools granting 15 or more PhDs in biological
+                    anthropology.</p>
+                <div id="school-counts" style="height: 400px;"></div>
             </div>
         </div>
 
         <div class="row">
             <div class="col s12">
-                <h3>Specialization</h3>
-                <p>This graph shows the number of PhDs claiming each topical specialization based on our data.</p>
-                <div id="specialization-counts" style="height: 250px;"></div>
+                <h4>Specialization</h4>
+                <p>Number of individuals identified with each topical specialization.</p>
+                <div id="specialization-counts" style="height: 400px;"></div>
             </div>
         </div>
     </div>
@@ -43,8 +50,10 @@ new Morris.Bar({
   data: {% autoescape off %}{{ phdYearChartData }}{% endautoescape %},
   xkey: 'year',
   ykeys: ['year__count'],
+  xLabelAngle: 45,
   ymax: 120,
-  labels: ['PhD Count']
+  labels: ['Count'],
+  hideHover: 'auto'
 });
 
 new Morris.Bar({
@@ -52,7 +61,9 @@ new Morris.Bar({
   data: {% autoescape off %}{{ schoolCounts }}{% endautoescape %},
   xkey: 'name',
   ykeys: ['num_phds'],
-  labels: ['Count']
+  ymax: 100,
+  labels: ['Count'],
+  hideHover: 'auto'
 });
 
 new Morris.Bar({
@@ -60,7 +71,8 @@ new Morris.Bar({
   data: {% autoescape off %}{{ specializationCounts }}{% endautoescape %},
   xkey: 'name',
   ykeys: ['count'],
-  labels: ['Count']
+  labels: ['Count'],
+  hideHover: 'auto'
 });
 </script>
 {% endblock %}
