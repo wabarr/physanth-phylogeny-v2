@@ -17,6 +17,7 @@ from django.conf.urls import url,include
 from django.contrib import admin
 from academicPhylogeny.views import *
 from ajax_select import urls as ajax_select_urls
+from django.views.generic import RedirectView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -27,7 +28,7 @@ urlpatterns = [
     url(r'^trends/$', TrendsView.as_view()),
     url(r'^FAQ/', FAQView.as_view()),
     url(r'^about/', AboutView.as_view()),
-    url(r'^people/', PhDTemplateView.as_view()),
+    url(r'^people/', PhDTemplateView.as_view(), name="people_search"),
     url(r'^people_ajax/', PhDListView.as_view()),
     url(r'^submit/$', AddPhDView.as_view()),
     url(r'^suggest_change_PhD_text/$', suggestedPhDTextUpdateCreateView.as_view()),
@@ -37,6 +38,7 @@ urlpatterns = [
     url(r'^tree_JSON/$', tree_JSON),
     url(r'^tree/(?P<pk>\d+)/$', TreeView.as_view()),
     url(r'^tree/$', TreeView.as_view()),
+    url(r'^detail/$', RedirectView.as_view(pattern_name="people_search", permanent=False)),
     url(r'^detail/(?P<pk>\d+)/$', PhD_numeric_detail_view, name="PhD-numeric-detail-view"),
     url(r'^detail/(?P<URL_for_detail>[\w\-\_\.]+)/$', PhDDetailView.as_view(), name="PhD-detail-view"),
     url(r'^$', HomePageView.as_view()),
