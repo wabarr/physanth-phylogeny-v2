@@ -14,10 +14,16 @@ class TagLookup(LookupChannel):
     def format_item_display(self, item):
         return u"<div class='chip school-chip'>%s</div>" % item.name
 
+    def check_auth(self, request):
+            return True
+
 @register('PhD')
 class PhDLookup(LookupChannel):
 
     model = PhD
+
+    def check_auth(self, request):
+            return True
 
     def get_query(self, q, request):
         queryset = PhD.objects.annotate(fullName=Concat('firstName',Value(' '),'lastName'))
@@ -33,3 +39,5 @@ class SpecializationLookup(LookupChannel):
 
     def get_query(self, q, request):
         return self.model.objects.filter(name__contains=q)
+    def check_auth(self, request):
+            return True
