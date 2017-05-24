@@ -22,31 +22,14 @@
                     </div>
                 </div>
             </div>
-            {% comment %}<div class="col s12 m6 input-field">
-                <div class="card">
-                    <div class="card-content">
-                        <span class="card-title">By Specialization</span>
-                        <select id="select-specialization">
-                            <option value="" disabled selected>Choose specialization</option>
-                            {% for specialization in specializations %}
-                                <option value="{{ specialization}}">{{ specialization}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-            </div>{% endcomment %}
         </div>
 
 
         <div class="row">
             <div class="col s12">
-               <div class="card grey lighten-4" id="search-results">
-                   <div class="card-content">
-                       <span class="card-title">Search Results <span id="query"></span></span>
-                       <div class="row" id="people-search-results">
-                           <div class="col s12">Why not search by school or name?</div>
-                        </div>
-                    </div>
+                <h4>Search Results</h4>
+                <div class="row" id="people-search-results">
+                    <div class="col s12">Why not search by school or name?</div>
                 </div>
             </div>
         </div>
@@ -111,8 +94,8 @@ function fetchResults(GETparams){
 }
 
 function checkResultsVisibleAndScrollIfNeeded() {
-    var top_of_element = $("#search-results").offset().top;
-    var bottom_of_element = $("#search-results").offset().top + $("#search-results").outerHeight();
+    var top_of_element = $("#people-search-results").offset().top;
+    var bottom_of_element = $("#people-search-results").offset().top + $("#people-search-results").outerHeight();
     var bottom_of_screen = $(window).scrollTop() + $(window).height();
     var top_of_screen = $(window).scrollTop();
 
@@ -121,7 +104,7 @@ function checkResultsVisibleAndScrollIfNeeded() {
     }
     else {
         $('html, body').animate({
-            scrollTop: ($('#search-results').offset().top)
+            scrollTop: ($('#people-search-results').offset().top)
         },1000);
     }
 }

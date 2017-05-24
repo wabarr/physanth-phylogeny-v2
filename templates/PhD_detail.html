@@ -22,6 +22,7 @@
                     <div class="col s12 ">
                         <div class="card amber lighten-5 hoverable">
                             <div class="card-content">
+                                <div class="hidden-url-for-detail">/detail/{{ each.URL_for_detail }}</div>
                                 <span class="card-title">{{ each }} ({{ each.year }})</span>
                                 <div class='chip blue darken-1 white-text'>{{ each.school }}</div>
                                 {% for special in each.specialization.all %}<div class="chip">{{ special }}</div>{% endfor %}
