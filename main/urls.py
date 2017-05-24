@@ -37,6 +37,7 @@ urlpatterns = [
     url(r'^tree_JSON/(?P<pk>\d+)/$', tree_JSON),
     url(r'^tree_JSON/$', tree_JSON),
     url(r'^tree/(?P<pk>\d+)/$', TreeView.as_view()),
+    url(r'^mod_tree/(?P<pk>\d+)/$', ModTreeView.as_view()),
     url(r'^tree/$', TreeView.as_view()),
     url(r'^detail/$', RedirectView.as_view(pattern_name="people_search", permanent=False)),
     url(r'^detail/(?P<pk>\d+)/$', PhD_numeric_detail_view, name="PhD-numeric-detail-view"),
