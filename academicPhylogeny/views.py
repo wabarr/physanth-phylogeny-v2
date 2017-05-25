@@ -135,7 +135,10 @@ class NetworkView(TreeView):
 
     def get_context_data(self, **kwargs):
         context = super(TreeView, self).get_context_data(**kwargs)
-        selectedPhD = PhD.objects.get(URL_for_detail=kwargs["URL_for_detail"])
+        try:
+            selectedPhD = PhD.objects.get(URL_for_detail=kwargs["URL_for_detail"])
+        except:
+            return context
         if not selectedPhD.validated:
             return context
 
@@ -144,6 +147,11 @@ class NetworkView(TreeView):
         context["edges"]= selectedPhD.network_edges_formatted
 
         return context
+
+def getNetworkJSONView(request, pk):
+    thePerson = PhD.objects.get(pk=pk)
+    return HttpResponse(json.dumps({"edges":thePerson.network_edges_formatted, "nodes":thePerson.network_nodes_formatted}))
+
 
 def networkViewNumeric(request, pk):
     ##if you ask for a newtork view with a numeric parameter, translate it and
