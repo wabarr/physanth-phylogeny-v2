@@ -12,7 +12,9 @@
 
     <div class="container">
         <div class="row">
-            <div class="col s12 "><h4>{{ selectedName }}</h4></div>
+            <div class="col s12 ">
+                <h4>{{ selectedName }}</h4>
+            </div>
             <div class="col s12 ">
                 <div id="PhDnetwork"></div>
             </div>
@@ -80,5 +82,9 @@
                 //edges.update(JSON.parse(data.edges))
         });
     });
+    Materialize.toast("You can click on a node to expand it.", 3000);
+    setTimeout(function(){
+         Materialize.toast("You can drag nodes to change the layout.", 3000);
+    }, 3700);
 </script>
 {% endblock %}
