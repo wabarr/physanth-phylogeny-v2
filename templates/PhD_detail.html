@@ -9,7 +9,7 @@
                 <div class="col s12">
                     <div class="card amber lighten-5">
                         <div class="card-content">
-                            <span class="card-title">{{ thePhD }} ({{ thePhD.year }})</span>
+                            <span class="card-title black-text">{{ thePhD }}{% if thePhD.year %} ({{ thePhD.year }}){% endif %}</span>
                             <div class='chip blue darken-1 white-text'>{{ thePhD.school }}</div>
                             {% for special in thePhD.specialization.all %}<div class="chip">{{ special }}</div>{% endfor %}
                         </div>
@@ -21,15 +21,17 @@
                 {% if thePhD.advisor.all %}<div class="col s12"><h5>Advisor</h5></div>{% endif %}
                 {% for each in thePhD.advisor.all %}
                     <div class="col s12 ">
-                        <div class="card amber lighten-5 hoverable">
+                        <a href="/detail/{{ each.URL_for_detail }}">
+                            <div class="card amber lighten-5 hoverable">
                             <div class="card-content">
-                                <div class="hidden-url-for-detail">/detail/{{ each.URL_for_detail }}</div>
-                                <span class="card-title">{{ each }} ({{ each.year }})</span>
+                                <span class="card-title black-text">{{ each }}{% if each.year %} ({{ each.year }}){% endif %}</span>
                                 <div class='chip blue darken-1 white-text'>{{ each.school }}</div>
                                 {% for special in each.specialization.all %}<div class="chip">{{ special }}</div>{% endfor %}
                             </div>
                             <div class="card-action"><a href="/network/{{ each.pk }}" class="black-text"><i class="fa fa-sitemap fa-2x" aria-hidden="true"></i> View Network </a></div>
                         </div>
+                        </a>
+
                     </div>
                 {% endfor %}
             </div>
@@ -38,16 +40,17 @@
             {% if students%}<div class="col s12"><h5>PhD Students</h5></div>{% endif %}
             {% for student in students %}
                 <div class="col s12">
+                    <a href="/detail/{{ student.URL_for_detail }}">
                     <div class="card amber lighten-5 hoverable">
                         <div class="card-content">
-                            <div class="hidden-url-for-detail">/detail/{{ student.URL_for_detail }}</div>
-                            <span class="card-title">{{ student }} ({{ student.year }})</span>
+                            <span class="card-title black-text">{{ student }}{% if student.year %} ({{ student.year }}){% endif %}</span>
                             <div class='chip blue darken-1 white-text'>{{ student.school }}</div>
                             {% for special in student.specialization.all %}<div class="chip">{{ special }}</div>{% endfor %}
                         </div>
                         <div class="card-action"><a href="/network/{{ student.pk }}" class="black-text"><i class="fa fa-sitemap fa-2x" aria-hidden="true"></i> View Network </a></div>
 
                     </div>
+                    </a>
                 </div>
             {% endfor %}
             </div>
@@ -61,13 +64,4 @@
         {% endif %}
 
     </div>
-{% endblock %}
-
-{% block javascript_doc_ready %}
-    <script>
-    $(document).on("click", ".person-card, .hoverable", function() {
-        var URLdetail=$(this).find(".hidden-url-for-detail").text();
-        window.location.href = URLdetail
-});
-    </script>
 {% endblock %}

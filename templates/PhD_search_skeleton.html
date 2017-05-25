@@ -66,11 +66,6 @@ $('select').on('change', function(){
     fetchResults(params);
 })
 
-$(document).on("click", ".person-card", function() {
-    var URLdetail=$(this).find(".hidden-url-for-detail").text();
-    window.location.href = URLdetail
-});
-
 function redirect2detail(id) {
       window.location.href="/detail/"+ id
     }
