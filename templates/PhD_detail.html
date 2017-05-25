@@ -13,6 +13,7 @@
                             <div class='chip blue darken-1 white-text'>{{ thePhD.school }}</div>
                             {% for special in thePhD.specialization.all %}<div class="chip">{{ special }}</div>{% endfor %}
                         </div>
+                        <div class="card-action"><a href="/network/{{ thePhD.pk }}" class="black-text"><i class="fa fa-sitemap fa-2x" aria-hidden="true"></i> View Network </a></div>
                     </div>
                 </div>
             </div>
@@ -27,6 +28,7 @@
                                 <div class='chip blue darken-1 white-text'>{{ each.school }}</div>
                                 {% for special in each.specialization.all %}<div class="chip">{{ special }}</div>{% endfor %}
                             </div>
+                            <div class="card-action"><a href="/network/{{ each.pk }}" class="black-text"><i class="fa fa-sitemap fa-2x" aria-hidden="true"></i> View Network </a></div>
                         </div>
                     </div>
                 {% endfor %}
@@ -43,6 +45,8 @@
                             <div class='chip blue darken-1 white-text'>{{ student.school }}</div>
                             {% for special in student.specialization.all %}<div class="chip">{{ special }}</div>{% endfor %}
                         </div>
+                        <div class="card-action"><a href="/network/{{ student.pk }}" class="black-text"><i class="fa fa-sitemap fa-2x" aria-hidden="true"></i> View Network </a></div>
+
                     </div>
                 </div>
             {% endfor %}

@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from models import frequently_asked_question, specialization, PhD, suggestedPhDTextUpdate, school, userContact
-from django.db.models import Count
+from django.db.models import Count, Value, F
+from django.db.models.functions import Concat
 from django.views.generic import CreateView
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
@@ -9,7 +10,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
 from forms import SchoolForm, PhD_form_for_ajax_selects_search, suggestedPhDTextUpdateForm, PhDAddForm, UserContactAddForm
 import json
-
 
 # Create your views here.
 
@@ -130,6 +130,46 @@ class TreeView(TemplateView):
             context['selectedName'] = None
         return context
 
+class NetworkView(TreeView):
+    template_name = 'network.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(TreeView, self).get_context_data(**kwargs)
+        selectedPhD = PhD.objects.get(URL_for_detail=kwargs["URL_for_detail"])
+        if not selectedPhD.validated:
+            return context
+        children = PhD.objects.filter(advisor=selectedPhD)
+        people = []
+        people.append(selectedPhD)
+        for advisor in selectedPhD.advisor.all():
+            people.append(advisor)
+        for child in children:
+            people.append(child)
+
+        nodes=[]
+        for person in people:
+            nodes.append({"id": person.pk, "label": " ".join((person.firstName, person.lastName))})
+        context["nodes"]= json.dumps(nodes)
+        edge_list = []
+        for person in people:
+            for advisor in person.advisor.all():
+                edge_list.append({"from":person.pk, "to":advisor.pk, "arrows":"from"})
+        context["edges"]= json.dumps(edge_list)
+
+        return context
+
+def networkViewNumeric(request, pk):
+    ##if you ask for a newtork view with a numeric parameter, translate it and
+    ## return corresponding non numeric view
+    try:
+        requestedPerson=PhD.objects.exclude(validated=False).get(pk=pk)
+    except:
+        return HttpResponseRedirect("/people/")
+    return HttpResponseRedirect("/network/" + requestedPerson.URL_for_detail)
+
+def tree_nodes_JSON(request):
+    nodes = PhD.objects.all().filter(validated=True).annotate(name=Concat("firstName", Value(" "), "lastName")).values_list("id","name")
+    return JsonResponse(list(nodes), safe=False)
 
 def tree_JSON(request, pk=None):
     if pk is not None:
