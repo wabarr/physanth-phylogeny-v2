@@ -138,23 +138,10 @@ class NetworkView(TreeView):
         selectedPhD = PhD.objects.get(URL_for_detail=kwargs["URL_for_detail"])
         if not selectedPhD.validated:
             return context
-        children = PhD.objects.filter(advisor=selectedPhD)
-        people = []
-        people.append(selectedPhD)
-        for advisor in selectedPhD.advisor.all():
-            people.append(advisor)
-        for child in children:
-            people.append(child)
 
-        nodes=[]
-        for person in people:
-            nodes.append({"id": person.pk, "label": " ".join((person.firstName, person.lastName))})
-        context["nodes"]= json.dumps(nodes)
-        edge_list = []
-        for person in people:
-            for advisor in person.advisor.all():
-                edge_list.append({"from":person.pk, "to":advisor.pk, "arrows":"from"})
-        context["edges"]= json.dumps(edge_list)
+        context["selectedName"] = selectedPhD.__unicode__()
+        context["nodes"]= selectedPhD.network_nodes_formatted
+        context["edges"]= selectedPhD.network_edges_formatted
 
         return context
 

@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib.auth.models import User
+import json
 
 class frequently_asked_question(models.Model):
     heading = models.CharField(max_length = 50)
@@ -130,6 +131,39 @@ class PhD(models.Model):
 
         # call the normal person save method
         super(PhD, self).save()
+
+
+    @property
+    def network_edges_formatted(self):
+        edge_list = []
+
+        for child in PhD.objects.filter(advisor=self):
+            for advisor in child.advisor.all():
+                edge_list.append({"to":advisor.pk, "from":child.pk, "arrows":"from"})
+
+        for advisor in self.advisor.all():
+            edge_list.append({"to":advisor.pk, "from":self.pk, "arrows":"from"})
+
+        return json.dumps(edge_list)
+
+    @property
+    def network_nodes_formatted(self):
+        nodes = []
+
+        nodes.append({"id": self.pk,
+                      "label": " ".join((self.firstName, self.lastName)),
+                      "color": "#ffecb3"})
+        advisors = self.advisor.all()
+        for advisor in advisors:
+            nodes.append({"id": advisor.pk,
+                          "label": " ".join((advisor.firstName, advisor.lastName))})
+
+        children = PhD.objects.filter(advisor=self)
+        for child in children:
+            nodes.append({"id": child.pk,
+                          "label": " ".join((child.firstName, child.lastName))})
+
+        return json.dumps(nodes)
 
     @property
     def find_root_ancestors(self):
