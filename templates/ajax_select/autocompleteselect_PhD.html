@@ -8,9 +8,24 @@
             redirect2detail($("#{{html_id}}").val());
         }
 
+        if(window.location.pathname === '/submit/'){
+            $("#name-container").text("edit " + $("#id_search_by_name_on_deck").find(".chip").html());
+            $("#edit_button").attr('href', "/suggest_change_PhD_text/" + $("#{{html_id}}").val()).show()
+            $("#or").show()
+            $("#add_button").show()
+        }
+
     });
+
     $("#{{html_id}}_on_deck").bind('killed', function() {
-      cleanUp();
+        if (window.location.pathname === '/people/') {
+            cleanUp();
+        }
+        if (window.location.pathname === '/submit/') {
+           $("#edit_button").hide();
+           $("#or").hide()
+           $("#add_button").hide()
+        }
     });
 </script>
 {% endblock %}

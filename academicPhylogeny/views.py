@@ -61,6 +61,14 @@ class ContactView(CreateView):
     form_class = UserContactAddForm
     success_url = "/thanks/"
 
+class PreAddPhDView(TemplateView):
+    template_name = "pre_add_phd.html"
+
+    def get_context_data(self, **kwargs):
+        context=super(PreAddPhDView, self).get_context_data(**kwargs)
+        context["form"] = PhD_form_for_ajax_selects_search()
+        return context
+
 class AddPhDView(CreateView):
     model = PhD
     form_class = PhDAddForm
