@@ -10,7 +10,7 @@
 
         if(window.location.pathname === '/submit/'){
             $("#name-container").text("edit " + $("#id_search_by_name_on_deck").find(".chip").html());
-            $("#edit_button").attr('href', "/suggest_change_PhD_text/" + $("#{{html_id}}").val()).show()
+            $("#edit_button").attr('href', "/suggest_change/" + $("#{{html_id}}").val()).show()
             $("#or").show()
             $("#add_button").show()
         }

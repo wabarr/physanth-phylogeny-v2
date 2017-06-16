@@ -4,13 +4,17 @@
     {{ form.media }}
     <div class="container">
         <div class="row">
-            <div class="col s12"><h3>Add Someone To The Database</h3></div>
+            <div class="col s12">
+                <h3>Add Someone To The Database</h3>
+                <p>Your submission will be added to the database after a moderator approves it. New submissions usually get added within 48 hours.</p>
+            </div>
+
             <div class="col s12">
                 <div class="card">
                     <div class="card-content">
                         <form action="/submit_post_search/" method="post" novalidate >{% csrf_token %}
                             {{ form.non_field_errors }}
-                            <div class="row">
+                            <div class="row section">
                                 <div class="col s12 m6">
                                     {{ form.firstName.errors }}
                                     {{ form.firstName.label_tag }}
@@ -22,7 +26,7 @@
                                     {{ form.lastName }}
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row section">
                                 <div class="col s12 m6">
                                     {{ form.year.errors }}
                                     {{ form.year.label_tag }}
@@ -34,7 +38,7 @@
                                     {{ form.school }}
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row section">
                                 <div class="col s12 m6">
                                     {{ form.specialization.errors }}
                                     {{ form.specialization.label_tag }}
@@ -44,11 +48,11 @@
                                     {{ form.advisor.errors }}
                                     {{ form.advisor.label_tag }}
                                     {{ form.advisor }}
-                                    <p>Note: The advisor must already be in database. If not, use this form to first add the advisor, then try again.</p>
+                                    <p>Note: The advisor must already be in database. If not, use this form to first add the advisor, then try again. You can add multiple advisors.</p>
                                 </div>
                             </div>
 
-                            <input type="submit" value="Save" />
+                            <button type="submit" class="waves-effect waves-light btn-large center-align btn-100-percent"><i class="material-icons left">input</i>Add person to database</button>
                         </form>
                     </div>
                 </div>

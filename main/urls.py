@@ -21,7 +21,7 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^debug/', debug_view),
+    #url(r'^debug/', debug_view),
     url(r'^ajax_select/', include(ajax_select_urls)),
     url(r'^contact/$', ContactView.as_view()),
     url(r'^thanks/$', ThanksView.as_view()),
@@ -32,7 +32,8 @@ urlpatterns = [
     url(r'^people_ajax/', PhDListView.as_view()),
     url(r'^submit/$', PreAddPhDView.as_view()),
     url(r'^submit_post_search/$', AddPhDView.as_view()),
-    url(r'^suggest_change_PhD_text/$', suggestedPhDTextUpdateCreateView.as_view()),
+    url(r'^suggest_change/(?P<pk>\d+)/$', PhDUpdateView.as_view()),
+    url(r'^random/', randomNetwork),
 #    url(r'^getJSONconnections/(?P<selectedNameID>\d+)/$', JSONstream),
 #    url(r'^getJSONconnections/$', JSONstream),
     #url(r'^tree_JSON/(?P<pk>\d+)/$', tree_JSON),
@@ -43,7 +44,7 @@ urlpatterns = [
     url(r'^network/(?P<pk>\d+)/$', networkViewNumeric, name="individual-network-numeric"),
     url(r'^network/$', RedirectView.as_view(pattern_name="people_search", permanent=False)),
     url(r'^network/(?P<URL_for_detail>[\w\-\_\.]+)/$', NetworkView.as_view(), name="individual-network"),
-    url(r'^tree/$', TreeView.as_view()),
+    #url(r'^tree/$', TreeView.as_view()),
     url(r'^detail/$', RedirectView.as_view(pattern_name="people_search", permanent=False)),
     url(r'^detail/(?P<pk>\d+)/$', PhD_numeric_detail_view, name="PhD-numeric-detail-view"),
     url(r'^detail/(?P<URL_for_detail>[\w\-\_\.]+)/$', PhDDetailView.as_view(), name="PhD-detail-view"),

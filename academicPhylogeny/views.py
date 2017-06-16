@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from models import frequently_asked_question, specialization, PhD, suggestedPhDTextUpdate, school, userContact
+from models import frequently_asked_question, specialization, PhD, PhDupdate, school, userContact
 from django.db.models import Count, Value, F
 from django.db.models.functions import Concat
 from django.views.generic import CreateView
@@ -8,15 +8,18 @@ from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
-from forms import SchoolForm, PhD_form_for_ajax_selects_search, suggestedPhDTextUpdateForm, PhDAddForm, UserContactAddForm
+import random
+from forms import SchoolForm, PhD_form_for_ajax_selects_search, PhDUpdateForm, PhDAddForm, UserContactAddForm
 import json
 
 # Create your views here.
 
-def debug_view(ob):
-    ###Just used to be able to debug the methods on my models
-    wol=PhD.objects.get(lastName="Wolpoff")
-    return JsonResponse(wol.get_nested_tree_dict)
+
+
+def randomNetwork(request):
+    nRecords = PhD.objects.count()
+    randomPerson = PhD.objects.all()[random.randint(0, nRecords)]
+    return HttpResponseRedirect("/network/" + randomPerson.URL_for_detail)
 
 class TrendsView(TemplateView):
     template_name = "trends.html"
@@ -51,10 +54,21 @@ class PhDTemplateView(TemplateView):
         context["specializations"] = specialization.objects.all()
         return context
 
-class suggestedPhDTextUpdateCreateView(CreateView):
-    model = suggestedPhDTextUpdate
-    form_class = suggestedPhDTextUpdateForm
-    success_url = "/"
+class PhDUpdateView(CreateView):
+    template_name = "suggest_edit_phd.html"
+    model = PhDupdate
+    form_class = PhDUpdateForm
+    success_url = "/thanks/"
+
+    def get_context_data(self, **kwargs):
+        context = super(PhDUpdateView, self).get_context_data(**kwargs)
+
+        try:
+            thePerson = PhD.objects.get(pk=self.kwargs["pk"])
+            context["selected_PhD_form"] = PhDAddForm(instance=thePerson)
+            return context
+        except:
+            return context
 
 class ContactView(CreateView):
     model = userContact
@@ -150,7 +164,7 @@ class NetworkView(TreeView):
         if not selectedPhD.validated:
             return context
 
-        context["selectedName"] = selectedPhD.__unicode__()
+        context["selectedPerson"] = selectedPhD
         context["nodes"]= selectedPhD.network_nodes_formatted
         context["edges"]= selectedPhD.network_edges_formatted
 

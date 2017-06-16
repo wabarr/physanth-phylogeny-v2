@@ -26,6 +26,11 @@ class PhD_form_for_ajax_selects_search(ModelForm):
 
     search_by_name = AutoCompleteSelectField("PhD",required=False, help_text=None)
 
+class PhDUpdateForm(ModelForm):
+    class Meta:
+        model=PhDupdate
+        fields = ["suggested_update_fixture"]
+
 class suggestedPhDTextUpdateForm(ModelForm):
 
     class Meta:
@@ -33,7 +38,7 @@ class suggestedPhDTextUpdateForm(ModelForm):
         fields = ["PhD", "field", "value"]
 
     PhD = AutoCompleteSelectField("PhD",required=True, help_text=None)
-    field = forms.ChoiceField(choices = CHOICES_editable_fields)
+    #field = forms.ChoiceField(choices = CHOICES_editable_fields)
 
 class UserContactAddForm(ModelForm):
     class Meta:

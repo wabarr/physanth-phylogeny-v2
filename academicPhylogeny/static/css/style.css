@@ -6,6 +6,11 @@
  * Made By MaterializeCSS.com
  */
 
+
+.btn-100-percent {
+    width: 100%;
+}
+
 .errorlist li {
     color: red;
 }

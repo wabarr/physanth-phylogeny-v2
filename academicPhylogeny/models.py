@@ -215,6 +215,13 @@ class suggestedPhDTextUpdate(models.Model):
     moderator_approved = models.BooleanField(default=False)
     approver = models.ForeignKey(User, default=1)
 
+class PhDupdate(models.Model):
+    moderator_approved = models.BooleanField(default=False)
+    approver = models.ForeignKey(User, null=True, blank=True)
+    suggested_update_fixture = models.TextField()
+    date_sent = models.DateTimeField(auto_now_add=True)
+    date_last_modified = models.DateTimeField(auto_now=True)
+
 class userContact(models.Model):
     email = models.EmailField(verbose_name="Your Email Address")
     first_name = models.CharField(max_length=100,verbose_name="Your First Name")
