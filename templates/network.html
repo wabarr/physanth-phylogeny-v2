@@ -17,13 +17,14 @@
             </div>
         </div>
         <div class="row">
-            <div class="col s12 m6">
-                <a class="waves-effect waves-light btn btn-100-percent" href="/detail/{{ selectedPerson.URL_for_detail }}" class="black-text"><i class="material-icons left">info</i>Detail Page</a>
+            <div class="col s12">
+                <a class="waves-effect waves-light btn" href="/detail/{{ selectedPerson.URL_for_detail }}" class="black-text"><i class="material-icons left">info</i>Detail Page</a>
             </div>
-
+            {% comment %}
             <div class="col s12 m6 ">
                 <a class="waves-effect waves-light btn btn-100-percent" href="/suggest_change/{{ selectedPerson.pk }}" class="black-text"><i class="material-icons left">edit</i>Suggest a correction</a>
             </div>
+            {% endcomment %}
         </div>
         <div class="row">
             <div class="fixed-action-btn">
