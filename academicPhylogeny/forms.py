@@ -14,7 +14,7 @@ class SchoolForm(ModelForm):
 class PhDAddForm(ModelForm):
     class Meta:
         model = PhD
-        fields = ["firstName","lastName","year","school","advisor","specialization", "id"]
+        fields = ["firstName","lastName","year","school","advisor","specialization", "id", "submitter_email", "source_of_info"]
     school = AutoCompleteSelectField("school", help_text=None)
     advisor = AutoCompleteSelectMultipleField("PhD", required=True, help_text=None)
 
@@ -29,7 +29,7 @@ class PhD_form_for_ajax_selects_search(ModelForm):
 class PhDUpdateForm(ModelForm):
     class Meta:
         model=PhDupdate
-        fields = ["suggested_update_fixture"]
+        fields = ["suggested_update_fixture", "submitter_email", "source_of_info"]
 
 class suggestedPhDTextUpdateForm(ModelForm):
 

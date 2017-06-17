@@ -51,6 +51,21 @@
                                     <p>Note: The advisor must already be in database. If not, use this form to first add the advisor, then try again. You can add multiple advisors.</p>
                                 </div>
                             </div>
+                            <div class="row section">
+                                <div class="col s12">
+                                    <h4>Just a couple more things...</h4>
+                                </div>
+                                    <div class="col s6">
+                                    {{ form.submitter_email.errors }}
+                                    {{ form.submitter_email.label_tag }}
+                                    {{ form.submitter_email }}
+                                    </div>
+                                    <div class="col s6">
+                                    {{ form.source_of_info.errors }}
+                                    {{ form.source_of_info.label_tag }}
+                                    {{ form.source_of_info }}
+                                    </div>
+                            </div>
 
                             <button type="submit" class="waves-effect waves-light btn-large center-align btn-100-percent"><i class="material-icons left">input</i>Add person to database</button>
                         </form>

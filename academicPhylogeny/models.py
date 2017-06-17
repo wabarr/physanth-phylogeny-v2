@@ -118,6 +118,8 @@ class PhD(models.Model):
     specialization = models.ManyToManyField(specialization, null=True, blank=True)
     URL_for_detail = models.CharField(max_length=200, null=True, blank=True)
     validated = models.NullBooleanField(default=False, blank=True)
+    submitter_email = models.EmailField(verbose_name="Your Email Address")
+    source_of_info = models.CharField(max_length=300, verbose_name="What's the source of this info?")
 
     def __unicode__(self):
         name = self.firstName + " " + self.lastName
@@ -219,6 +221,8 @@ class PhDupdate(models.Model):
     moderator_approved = models.BooleanField(default=False)
     approver = models.ForeignKey(User, null=True, blank=True)
     suggested_update_fixture = models.TextField()
+    submitter_email = models.EmailField(verbose_name="Your Email Address")
+    source_of_info = models.CharField(max_length=300,verbose_name="What's the source of this info?")
     date_sent = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
     class Meta:
