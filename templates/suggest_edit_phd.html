@@ -47,16 +47,20 @@
                         {{ selected_PhD_form.advisor.label_tag }}
                         {{ selected_PhD_form.advisor }}
                     </div>
+                    <input id="selected_person_id" name="selected_person_id" value="{{ selectedID }}" style="display:none;">
                 </div>
+
             </form>
 
-            <form method="post" action="/suggest_change/" id="hidden-suggested-edit-form">
+            <form method="post" action="/suggested_change/">
+                {% csrf_token %}
                 {% comment %}
                 This is the form that actually gets submitted, of form class PhDUpdateForm
                 {% endcomment %}
                 {{ form.as_p }}
+            <button id="suggest_change_submit" type="submit" class="waves-effect waves-light btn-large center-align btn-100-percent"><i class="material-icons left">input</i>Submit</button>
             </form>
-            <button type="submit" class="waves-effect waves-light btn-large center-align btn-100-percent"><i class="material-icons left">input</i>Submit</button>
+
 
             {% else %}
                 <h3>Whoops!</h3>
@@ -71,7 +75,29 @@
 {% block javascript_doc_ready %}
 <script>
 $(document).ready(function() {
+    $("#id_suggested_update_fixture").hide();
+    $("label[for='id_suggested_update_fixture']").hide();
     $('select').material_select();
+    $("#suggest_change_submit").on("click", function(){
+        var ob = Object();
+        ob.id = $("#selected_person_id").val();
+        ob.firstName = $("#id_firstName").val();
+        ob.lastName = $("#id_lastName").val();
+        ob.year = $("#id_year").val();
+        ob.school = $("#id_school").val();
+        ob.specialization = ($("#id_specialization").val());
+        var advisors_literal = $("#id_advisor").val().split("|");
+        var advisors = []
+        for(var index in advisors_literal){
+            if(advisors_literal[index] === "") {
+                //pass
+            } else{
+                advisors.push(advisors_literal[index]);
+            }
+        }
+        ob.advisor = advisors;
+        $("#id_suggested_update_fixture").val(JSON.stringify(ob))
+    });
   });
 
 </script>

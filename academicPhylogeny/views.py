@@ -54,21 +54,30 @@ class PhDTemplateView(TemplateView):
         context["specializations"] = specialization.objects.all()
         return context
 
-class PhDUpdateView(CreateView):
+class SubmitPhDUpdateView(TemplateView):
+    # This view is for users to submit suggested updates
+    # it binds a specific PhD objet to be edited
+    # template suggest_edit_phd.html actually submits a POST request to
+    # PhDUpdateView to create the suggested update from the bound PhD object data
+
     template_name = "suggest_edit_phd.html"
-    model = PhDupdate
-    form_class = PhDUpdateForm
-    success_url = "/thanks/"
 
     def get_context_data(self, **kwargs):
-        context = super(PhDUpdateView, self).get_context_data(**kwargs)
+        context = super(SubmitPhDUpdateView, self).get_context_data(**kwargs)
 
         try:
             thePerson = PhD.objects.get(pk=self.kwargs["pk"])
+            context["selectedID"] = thePerson.id
             context["selected_PhD_form"] = PhDAddForm(instance=thePerson)
+            context["form"] = PhDUpdateForm()
             return context
         except:
             return context
+
+class PhDUpdateView(CreateView):
+    model = PhDupdate
+    form_class = PhDUpdateForm
+    success_url = "/thanks/"
 
 class ContactView(CreateView):
     model = userContact

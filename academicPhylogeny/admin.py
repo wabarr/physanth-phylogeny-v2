@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.contrib import admin
+from django.contrib import admin, messages
 from academicPhylogeny.models import *
 from ajax_select import make_ajax_form
+import json
 
 # Register your models here.
 
@@ -29,15 +30,38 @@ class FAQadmin(admin.ModelAdmin):
     list_filter = ("published",)
     list_editable = ("published","displayOrder")
 
-class SuggestedPhDTexaUpdateAdmin(admin.ModelAdmin):
-    list_display = ["PhD", "field", "value", "moderator_approved", "approver"]
-    form = make_ajax_form(suggestedPhDTextUpdate, {
-        'PhD': 'PhD'
-    })
+
+def updatePhDObject(modeladmin, request, queryset):
+    for obj in queryset:
+        dict = json.loads(obj.suggested_update_fixture)
+        PhD_obj = PhD.objects.get(pk=dict["id"])
+        PhD_obj.firstName = dict["firstName"]
+        PhD_obj.lastName = dict["lastName"]
+        PhD_obj.year = dict["year"]
+        PhD_obj.school = school.objects.get(pk=dict["school"])
+
+        PhD_obj.specialization.clear()
+        for special in dict["specialization"]:
+            PhD_obj.specialization.add(special)
+
+        PhD_obj.advisor.clear()
+        for advisor in dict["advisor"]:
+            PhD_obj.advisor.add(advisor)
+
+        PhD_obj.save()
+        messages.add_message(request, messages.INFO, "%s has been updated successfully" % (PhD_obj.__unicode__()))
+        obj.moderator_approved = True
+        obj.approver = request.user
+        obj.save()
+
+class PhDUpdateAdmin(admin.ModelAdmin):
+    list_display = ("suggested_update_fixture","date_sent","moderator_approved")
+    actions= [updatePhDObject]
+
 
 admin.site.register(frequently_asked_question,FAQadmin)
 admin.site.register(school, SchoolAdmin)
 #admin.site.register(person, admin.ModelAdmin)
 admin.site.register(PhD, PhDAdmin)
 admin.site.register(userContact, UserContactAdmin)
-admin.site.register(suggestedPhDTextUpdate, SuggestedPhDTexaUpdateAdmin)
+admin.site.register(PhDupdate, PhDUpdateAdmin)
