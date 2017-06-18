@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="row section">
-                    <div class="col s12 m6 ">
+                    <div class="col s10 m6 ">
                         {{ selected_PhD_form.specialization.errors }}
                         {{ selected_PhD_form.specialization.label_tag }}
                         {{ selected_PhD_form.specialization }}
@@ -78,6 +78,7 @@ $(document).ready(function() {
     $("#id_suggested_update_fixture").hide();
     $("label[for='id_suggested_update_fixture']").hide();
     $('select').material_select();
+    //$("#id_specialization").addClass("browser-default");
     $("#suggest_change_submit").on("click", function(){
         var ob = Object();
         ob.id = $("#selected_person_id").val();
