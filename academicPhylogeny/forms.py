@@ -1,7 +1,8 @@
-from django import forms
+from django.contrib.auth.models import User
 from django.forms import ModelForm
 from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultipleField
 from .models import *
+
 
 class SchoolForm(ModelForm):
 
@@ -44,3 +45,8 @@ class UserContactAddForm(ModelForm):
     class Meta:
         model=userContact
         exclude=["dealt_with","admin_notes","date_last_modified","date_sent"]
+
+class UserCreateForm(ModelForm):
+    class Meta:
+        model=User
+        fields=('username', 'first_name','last_name', 'email', 'password')

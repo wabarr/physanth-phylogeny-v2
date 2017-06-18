@@ -8,8 +8,11 @@ from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.contrib.auth.models import User
 import random
-from forms import SchoolForm, PhD_form_for_ajax_selects_search, PhDUpdateForm, PhDAddForm, UserContactAddForm
+from forms import SchoolForm, PhD_form_for_ajax_selects_search, PhDUpdateForm, PhDAddForm, UserContactAddForm, UserCreateForm
 import json
 
 # Create your views here.
@@ -73,6 +76,18 @@ class SubmitPhDUpdateView(TemplateView):
             return context
         except:
             return context
+
+class UserCreateView(CreateView):
+    model = User
+    form_class = UserCreateForm
+    success_url = "/user_created/"
+
+class UserCreatedView(TemplateView):
+    template_name = "user_created.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(UserCreatedView, self).dispatch(*args, **kwargs)
 
 class PhDUpdateView(CreateView):
     model = PhDupdate
