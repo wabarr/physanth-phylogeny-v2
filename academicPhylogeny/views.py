@@ -18,7 +18,7 @@ import json
 
 def randomNetwork(request):
     nRecords = PhD.objects.count()
-    randomPerson = PhD.objects.all()[random.randint(0, nRecords)]
+    randomPerson = PhD.objects.all()[random.randint(0, nRecords-1)]
     return HttpResponseRedirect("/network/" + randomPerson.URL_for_detail)
 
 class TrendsView(TemplateView):
