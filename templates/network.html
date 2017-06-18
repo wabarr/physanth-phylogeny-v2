@@ -114,14 +114,14 @@
                 });
 
             //zoom to fit all nodes
-            if(nodesAdded === true){
-                setTimeout(function() {
-                    network.fit({
-                        nodes: getNodeIDs(),
-                        animation: true
-                    })
-                } , 100);
-            }
+            //if(nodesAdded === true){
+            //    setTimeout(function() {
+            //        network.fit({
+            //            nodes: getNodeIDs(),
+            //            animation: true
+            //        })
+            //    } , 100);
+            //}
         });
     });
     var getNodeIDs = function(){
@@ -130,6 +130,12 @@
             output.push(n.id);
         });
     };
+    network.on("stabilized", function(){
+        network.fit({
+            nodes: getNodeIDs(),
+            animation: true
+        })
+    });
 
 
 
