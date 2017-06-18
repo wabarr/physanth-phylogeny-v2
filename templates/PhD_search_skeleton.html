@@ -27,9 +27,7 @@
 
         <div class="row">
             <div class="col s12">
-                <h4>Search Results</h4>
                 <div class="row" id="people-search-results">
-                    <div class="col s12">Why not search by school or name?</div>
                 </div>
             </div>
         </div>
@@ -44,7 +42,7 @@
 $('select').material_select();
 
 function cleanUp(){
-    $('#people-search-results').html("<div class='col s12'>Why not search by school or name?</div>");
+    $('#people-search-results').html("");
     $('.results_on_deck').html("");
     $('select').prop('selectedIndex', 0);
     $('select').material_select();
