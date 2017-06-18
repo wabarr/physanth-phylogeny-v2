@@ -43,6 +43,23 @@
                 </div>
             </div>
         </div>
+        <!-- Modal Trigger -->
+        <a class="modal-trigger" href="#modal1"></a>
+
+        <!-- Modal Structure -->
+        <div id="modal1" class="modal ">
+          <div class="modal-content">
+            <h4>Contact</h4>
+            <p>This page is for contacting the administrators. If you want to submit information for someone, or
+                correct an existing entry please use the appropriate page.</p>
+          </div>
+          <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Contact us</a>
+            <a href="/submit/" class="modal-action modal-close waves-effect waves-green btn-flat ">Add new person</a>
+            <a href="/submit/" class="modal-action modal-close waves-effect waves-green btn-flat ">Submit a correction</a>
+
+          </div>
+        </div>
     </div>
 
 {% endblock %}
@@ -51,6 +68,8 @@
 <script>
 $(document).ready(function() {
     $('textarea').addClass("materialize-textarea");
+    $('.modal').modal();
+    $('#modal1').modal('open');
   });
 
 </script>
