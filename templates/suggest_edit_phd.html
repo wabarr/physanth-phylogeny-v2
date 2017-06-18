@@ -52,15 +52,17 @@
 
             </form>
             <div class="row section">
-                <form method="post" action="/suggested_change/">
+                <div class="col s12">
+                    <form method="post" action="/suggested_change/">
                     {% csrf_token %}
                     {% comment %}
                     This is the form that actually gets submitted, of form class PhDUpdateForm
                     {% endcomment %}
-                    <h4>Just a couple more things....</h4>
+                    <h4>A few more things...</h4>
                     {{ form.as_p }}
                 <button id="suggest_change_submit" type="submit" class="waves-effect waves-light btn-large center-align btn-100-percent"><i class="material-icons left">input</i>Submit</button>
                 </form>
+                </div>
             </div>
 
 
