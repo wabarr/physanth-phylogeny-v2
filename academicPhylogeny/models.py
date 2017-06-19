@@ -247,3 +247,13 @@ class userContact(models.Model):
         display = "%s %s - (sent on %s)" % (self.first_name, self.last_name, self.date_sent.strftime("%Y-%m-%d")
 )
         return display
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(to=User)
+    associated_PhD = models.OneToOneField(to=PhD)
+    current_position = models.CharField(max_length=100, null=True, blank=True)
+    current_affiliation = models.CharField(max_length=100, null=True, blank=True)
+    reputation_points = models.IntegerField(default=0)
+
+    def __unicode__(self):
+        return "%s = %s" %(self.user, self.associated_PhD.firstName + " " + self.associated_PhD.lastName)
