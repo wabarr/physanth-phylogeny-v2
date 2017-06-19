@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from models import frequently_asked_question, specialization, PhD, PhDupdate, school, userContact
+from models import frequently_asked_question, specialization, PhD, PhDupdate, school, userContact, UserProfile
 from django.db.models import Count, Value, F
 from django.db.models.functions import Concat
 from django.views.generic import CreateView
@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
 import random
-from forms import SchoolForm, PhD_form_for_ajax_selects_search, PhDUpdateForm, PhDAddForm, UserContactAddForm, UserCreateForm
+from forms import SchoolForm, PhD_form_for_ajax_selects_search, PhDUpdateForm, PhDAddForm, UserContactAddForm, UserCreateForm, UserProfileForm
 import json
 
 # Create your views here.
@@ -81,6 +81,19 @@ class UserCreateView(CreateView):
     model = User
     form_class = UserCreateForm
     success_url = "/user_created/"
+
+class ClaimPhDView(CreateView):
+    model = UserProfile
+    form_class = UserProfileForm
+    success_url = "/"
+
+    def get_initial(self):
+        return {'user': self.request.user}
+
+    def get_context_data(self, **kwargs):
+        context = super(ClaimPhDView, self).get_context_data(**kwargs)
+        context["user"] = self.request.user
+        return context
 
 class UserCreatedView(TemplateView):
     template_name = "user_created.html"

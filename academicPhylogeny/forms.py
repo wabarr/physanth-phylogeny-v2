@@ -50,3 +50,9 @@ class UserCreateForm(ModelForm):
     class Meta:
         model=User
         fields=('username', 'first_name','last_name', 'email', 'password')
+
+class UserProfileForm(ModelForm):
+    class Meta:
+        model = UserProfile
+        fields=('user',"associated_PhD")
+    associated_PhD = AutoCompleteSelectField("PhD", required=True, help_text=None, label="Search")
