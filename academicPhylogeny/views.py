@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from models import frequently_asked_question, specialization, PhD, PhDupdate, school, userContact, UserProfile
 from django.db.models import Count, Value, F
 from django.db.models.functions import Concat
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.http import HttpResponse, HttpResponseRedirect
@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
 import random
-from forms import SchoolForm, PhD_form_for_ajax_selects_search, PhDUpdateForm, PhDAddForm, UserContactAddForm, UserCreateForm, UserProfileForm
+from forms import SchoolForm, PhD_form_for_ajax_selects_search, PhDUpdateForm, PhDAddForm, PhDEditForm, UserContactAddForm, UserCreateForm, UserProfileForm
 import json
 
 # Create your views here.
@@ -92,7 +92,11 @@ class ClaimPhDView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(ClaimPhDView, self).get_context_data(**kwargs)
-        context["user"] = self.request.user
+        try:
+            user_profile = UserProfile.objects.get(user=self.request.user)
+            context["user_profile"] = user_profile
+        except:
+            pass
         return context
 
 class UserCreatedView(TemplateView):
@@ -103,9 +107,28 @@ class UserCreatedView(TemplateView):
         return super(UserCreatedView, self).dispatch(*args, **kwargs)
 
 class PhDUpdateView(CreateView):
+    # for unauthenticated users to suggest entries that require moderator validation
     model = PhDupdate
     form_class = PhDUpdateForm
+    template_name = "unauthenticated_user_PhDupdate.html"
     success_url = "/thanks/"
+
+class PhD_EditView(UpdateView):
+    ## for authenticated users to edit their own entries
+    model = PhD
+    form_class = PhDEditForm
+    template_name = "authenticated_user_PhD_edit.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(PhD_EditView, self).get_context_data(**kwargs)
+        try:
+            context["user_profile"] = UserProfile.objects.get(associated_PhD=self.object)
+        except:
+            pass
+        return context
+
+    def get_success_url(self):
+        return "/detail/" + str(self.object.id) +  "/"
 
 class ContactView(CreateView):
     model = userContact
@@ -124,6 +147,7 @@ class AddPhDView(CreateView):
     model = PhD
     form_class = PhDAddForm
     success_url = "/thanks/"
+    template_name = "unauthenticated_user_PhDupdate.html"
 
 class PhDListView(ListView):
     template_name = "PhD_search_results.html"
@@ -157,11 +181,16 @@ class PhDDetailView(TemplateView):
         except:
             thePhD = None
             students = None
+        try:
+            theUserProfile=UserProfile.objects.get(associated_PhD=thePhD)
+        except:
+            theUserProfile=None
 
 
         context = super(PhDDetailView, self).get_context_data(**kwargs)
         context["thePhD"] = thePhD
         context["students"] = students
+        context["user_profile"] = theUserProfile
         return context
 
 class AboutView(TemplateView):

@@ -27,7 +27,16 @@ class PhD_form_for_ajax_selects_search(ModelForm):
 
     search_by_name = AutoCompleteSelectField("PhD",required=False, help_text=None)
 
+class PhDEditForm(ModelForm):
+    #for authenticated users to edit their own entries
+    class Meta:
+        model=PhD
+        fields = ["firstName", "lastName", "year", "school", "advisor", "specialization", "id"]
+    school = AutoCompleteSelectField("school", help_text=None)
+    advisor = AutoCompleteSelectMultipleField("PhD", required=True, help_text=None)
+
 class PhDUpdateForm(ModelForm):
+    #for unauthenticated users to suggest entries that require moderator validation
     class Meta:
         model=PhDupdate
         fields = ["suggested_update_fixture", "submitter_email", "source_of_info"]

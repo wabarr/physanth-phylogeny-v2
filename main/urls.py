@@ -48,9 +48,10 @@ urlpatterns = [
     url(r'^network/(?P<pk>\d+)/$', networkViewNumeric, name="individual-network-numeric"),
     url(r'^network/$', RedirectView.as_view(pattern_name="people_search", permanent=False)),
     url(r'^network/(?P<URL_for_detail>[\w\-\_\.]+)/$', NetworkView.as_view(), name="individual-network"),
-    #url(r'^tree/$', TreeView.as_view()),
+    url(r'^edit/$',RedirectView.as_view(pattern_name="home", permanent=False)),
+    url(r'^edit/(?P<pk>\d+)/$', PhD_EditView.as_view()),
     url(r'^detail/$', RedirectView.as_view(pattern_name="people_search", permanent=False)),
     url(r'^detail/(?P<pk>\d+)/$', PhD_numeric_detail_view, name="PhD-numeric-detail-view"),
     url(r'^detail/(?P<URL_for_detail>[\w\-\_\.]+)/$', PhDDetailView.as_view(), name="PhD-detail-view"),
-    url(r'^$', HomePageView.as_view()),
+    url(r'^$', HomePageView.as_view(), name="home"),
 ]
