@@ -253,7 +253,7 @@ class UserProfile(models.Model):
     associated_PhD = models.OneToOneField(to=PhD)
     current_position = models.CharField(max_length=100, null=True, blank=True)
     current_affiliation = models.CharField(max_length=100, null=True, blank=True)
-    reputation_points = models.IntegerField(default=0)
+    reputation_points = models.IntegerField(default=10)
 
     def __unicode__(self):
         return "%s = %s" %(self.user, self.associated_PhD.firstName + " " + self.associated_PhD.lastName)

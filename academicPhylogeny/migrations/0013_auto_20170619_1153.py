@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('current_position', models.CharField(blank=True, max_length=100, null=True)),
                 ('current_affiliation', models.CharField(blank=True, max_length=100, null=True)),
-                ('reputation_points', models.IntegerField(default=0)),
+                ('reputation_points', models.IntegerField(default=10)),
             ],
         ),
         migrations.AddField(
