@@ -20,6 +20,7 @@ from ajax_select import urls as ajax_select_urls
 from django.views.generic import RedirectView
 
 urlpatterns = [
+    url('^', include('academicPhylogeny.registration_authorization_urls')),
     url(r'^admin/', admin.site.urls),
     ##user auth urls
     url(r'^create_user/', UserCreateView.as_view()),

@@ -82,6 +82,14 @@ class UserCreateView(CreateView):
     form_class = UserCreateForm
     success_url = "/user_created/"
 
+    def form_valid(self, form):
+        response = super(UserCreateView, self).form_valid(form)
+        pw=form.data["password"]
+        self.object.set_password(pw)
+        self.object.save()
+        return response
+
+
 class ClaimPhDView(CreateView):
     model = UserProfile
     form_class = UserProfileForm

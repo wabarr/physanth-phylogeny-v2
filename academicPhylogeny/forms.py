@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
-from django.forms import ModelForm
+from django.forms import ModelForm, CharField, EmailField
+from django.forms.widgets import PasswordInput
 from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultipleField
 from .models import *
 
@@ -59,6 +60,11 @@ class UserCreateForm(ModelForm):
     class Meta:
         model=User
         fields=('username', 'first_name','last_name', 'email', 'password')
+    username = CharField(required=True)
+    first_name = CharField(required=True)
+    last_name = CharField(required=True)
+    email = EmailField(required=True)
+    password = CharField(widget=PasswordInput, required=True)
 
 class UserProfileForm(ModelForm):
     class Meta:
