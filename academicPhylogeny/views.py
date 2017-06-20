@@ -199,6 +199,9 @@ class PhDDetailView(TemplateView):
         context["thePhD"] = thePhD
         context["students"] = students
         context["user_profile"] = theUserProfile
+        context["nodes"]= thePhD.network_nodes_formatted
+        context["edges"]= thePhD.network_edges_formatted
+
         return context
 
 class AboutView(TemplateView):

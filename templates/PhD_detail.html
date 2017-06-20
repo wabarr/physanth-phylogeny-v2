@@ -1,21 +1,20 @@
 {% extends "default.html" %}
+{% load static %}
+{% block extrastyle %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.0/vis.min.css" type="text/css"/>
+{% endblock %}
 
 {% block content %}
     {%  if user_profile.user == request.user %}
-        <div class="container">
-            <div class="row">
-                <div class="col s12 ">
-                <div class="card red lighten-3">
-                    <div class="card-content">
+        <div class="row deep-orange white-text">
+            <div class="container">
+                <div class="col s6 ">
                         You control this page
-                    </div>
-                    <div class="card-action">
-                        <a class="blue-text lighten-3" href="/edit/{{user_profile.associated_PhD.id}}/">Edit your information</a>
-                    </div>
+                </div>
+                <div class="col s6 right-align">
+                    <a class="white-text" href="/edit/{{user_profile.associated_PhD.id}}/">Edit your information</a>
                 </div>
             </div>
-            </div>
-
         </div>
     {% endif %}
 
@@ -23,23 +22,19 @@
 
         {% if thePhD %}
             {% comment %}<div class="col s12"><h4>Details for {{ thePhD }}</h4></div>{% endcomment %}
-            <div class="row section">
+            <div class="row section" style="margin-bottom:0px">
                 <div class="col s12">
                     <div class="card amber lighten-5">
                         <div class="card-content">
                             <span class="card-title black-text">{{ thePhD }}{% if thePhD.year %} ({{ thePhD.year }}){% endif %}</span>
                             <div class="row">
-                                <div class="col s12">
+                                <div class="col s10">
                                     <div class='chip blue darken-1 white-text'>{{ thePhD.school }}</div>
                                     {% for special in thePhD.specialization.all %}<div class="chip">{{ special }}</div>{% endfor %}
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col s10 l11">
-                                    <a class="waves-effect btn waves-light btn-100-percent" href="/network/{{ thePhD.URL_for_detail }}" class="black-text"><i class="material-icons left">device_hub</i>View Network</a>
-                                </div>
+
                                 {%  if not user_profile.user == request.user %}
-                                <div class="col s1">
+                                <div class="col s2">
                                     <a class="btn-floating tooltipped" data-position="right" data-tooltip="Suggest a correction" href="/suggest_change/{{ thePhD.id }}">
                                         <i class="large material-icons">mode_edit</i>
                                     </a>
@@ -50,6 +45,36 @@
                     </div>
                 </div>
             </div>
+
+            {% comment %}
+            Network
+            {% endcomment %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.0/vis.min.js"></script>
+
+        <div id="modal1" class="modal">
+            <div class="modal-content">
+                <h4>Hints for using the network graph</h4>
+                <p>Network can be zoomed.</p>
+                <p>Click on a node to expand it.</p>
+                <p>Drag nodes to change the layout.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+            </div>
+        </div>
+        <div class="row section">
+            <div class="col s12 ">
+                <div id="PhDnetwork"></div>
+            </div>
+        </div>
+        <div class="fixed-action-btn">
+            <a class="btn-floating btn-large red" href="#modal1">
+                <i class="material-icons" style="font-size: 46px">help_outline</i>
+            </a>
+        </div>
+    {% comment %}
+    PhD Advisor section
+    {% endcomment %}
             <div class="row section">
                 {% if thePhD.advisor.all %}<div class="col s12"><h5>Advisor{% if thePhD.advisor.all|length > 1 %}s{% endif %}</h5></div>{% endif %}
                 {% for each in thePhD.advisor.all %}
@@ -58,31 +83,26 @@
                             <div class="card amber lighten-5 hoverable">
                             <div class="card-content">
                                 <div class="row">
-                                    <div class="col s12">
+                                    <div class="col s10">
                                         <span class="card-title black-text">{{ each }}{% if each.year %} ({{ each.year }}){% endif %}</span>
                                         <div class='chip blue darken-1 white-text'>{{ each.school }}</div>
                                         {% for special in each.specialization.all %}<div class="chip">{{ special }}</div>{% endfor %}
                                     </div>
+                                    <div class="col s2">
+                                        <a class="btn-floating tooltipped" data-position="right" data-tooltip="Suggest a correction" href="/suggest_change/{{ each.id }}"><i class="large material-icons">mode_edit</i></a>
+                                    </div>
                                 </div>
-                            <div class="row">
-                                <div class="col s10 l11">
-                                    <a class="waves-effect waves-light btn btn-100-percent" href="/network/{{ each.URL_for_detail }}" class="black-text"><i class="material-icons left">device_hub</i>View Network</a>
-                                </div>
-                                <div class="col s1">
-                                    <a class="btn-floating tooltipped" data-position="right" data-tooltip="Suggest a correction" href="/suggest_change/{{ each.id }}">
-                                        <i class="large material-icons">mode_edit</i>
-                                    </a>
-                                </div>
-                            </div>
                             </div>
 
                         </div>
                         </a>
-
                     </div>
+
                 {% endfor %}
             </div>
-
+            {% comment %}
+            PhD student section
+            {% endcomment %}
             <div class="row section">
             {% if students%}<div class="col s12"><h5>PhD Students</h5></div>{% endif %}
             {% for student in students %}
@@ -91,21 +111,16 @@
                         <div class="card amber lighten-5 hoverable">
                             <div class="card-content">
                                 <div class="row">
-                                    <div class="col s12">
+                                    <div class="col s10">
                                         <span class="card-title black-text">{{ student }}{% if student.year %} ({{ student.year }}){% endif %}</span>
                                         <div class='chip blue darken-1 white-text'>{{ student.school }}</div>
                                         {% for special in student.specialization.all %}<div class="chip">{{ special }}</div>{% endfor %}
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col s10 l11">
-                                        <a class="waves-effect waves-light btn btn-100-percent" href="/network/{{ student.URL_for_detail }}" class="black-text"><i class="material-icons left">device_hub</i>View Network</a>
-                                    </div>
                                     <div class="col s1">
-                                    <a class="btn-floating tooltipped" data-position="right" data-tooltip="Suggest a correction" href="/suggest_change/{{ student.id }}">
+                                        <a class="btn-floating tooltipped" data-position="right" data-tooltip="Suggest a correction" href="/suggest_change/{{ student.id }}">
                                         <i class="large material-icons">mode_edit</i>
-                                    </a>
-                                </div>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -113,14 +128,85 @@
                 </div>
             {% endfor %}
             </div>
-        {% else %}
-            <div class="card red accent-2">
-                <div class="card-content">
-                    <span class="card-title">There's nobody here!</span>
-                    Try <a class="white-text" href="/people/">searching</a> for someone
-                </div>
+
+    {% else %}
+        <div class="card red accent-2">
+            <div class="card-content">
+                <span class="card-title">There's nobody here!</span>
+                Try <a class="white-text" href="/people/">searching</a> for someone
             </div>
-        {% endif %}
+        </div>
+    {% endif %}
 
     </div>
+{% endblock %}
+
+
+{% block javascript_doc_ready %}
+    <script type="text/javascript">
+    $(".modal").modal();
+
+    // create a network
+    var container = document.getElementById('PhDnetwork');
+    var nodes = new vis.DataSet({{ nodes|safe }})
+    var edges = new vis.DataSet({{ edges|safe }})
+    // provide the data in the vis format
+    var data = {
+        nodes: nodes,
+        edges: edges
+    };
+    var options = {
+        layout:{
+        },
+        nodes : {
+            shape: 'dot',
+            size: 10
+        }
+    };
+
+    // initialize your network!
+    var network = new vis.Network(container, data, options);
+    network.on("click", function( params ) {
+        $.getJSON("/get_network_JSON/" + params.nodes + "/", function( data ){
+                nodesObj=JSON.parse(data.nodes);
+                edgesObj=JSON.parse(data.edges);
+                nodesAdded = false;
+                $.each(nodesObj, function(n){
+                    if(nodes.get(nodesObj[n].id)){} else {
+                        nodes.add(nodesObj[n]);
+                        nodesAdded = true;
+                    }
+                });
+
+                $.each(edgesObj, function(e) {
+                    var edgeExists = edges.get({
+                        filter: function (item) {
+                            return item.from == edgesObj[e].from && item.to == edgesObj[e].to;
+                        }
+                    });
+                    if(edgeExists.length > 0){
+                        //do nothing
+                    }else{
+                        edges.add(edgesObj[e]);
+                    }
+                });
+
+            if(nodesAdded === true) {
+                setTimeout(function(){
+                network.fit({
+                nodes: getNodeIDs(),
+                animation: true
+                });
+            }, 1500);
+            };
+        });
+    });
+    var getNodeIDs = function(){
+        var output = []
+        $.each(nodes, function(n){
+            output.push(n.id);
+        });
+    };
+
+    </script>
 {% endblock %}
