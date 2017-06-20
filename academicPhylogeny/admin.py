@@ -58,6 +58,9 @@ class PhDUpdateAdmin(admin.ModelAdmin):
     list_display = ("suggested_update_fixture","date_sent","moderator_approved", "submitter_email", "source_of_info")
     actions= [updatePhDObject]
 
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ("user", "associated_PhD", "reputation_points", "moderator_approved")
+
 
 admin.site.register(frequently_asked_question,FAQadmin)
 admin.site.register(school, SchoolAdmin)
@@ -65,4 +68,4 @@ admin.site.register(school, SchoolAdmin)
 admin.site.register(PhD, PhDAdmin)
 admin.site.register(userContact, UserContactAdmin)
 admin.site.register(PhDupdate, PhDUpdateAdmin)
-admin.site.register(UserProfile, admin.ModelAdmin)
+admin.site.register(UserProfile, UserProfileAdmin)

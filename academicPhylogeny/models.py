@@ -250,10 +250,13 @@ class userContact(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(to=User)
+    moderator_approved = models.BooleanField(default=False)
     associated_PhD = models.OneToOneField(to=PhD)
     current_position = models.CharField(max_length=100, null=True, blank=True)
     current_affiliation = models.CharField(max_length=100, null=True, blank=True)
     reputation_points = models.IntegerField(default=10)
+    research_website = models.URLField(null=True, blank=True)
+    research_blurb = models.TextField(max_length=2000,verbose_name="Describe your research program", null=True, blank=True)
 
     def __unicode__(self):
         return "%s = %s" %(self.user, self.associated_PhD.firstName + " " + self.associated_PhD.lastName)
