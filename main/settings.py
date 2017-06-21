@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 #use this in production to import from secrets file
-from academicPhylogeny.secrets import EMAIL_HOST_PASSWORD, EMAIL_HOST_USER, EMAIL_HOST, DEFAULT_FROM_EMAIL
+from academicPhylogeny import secrets
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -125,6 +125,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/wabarr/webapps/phys_phylo_v2_static'
 
+
+LOGIN_URL = '/login/'
+
 #EMAIL_HOST = "localhost"
 #EMAIL_PORT = 1025
-LOGIN_URL = '/login/'
+EMAIL_HOST_PASSWORD = secrets.EMAIL_HOST_PASSWORD
+EMAIL_HOST_USER = secrets.EMAIL_HOST_USER
+EMAIL_HOST = secrets.EMAIL_HOST
+DEFAULT_FROM_EMAIL = secrets.DEFAULT_FROM_EMAIL
