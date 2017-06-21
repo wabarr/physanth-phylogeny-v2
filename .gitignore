@@ -6,3 +6,5 @@
 virtualenv/
 
 .idea/
+
+academicPhylogeny/secrets.py
