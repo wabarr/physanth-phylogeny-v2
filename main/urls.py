@@ -38,7 +38,7 @@ urlpatterns = [
     url(r'^submit_post_search/$', AddPhDView.as_view()),
     url(r'^suggest_change/(?P<pk>\d+)/$', SubmitPhDUpdateView.as_view()),
     url(r'^suggested_change/$', PhDUpdateView.as_view()),
-    url(r'^random/', randomNetwork),
+    url(r'^random/', randomPerson),
 #    url(r'^getJSONconnections/(?P<selectedNameID>\d+)/$', JSONstream),
 #    url(r'^getJSONconnections/$', JSONstream),
     #url(r'^tree_JSON/(?P<pk>\d+)/$', tree_JSON),

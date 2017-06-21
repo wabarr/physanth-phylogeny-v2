@@ -19,10 +19,10 @@ import json
 
 
 
-def randomNetwork(request):
+def randomPerson(request):
     nRecords = PhD.objects.count()
     randomPerson = PhD.objects.all()[random.randint(0, nRecords-1)]
-    return HttpResponseRedirect("/network/" + randomPerson.URL_for_detail)
+    return HttpResponseRedirect("/detail/" + randomPerson.URL_for_detail)
 
 class TrendsView(TemplateView):
     template_name = "trends.html"

@@ -6,16 +6,7 @@
 
 {% block content %}
     {%  if user_profile.user == request.user %}
-        <div class="row deep-orange white-text">
-            <div class="container">
-                <div class="col s6 ">
-                        You control this page
-                </div>
-                <div class="col s6 right-align">
-                    <a class="white-text" href="/edit/{{user_profile.associated_PhD.id}}/">Edit your information</a>
-                </div>
-            </div>
-        </div>
+        {% include "ownership-strip.html" %}
     {% endif %}
 
     <div class="container">

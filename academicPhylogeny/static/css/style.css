@@ -8,6 +8,13 @@
 
 .login-row {
     margin-bottom:0px;
+    padding-top:5px;
+    padding-bottom:5px;
+}
+
+.ownership-alert {
+    padding-top:5px;
+    padding-bottom:5px;
 }
 
 .btn-100-percent {
