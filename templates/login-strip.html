@@ -5,6 +5,9 @@
                 Hello, {{ request.user }}
             </div>
             <div class="col s6 right-align">
+                {% if request.user.userprofile.associated_PhD %}
+                    <a href="/detail/{{ request.user.userprofile.associated_PhD.id }}" style="padding-right:5px;">Your page</a>
+                {% endif %}
                 <a href="/logout/">Logout</a>
             </div>
         </div>
