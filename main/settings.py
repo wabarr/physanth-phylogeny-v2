@@ -27,7 +27,7 @@ SECRET_KEY = 'd#r4bo5+7e8$-j$w!%s$0i*fk6$6+&4wli^yrq1*5h5+zg$gy@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['v2.physanthphylogeny.org']
 
 
 # Application definition
@@ -128,4 +128,3 @@ STATIC_ROOT = '/home/wabarr/webapps/phys_phylo_v2_static'
 #EMAIL_HOST = "localhost"
 #EMAIL_PORT = 1025
 LOGIN_URL = '/login/'
-
