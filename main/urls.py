@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^create_user/', UserCreateView.as_view()),
     url(r'^user_created/', UserCreatedView.as_view()),
     url(r'^claim/', ClaimPhDView.as_view()),
+    url(r'^after_create_userprofile/', AfterCreateUserprofileView.as_view()),
     url(r'^ajax_select/', include(ajax_select_urls)),
     url(r'^contact/$', ContactView.as_view()),
     url(r'^thanks/$', ThanksView.as_view()),

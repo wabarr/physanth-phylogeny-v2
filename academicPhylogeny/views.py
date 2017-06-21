@@ -89,11 +89,13 @@ class UserCreateView(CreateView):
         self.object.save()
         return response
 
+class AfterCreateUserprofileView(TemplateView):
+    template_name = "after_create_userprofile.html"
 
 class ClaimPhDView(CreateView):
     model = UserProfile
     form_class = UserProfileForm
-    success_url = "/"
+    success_url = "/after_create_userprofile/"
 
     def get_initial(self):
         return {'user': self.request.user}
