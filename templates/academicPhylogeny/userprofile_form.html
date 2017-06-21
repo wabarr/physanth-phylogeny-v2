@@ -3,42 +3,53 @@
 {% block content %}
 
     {% if request.user.is_authenticated %}
-    <div class="container">
-        <div class="row">
-            <div class="col s12">
-                <h3>Claim your page</h3>
+        {% if  request.user.userprofile.moderator_approved %}
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    <h3>Claim your page</h3>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col s12 m6">
-                <div class="card amber lighten-5">
-                    <div class="card-content">
-                        <span class="card-title">User: {{ request.user }}</span>
-                        {% if user_profile %}
-                            <p>You have already claimed a page.</p>
-                            <br>
-                            <a href="/detail/{{ user_profile.associated_PhD.id }}"><button class="waves-effect waves-light btn-large">Go to your page</button></a>
-                        {% else %}
-                            <p>User has no associated website page...</p>
-                        {% endif %}
+            <div class="row">
+                <div class="col s12 m6">
+                    <div class="card amber lighten-5">
+                        <div class="card-content">
+                            <span class="card-title">User: {{ request.user }}</span>
+                            {% if user_profile %}
+                                <p>You have already claimed a page.</p>
+                                <br>
+                                <a href="/detail/{{ user_profile.associated_PhD.id }}"><button class="waves-effect waves-light btn-large">Go to your page</button></a>
+                            {% else %}
+                                <p>User has no associated website page...</p>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        {% if not user_profile %}
-        <div class="row">
-            <div class="col s12">
-                <h3>Search for website page to claim</h3>
-                {{ form.media }}
-                <form action="/claim/" method="post" novalidate>
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button class="waves-effect waves-light btn-large" type="submit">Claim</button>
-                </form>
+            {% if not user_profile %}
+            <div class="row">
+                <div class="col s12">
+                    <h3>Search for website page to claim</h3>
+                    {{ form.media }}
+                    <form action="/claim/" method="post" novalidate>
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button class="waves-effect waves-light btn-large" type="submit">Claim</button>
+                    </form>
+                </div>
             </div>
+            {% endif %}
         </div>
+        {% else %}
+            <div class="container">
+                <div class="row">
+                    <div class="col s12">
+                        <h3>Sorry {{ request.user }}...</h3>
+                        <p>Your account has not yet been approved by a moderator, so you cannot claim your page yet.</p>
+                    </div>
+                </div>
+            </div>
         {% endif %}
-    </div>
     {% else %}
         <div class="container">
             <div class="row">
