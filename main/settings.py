@@ -121,7 +121,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/home/wabarr/webapps/phys_phylo_v2_static'
 
 EMAIL_HOST = "localhost"
 EMAIL_PORT = 1025
 LOGIN_URL = '/login/'
+
+#EMAIL_HOST = 'smtp.webfaction.com'
+#EMAIL_HOST_USER = 'wabarr'
+#EMAIL_HOST_PASSWORD = "asdfjkl;xyz-123"
+#DEFAULT_FROM_EMAIL = 'mail@wabarr.webfactional.com'
+#SERVER_EMAIL = 'mail@wabarr.webfactional.com'
