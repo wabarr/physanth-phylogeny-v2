@@ -137,16 +137,17 @@ class PhD(models.Model):
 
     @property
     def network_edges_formatted(self):
+        arrowSettings = {"from":{"scaleFactor":1.3}}
         edge_list = []
 
         for child in PhD.objects.filter(advisor=self):
             for advisor in child.advisor.all():
-                edge_list.append({"to":advisor.pk, "from":child.pk, "arrows":"from"})
+                edge_list.append({"to":advisor.pk, "from":child.pk, "arrows":arrowSettings})
 
         for advisor in self.advisor.all():
             edge_list.append({"to":advisor.pk, "from":self.pk, "arrows":"from"})
             for sibling in PhD.objects.filter(advisor=advisor).exclude(pk=self.pk):
-                edge_list.append({"to": advisor.pk, "from": sibling.pk, "arrows": "from"})
+                edge_list.append({"to": advisor.pk, "from": sibling.pk, "arrows": arrowSettings})
 
         return json.dumps(edge_list)
 
