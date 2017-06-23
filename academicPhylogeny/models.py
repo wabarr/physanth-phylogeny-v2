@@ -153,14 +153,15 @@ class PhD(models.Model):
 
     @property
     def network_nodes_formatted(self):
-        selctecNodeColor = "#1e88e5"
+        selectedNodeColor = "#1e88e5"
         baseNodeColor = "#ffecb3"
         nodes = []
 
         nodes.append({"id": self.pk,
                       "label": " ".join((self.firstName, self.lastName)),
-                      "color": selctecNodeColor,
-                      "shape": "star",
+                      "color": selectedNodeColor,
+                      "shape": "ellipse",
+                      "font" : {"color":"white"},
                       "size": 20})
         advisors = self.advisor.all()
         for advisor in advisors:
