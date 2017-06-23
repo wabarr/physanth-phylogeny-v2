@@ -125,7 +125,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/wabarr/webapps/phys_phylo_v2_static'
 
-
 LOGIN_URL = '/login/'
 
 #EMAIL_HOST = "localhost"
@@ -134,3 +133,7 @@ EMAIL_HOST_PASSWORD = secrets.EMAIL_HOST_PASSWORD
 EMAIL_HOST_USER = secrets.EMAIL_HOST_USER
 EMAIL_HOST = secrets.EMAIL_HOST
 DEFAULT_FROM_EMAIL = secrets.DEFAULT_FROM_EMAIL
+
+#EMAIL_HOST = "localhost"
+#EMAIL_PORT = 1025
+LOGIN_URL = '/login/'
