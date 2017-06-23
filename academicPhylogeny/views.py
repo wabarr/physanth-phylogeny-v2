@@ -169,7 +169,7 @@ class PhDListView(ListView):
             if value:
                 if value <> "":
                     filterArgs[key] = value
-        return PhD.objects.filter(**filterArgs)
+        return PhD.objects.filter(**filterArgs).order_by("-year")
 
 def PhD_numeric_detail_view(request, pk):
     ##if you ask for a detail view with a numeric parameter, translate it and
@@ -218,36 +218,36 @@ class FAQView(TemplateView):
         return context
 
 
-class TreeView(TemplateView):
-    template_name = 'tree.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(TreeView, self).get_context_data(**kwargs)
-        try:
-            context['pk'] = self.kwargs["pk"]
-            context['selectedName'] = PhD.objects.get(pk=self.kwargs["pk"]).__unicode__()
-        except:
-            context['pk'] = None
-            context['selectedName'] = None
-        return context
-
-class NetworkView(TreeView):
-    template_name = 'network.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(TreeView, self).get_context_data(**kwargs)
-        try:
-            selectedPhD = PhD.objects.get(URL_for_detail=kwargs["URL_for_detail"])
-        except:
-            return context
-        if not selectedPhD.validated:
-            return context
-
-        context["selectedPerson"] = selectedPhD
-        context["nodes"]= selectedPhD.network_nodes_formatted
-        context["edges"]= selectedPhD.network_edges_formatted
-
-        return context
+# class TreeView(TemplateView):
+#     template_name = 'tree.html'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(TreeView, self).get_context_data(**kwargs)
+#         try:
+#             context['pk'] = self.kwargs["pk"]
+#             context['selectedName'] = PhD.objects.get(pk=self.kwargs["pk"]).__unicode__()
+#         except:
+#             context['pk'] = None
+#             context['selectedName'] = None
+#         return context
+#
+# class NetworkView(TreeView):
+#     template_name = 'network.html'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(TreeView, self).get_context_data(**kwargs)
+#         try:
+#             selectedPhD = PhD.objects.get(URL_for_detail=kwargs["URL_for_detail"])
+#         except:
+#             return context
+#         if not selectedPhD.validated:
+#             return context
+#
+#         context["selectedPerson"] = selectedPhD
+#         context["nodes"]= selectedPhD.network_nodes_formatted
+#         context["edges"]= selectedPhD.network_edges_formatted
+#
+#         return context
 
 def getNetworkJSONView(request, pk):
     thePerson = PhD.objects.get(pk=pk)
