@@ -145,7 +145,7 @@ class PhD(models.Model):
                 edge_list.append({"to":advisor.pk, "from":child.pk, "arrows":arrowSettings})
 
         for advisor in self.advisor.all():
-            edge_list.append({"to":advisor.pk, "from":self.pk, "arrows":"from"})
+            edge_list.append({"to":advisor.pk, "from":self.pk, "arrows":arrowSettings})
             for sibling in PhD.objects.filter(advisor=advisor).exclude(pk=self.pk):
                 edge_list.append({"to": advisor.pk, "from": sibling.pk, "arrows": arrowSettings})
 
