@@ -159,7 +159,9 @@ class PhD(models.Model):
 
         nodes.append({"id": self.pk,
                       "label": " ".join((self.firstName, self.lastName)),
-                      "color": selctecNodeColor})
+                      "color": selctecNodeColor,
+                      "shape": "star",
+                      "size": 20})
         advisors = self.advisor.all()
         for advisor in advisors:
             nodes.append({"id": advisor.pk,
