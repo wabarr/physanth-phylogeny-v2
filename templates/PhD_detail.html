@@ -42,31 +42,31 @@
             {% endcomment %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.0/vis.min.js"></script>
 
-        <div id="modal1" class="modal">
+        <div class="row section">
+            <div class="col s12 ">
+                <h5>Network
+                    <a href="#network-hints">
+                        <i class="material-icons" style="font-size:18px;">help_outline</i>
+                    </a>
+                </h5>
+                <div id="PhDnetwork"></div>
+            </div>
+        </div>
+        <div id="network-hints" class="modal">
             <div class="modal-content">
-                <h4>Hints for using the network graph</h4>
-                <p>Network can be zoomed.</p>
-                <p>Click on a node to expand it.</p>
-                <p>Drag nodes to change the layout.</p>
+                <h4>Network hints</h4>
+                <p>Click on any node to fully expand it. This will reveal a person's advisor (if known) as well as any siblings. </p>
+                <p>Drag nodes to move the layout.</p>
+                <p>Use the navigation buttons to zoom the network or to make the full network fit the window.</p>
             </div>
             <div class="modal-footer">
                 <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
             </div>
         </div>
-        <div class="row section">
-            <div class="col s12 ">
-                <div id="PhDnetwork"></div>
-            </div>
-        </div>
-        <div class="fixed-action-btn">
-            <a class="btn-floating btn-large red" href="#modal1">
-                <i class="material-icons" style="font-size: 46px">help_outline</i>
-            </a>
-        </div>
     {% comment %}
     PhD Advisor section
     {% endcomment %}
-            <div class="row section">
+            <div class="row ">
                 {% if thePhD.advisor.all %}<div class="col s12"><h5>Advisor{% if thePhD.advisor.all|length > 1 %}s{% endif %}</h5></div>{% endif %}
                 {% for each in thePhD.advisor.all %}
                     <div class="col s12 ">
@@ -94,7 +94,7 @@
             {% comment %}
             PhD student section
             {% endcomment %}
-            <div class="row section">
+            <div class="row ">
             {% if students%}<div class="col s12"><h5>PhD Students</h5></div>{% endif %}
             {% for student in students %}
                 <div class="col s12">
@@ -202,6 +202,8 @@
             output.push(n.id);
         });
     };
+
+    $(".vis-up, .vis-down, .vis-right, .vis-left").remove();
 
     </script>
 {% endblock %}
