@@ -145,25 +145,35 @@ class PhD(models.Model):
 
         for advisor in self.advisor.all():
             edge_list.append({"to":advisor.pk, "from":self.pk, "arrows":"from"})
+            for sibling in PhD.objects.filter(advisor=advisor).exclude(pk=self.pk):
+                edge_list.append({"to": advisor.pk, "from": sibling.pk, "arrows": "from"})
 
         return json.dumps(edge_list)
 
     @property
     def network_nodes_formatted(self):
+        selctecNodeColor = "#1e88e5"
+        baseNodeColor = "#ffecb3"
         nodes = []
 
         nodes.append({"id": self.pk,
                       "label": " ".join((self.firstName, self.lastName)),
-                      "color": "#ffecb3"})
+                      "color": selctecNodeColor})
         advisors = self.advisor.all()
         for advisor in advisors:
             nodes.append({"id": advisor.pk,
-                          "label": " ".join((advisor.firstName, advisor.lastName))})
+                          "label": " ".join((advisor.firstName, advisor.lastName)),
+                          "color":baseNodeColor})
+            for sibling in PhD.objects.filter(advisor=advisor).exclude(pk=self.pk):
+                nodes.append({"id": sibling.pk,
+                              "label": " ".join((sibling.firstName, sibling.lastName)),
+                              "color":baseNodeColor})
 
         children = PhD.objects.filter(advisor=self)
         for child in children:
             nodes.append({"id": child.pk,
-                          "label": " ".join((child.firstName, child.lastName))})
+                          "label": " ".join((child.firstName, child.lastName)),
+                          "color":baseNodeColor})
 
         return json.dumps(nodes)
 
