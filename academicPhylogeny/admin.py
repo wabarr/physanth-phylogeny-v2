@@ -56,7 +56,8 @@ def updatePhDObject(modeladmin, request, queryset):
 
 class PhDUpdateAdmin(admin.ModelAdmin):
     list_display = ("suggested_update_fixture","date_sent","moderator_approved", "submitter_email", "source_of_info")
-    actions= [updatePhDObject]
+    #actions= [updatePhDObject]
+    #this action is much better done using the /validate/ url which hits ValidateView
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ("user", "associated_PhD", "reputation_points", "moderator_approved")

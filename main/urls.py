@@ -40,6 +40,8 @@ urlpatterns = [
     url(r'^suggest_change/(?P<pk>\d+)/$', SubmitPhDUpdateView.as_view()),
     url(r'^suggested_change/$', PhDUpdateView.as_view()),
     url(r'^random/', randomPerson),
+    url(r'^validate/(?P<pk>\d+)/$', ValidateView.as_view()),
+    url(r'^validate/$', checkValidateQueueView),
 #    url(r'^getJSONconnections/(?P<selectedNameID>\d+)/$', JSONstream),
 #    url(r'^getJSONconnections/$', JSONstream),
     #url(r'^tree_JSON/(?P<pk>\d+)/$', tree_JSON),

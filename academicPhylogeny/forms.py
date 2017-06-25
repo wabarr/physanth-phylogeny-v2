@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.forms import ModelForm, CharField, EmailField
+from django.forms import ModelForm, CharField, EmailField, IntegerField
 from django.forms.widgets import PasswordInput
 from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultipleField
 from .models import *
@@ -40,16 +40,16 @@ class PhDUpdateForm(ModelForm):
     #for unauthenticated users to suggest entries that require moderator validation
     class Meta:
         model=PhDupdate
-        fields = ["suggested_update_fixture", "submitter_email", "source_of_info"]
+        fields = ["suggested_update_fixture", "submitter_email", "source_of_info", "PhD"]
 
-class suggestedPhDTextUpdateForm(ModelForm):
+#class suggestedPhDTextUpdateForm(ModelForm):
 
-    class Meta:
-        model = suggestedPhDTextUpdate
-        fields = ["PhD", "field", "value"]
+#    class Meta:
+#       model = suggestedPhDTextUpdate
+#        fields = ["PhD", "field", "value"]
 
-    PhD = AutoCompleteSelectField("PhD",required=True, help_text=None)
-    #field = forms.ChoiceField(choices = CHOICES_editable_fields)
+#    PhD = AutoCompleteSelectField("PhD",required=True, help_text=None)
+#    field = forms.ChoiceField(choices = CHOICES_editable_fields)
 
 class UserContactAddForm(ModelForm):
     class Meta:
@@ -71,3 +71,9 @@ class UserProfileForm(ModelForm):
         model = UserProfile
         fields=('user',"associated_PhD")
     associated_PhD = AutoCompleteSelectField("PhD", required=True, help_text=None, label="Search")
+
+class PhDValidateForm(ModelForm):
+    class Meta:
+        model = PhD
+        fields = ["firstName", "lastName", "specialization", "year", "school", "advisor", "id"]
+    #advisor = AutoCompleteSelectField("PhD", required=True, help_text=None)

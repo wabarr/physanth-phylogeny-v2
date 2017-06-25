@@ -8,11 +8,12 @@ from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
-from django.contrib.auth.models import User
+from django.shortcuts import render
+from django.template import RequestContext
 import random
-from forms import SchoolForm, PhD_form_for_ajax_selects_search, PhDUpdateForm, PhDAddForm, PhDEditForm, UserContactAddForm, UserCreateForm, UserProfileForm
+from forms import *
 import json
 
 # Create your views here.
@@ -72,7 +73,7 @@ class SubmitPhDUpdateView(TemplateView):
             thePerson = PhD.objects.get(pk=self.kwargs["pk"])
             context["selectedID"] = thePerson.id
             context["selected_PhD_form"] = PhDAddForm(instance=thePerson)
-            context["form"] = PhDUpdateForm()
+            context["form"] = PhDUpdateForm(initial={"PhD":thePerson.id})
             return context
         except:
             return context
@@ -109,6 +110,10 @@ class ClaimPhDView(CreateView):
             pass
         return context
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ClaimPhDView, self).dispatch(*args, **kwargs)
+
 class UserCreatedView(TemplateView):
     template_name = "user_created.html"
 
@@ -120,7 +125,7 @@ class PhDUpdateView(CreateView):
     # for unauthenticated users to suggest entries that require moderator validation
     model = PhDupdate
     form_class = PhDUpdateForm
-    template_name = "unauthenticated_user_PhDupdate.html"
+    template_name = "unauthenticated_user_PhD_add.html"
     success_url = "/thanks/"
 
 class PhD_EditView(UpdateView):
@@ -157,7 +162,7 @@ class AddPhDView(CreateView):
     model = PhD
     form_class = PhDAddForm
     success_url = "/thanks/"
-    template_name = "unauthenticated_user_PhDupdate.html"
+    template_name = "unauthenticated_user_PhD_add.html"
 
 class PhDListView(ListView):
     template_name = "PhD_search_results.html"
@@ -290,3 +295,33 @@ def tree_JSON(request, pk=None):
             rootNode["children"].append(root.get_nested_tree_dict)
         return JsonResponse(rootNode)
 
+class ValidateView(UpdateView):
+    model = PhD
+    form_class = PhDValidateForm
+    template_name = "validate_suggested_PhDUpdate.html"
+
+    def get_object(self, queryset=None):
+        PhDUpdateObject = PhDupdate.objects.get(pk=self.kwargs["pk"])
+        dict = json.loads(PhDUpdateObject.suggested_update_fixture)
+        ob = PhD.objects.get(pk=dict["id"])
+        return ob
+
+    def get_context_data(self, **kwargs):
+        PhDUpdateObject = PhDupdate.objects.get(pk=self.kwargs["pk"])
+        context = super(ValidateView, self).get_context_data(**kwargs)
+        context["suggestedUpdateForm"] = PhDValidateForm(initial=json.loads(PhDupdate.objects.get(pk=self.kwargs["pk"]).suggested_update_fixture))
+        context["email"] = PhDUpdateObject.submitter_email
+        context["source"] = PhDUpdateObject.source_of_info
+        return context
+
+    @method_decorator(permission_required("academicPhylogeny.change_phd"))
+    def dispatch(self, *args, **kwargs):
+        return super(ValidateView, self).dispatch(*args, **kwargs)
+
+@permission_required("academicPhylogeny.change_phd")
+def checkValidateQueueView(request):
+    try:
+        object = PhDupdate.objects.filter(moderator_approved=False).order_by("date_sent")[0]
+        return HttpResponseRedirect("/validate/" + str(object.pk) + "/")
+    except IndexError:
+        return render(request, 'empty_validation_queue.html',)

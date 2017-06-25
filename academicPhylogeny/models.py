@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
+from django.shortcuts import reverse
 from django.db import models
 from django.contrib.auth.models import User
 import json
@@ -232,6 +232,7 @@ class suggestedPhDTextUpdate(models.Model):
     approver = models.ForeignKey(User, default=1)
 
 class PhDupdate(models.Model):
+    PhD = models.ForeignKey(PhD)
     moderator_approved = models.BooleanField(default=False)
     approver = models.ForeignKey(User, null=True, blank=True)
     suggested_update_fixture = models.TextField()

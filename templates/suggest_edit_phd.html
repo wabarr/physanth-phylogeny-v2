@@ -1,4 +1,5 @@
 {% extends "default.html" %}
+{% load static %}
 
 {% block content %}
 
@@ -78,11 +79,14 @@
 {% endblock %}
 
 {% block javascript_doc_ready %}
+<script src={% static "js/cleanup.js" %}></script>
 <script>
 $(document).ready(function() {
     $("#id_suggested_update_fixture").hide();
+    $("#id_PhD").hide();
+    $("label[for='id_PhD']").hide();
     $("label[for='id_suggested_update_fixture']").hide();
-    $('select').material_select();
+    $('#id_specialization').material_select();
     //$("#id_specialization").addClass("browser-default");
     $("#suggest_change_submit").on("click", function(){
         var ob = Object();
@@ -105,7 +109,6 @@ $(document).ready(function() {
         $("#id_suggested_update_fixture").val(JSON.stringify(ob))
     });
   });
-
 </script>
 
 {% endblock %}
