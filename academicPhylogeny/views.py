@@ -107,11 +107,14 @@ class ClaimPhDView(CreateView):
             user_profile = UserProfile.objects.get(user=self.request.user)
             context["user_profile"] = user_profile
         except:
-            pass
+            passx
         return context
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
+        #redirect if user already has a profile
+        if self.request.user.userprofile:
+            return HttpResponseRedirect("/detail/" + self.request.user.userprofile.associated_PhD.URL_for_detail + "/")
         return super(ClaimPhDView, self).dispatch(*args, **kwargs)
 
 class UserCreatedView(TemplateView):
