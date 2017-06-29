@@ -162,6 +162,14 @@
     // initialize your network!
     var network = new vis.Network(container, data, options);
     network.on("click", function( params ) {
+        {% if request.user.username != "wabarr"  %}
+        ga('send', {
+			hitType: 'event',
+			eventCategory: 'network-click',
+			eventAction: 'expand-node',
+			eventLabel: params.nodes
+		});
+        {% endif %}
         $.getJSON("/get_network_JSON/" + params.nodes + "/", function( data ){
                 nodesObj=JSON.parse(data.nodes);
                 edgesObj=JSON.parse(data.edges);
