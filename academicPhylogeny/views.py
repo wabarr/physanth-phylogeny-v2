@@ -167,6 +167,13 @@ class AddPhDView(CreateView):
     success_url = "/thanks/"
     template_name = "unauthenticated_user_PhD_add.html"
 
+    def get_initial(self):
+        initial = super(AddPhDView, self).get_initial()
+        if self.request.user.is_authenticated():
+            initial['submitter_user'] = self.request.user
+            initial['submitter_email'] = self.request.user.email
+        return initial
+
 class PhDListView(ListView):
     template_name = "PhD_search_results.html"
     model = PhD

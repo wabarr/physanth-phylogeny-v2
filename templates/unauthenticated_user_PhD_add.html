@@ -55,11 +55,24 @@
                                 <div class="col s12">
                                     <h4>A few more things...</h4>
                                 </div>
+                                    {% if request.user.is_authenticated %}
+                                    <div class="col s12">
+                                    {{ form.submitter_user.errors }}
+                                    {{ form.submitter_user.label_tag }}
+                                    {{ form.submitter_user }}
+                                    </div>
                                     <div class="col s12">
                                     {{ form.submitter_email.errors }}
                                     {{ form.submitter_email.label_tag }}
                                     {{ form.submitter_email }}
                                     </div>
+                                    {% else %}
+                                    <div class="col s12">
+                                    {{ form.submitter_email.errors }}
+                                    {{ form.submitter_email.label_tag }}
+                                    {{ form.submitter_email }}
+                                    </div>
+                                    {% endif %}
                                     <div class="col s12">
                                     {{ form.source_of_info.errors }}
                                     {{ form.source_of_info.label_tag }}

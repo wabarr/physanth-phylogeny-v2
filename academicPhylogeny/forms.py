@@ -16,7 +16,7 @@ class SchoolForm(ModelForm):
 class PhDAddForm(ModelForm):
     class Meta:
         model = PhD
-        fields = ["firstName","lastName","year","school","advisor","specialization", "id", "submitter_email", "source_of_info"]
+        fields = ["firstName","lastName","year","school","advisor","specialization", "id", "submitter_email", "source_of_info", "submitter_user"]
     school = AutoCompleteSelectField("school", help_text=None)
     advisor = AutoCompleteSelectMultipleField("PhD", required=True, help_text=None)
 

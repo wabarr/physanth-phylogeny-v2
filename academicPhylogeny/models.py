@@ -33,82 +33,6 @@ class specialization(models.Model):
     class Meta:
         ordering = ['name']
 
-class person(models.Model):
-    firstName = models.CharField(max_length = 100,blank=True,null=True)
-    middleName = models.CharField(max_length = 100,blank=True,null=True)
-    lastName = models.CharField(max_length = 100,blank=True,null=True)
-    yearOfPhD = models.IntegerField(max_length= 4, blank=True,null=True)
-    school = models.ForeignKey(school)
-    specialization = models.ManyToManyField(specialization,null=True,blank=True)
-    URL_for_detail = models.CharField(max_length = 200,null=True)
-    #shareImageURL = models.URLField(max_length=200, null=True, blank=True)
-    featureImage = models.FileField(max_length=255, blank=True, upload_to="people/images/", null=True)
-    featureBlurb = models.TextField(max_length=2000, null=True, blank=True, help_text="formatted with with <\p> tags")
-    isFeatured = models.NullBooleanField()
-    dateFeatured = models.DateField(null=True, blank=True)
-    def get_absolute_url(self):
-        return reverse('academicPhylogeny.views.detail', args=[self.URL_for_detail])
-
-    def __unicode__(self):
-            name = self.firstName + " " + self.lastName
-            return name
-
-    def save(self):#custom save method for person to update detail URL
-        self.URL_for_detail = (self.firstName + "_" + self.lastName).replace(" ","_")
-
-        #call the normal person save method
-        super(person, self).save()
-
-    class Meta:
-            db_table = 'person'
-            unique_together = (("firstName", "lastName"),)
-            ordering = ['lastName']
-            verbose_name_plural = 'people'
-
-
-
-class connection(models.Model):
-    advisor = models.ManyToManyField(person,related_name="a+")
-    student = models.ForeignKey(person)
-
-    def student_First_Name(self):
-        return(self.student.firstName)
-    student_First_Name.admin_order_field = 'student__firstName'
-
-    def student_Last_Name(self):
-        return(unicode(self.student.lastName))
-    student_Last_Name.admin_order_field = 'student__lastName'
-
-    def student_Year_Of_PhD(self):
-        return(str(self.student.yearOfPhD))
-    student_Year_Of_PhD.admin_order_field = 'student__yearOfPhD'
-
-    def advisor_name(self):
-        allAdvisors = []
-        for each in self.advisor.all():
-            allAdvisors.append(unicode(each.lastName))
-
-        advisorNames = "/".join(allAdvisors)
-        return(unicode(advisorNames))
-    advisor_name.admin_order_field = 'advisor__lastName'
-
-    def connectionJSON(self):
-        allAdvisors = []
-        try:
-            for each in self.advisor.all():
-                allAdvisors.append(unicode(each.firstName) + " " +  unicode(each.lastName))
-            to_be_formatted = '{"source":"' + allAdvisors[0] + '", "target":"' + unicode(self.student.firstName) + " " + unicode(self.student.lastName) + '"}'
-        except IndexError:
-            to_be_formatted = '{"source":"' + "Unknown" + '", "target":"' + unicode(self.student.firstName) + " " + unicode(self.student.lastName) + '"}'
-        return to_be_formatted.replace("None","Unknown")
-    def __unicode__(self):
-        return self.advisor_name() + "-->>" + self.student.firstName + " " + self.student.lastName + " (" + str(self.student.yearOfPhD) + ")"
-
-    class Meta:
-        db_table = "connection"
-        unique_together = ('student',)
-        ordering = ('student',)
-
 class PhD(models.Model):
     firstName = models.CharField(max_length=100,  null=True, verbose_name="First Name")
     lastName = models.CharField(max_length=100, null=True,  verbose_name="Last Name")
@@ -119,6 +43,7 @@ class PhD(models.Model):
     URL_for_detail = models.CharField(max_length=200, null=True, blank=True)
     validated = models.NullBooleanField(default=False, blank=True)
     submitter_email = models.EmailField(verbose_name="Your Email Address")
+    submitter_user = models.ForeignKey(User, null=True, blank=True, verbose_name="Submitter username")
     source_of_info = models.CharField(max_length=300, verbose_name="What's the source of this info?")
 
     def __unicode__(self):
@@ -130,8 +55,11 @@ class PhD(models.Model):
 
     def save(self):  # custom save method for person to update detail URL
         self.URL_for_detail = (self.firstName + "_" + self.lastName).replace(" ", "_")
-
-        # call the normal person save method
+        if self.submitter_user.userprofile:
+            profile = UserProfile.objects.get(pk=self.submitter_user.userprofile.id)
+            profile.reputation_points = profile.reputation_points + 10
+            profile.save()
+        # call the normal PhD save method
         super(PhD, self).save()
 
 
@@ -222,14 +150,7 @@ class PhD(models.Model):
         verbose_name_plural = 'PhDs'
         verbose_name = "PhD"
 
-CHOICES_editable_fields=[("firstName","firstName"), ("lastName", "lastName"),("year", "year")]
-class suggestedPhDTextUpdate(models.Model):
-    ## deals with user suggested updates for fields that can be stored as text
-    PhD = models.ForeignKey(PhD)
-    field = models.CharField(choices=CHOICES_editable_fields, max_length=100)
-    value = models.CharField(max_length=100)
-    moderator_approved = models.BooleanField(default=False)
-    approver = models.ForeignKey(User, default=1)
+
 
 class PhDupdate(models.Model):
     PhD = models.ForeignKey(PhD)
@@ -237,6 +158,7 @@ class PhDupdate(models.Model):
     approver = models.ForeignKey(User, null=True, blank=True)
     suggested_update_fixture = models.TextField()
     submitter_email = models.EmailField(verbose_name="Your Email Address")
+    submitter_user = models.ForeignKey(User, null=True, blank=True, related_name="submitter_user", verbose_name="Submitter username")
     source_of_info = models.CharField(max_length=300,verbose_name="What's the source of this info?")
     date_sent = models.DateTimeField(auto_now_add=True)
     date_last_modified = models.DateTimeField(auto_now=True)
@@ -275,3 +197,90 @@ class UserProfile(models.Model):
 
     def __unicode__(self):
         return "%s = %s" %(self.user, self.associated_PhD.firstName + " " + self.associated_PhD.lastName)
+
+    #########DEPRECATED###########
+CHOICES_editable_fields = [("firstName", "firstName"), ("lastName", "lastName"), ("year", "year")]
+
+class suggestedPhDTextUpdate(models.Model):
+    ## deals with user suggested updates for fields that can be stored as text
+    PhD = models.ForeignKey(PhD)
+    field = models.CharField(choices=CHOICES_editable_fields, max_length=100)
+    value = models.CharField(max_length=100)
+    moderator_approved = models.BooleanField(default=False)
+    approver = models.ForeignKey(User, default=1)
+
+class person(models.Model):
+    firstName = models.CharField(max_length = 100,blank=True,null=True)
+    middleName = models.CharField(max_length = 100,blank=True,null=True)
+    lastName = models.CharField(max_length = 100,blank=True,null=True)
+    yearOfPhD = models.IntegerField(max_length= 4, blank=True,null=True)
+    school = models.ForeignKey(school)
+    specialization = models.ManyToManyField(specialization,null=True,blank=True)
+    URL_for_detail = models.CharField(max_length = 200,null=True)
+    #shareImageURL = models.URLField(max_length=200, null=True, blank=True)
+    featureImage = models.FileField(max_length=255, blank=True, upload_to="people/images/", null=True)
+    featureBlurb = models.TextField(max_length=2000, null=True, blank=True, help_text="formatted with with <\p> tags")
+    isFeatured = models.NullBooleanField()
+    dateFeatured = models.DateField(null=True, blank=True)
+    def get_absolute_url(self):
+        return reverse('academicPhylogeny.views.detail', args=[self.URL_for_detail])
+
+    def __unicode__(self):
+            name = self.firstName + " " + self.lastName
+            return name
+
+    def save(self):#custom save method for person to update detail URL
+        self.URL_for_detail = (self.firstName + "_" + self.lastName).replace(" ","_")
+
+        #call the normal person save method
+        super(person, self).save()
+
+    class Meta:
+            db_table = 'person'
+            unique_together = (("firstName", "lastName"),)
+            ordering = ['lastName']
+            verbose_name_plural = 'people'
+
+
+
+class connection(models.Model):
+    advisor = models.ManyToManyField(person,related_name="a+")
+    student = models.ForeignKey(person)
+
+    def student_First_Name(self):
+        return(self.student.firstName)
+    student_First_Name.admin_order_field = 'student__firstName'
+
+    def student_Last_Name(self):
+        return(unicode(self.student.lastName))
+    student_Last_Name.admin_order_field = 'student__lastName'
+
+    def student_Year_Of_PhD(self):
+        return(str(self.student.yearOfPhD))
+    student_Year_Of_PhD.admin_order_field = 'student__yearOfPhD'
+
+    def advisor_name(self):
+        allAdvisors = []
+        for each in self.advisor.all():
+            allAdvisors.append(unicode(each.lastName))
+
+        advisorNames = "/".join(allAdvisors)
+        return(unicode(advisorNames))
+    advisor_name.admin_order_field = 'advisor__lastName'
+
+    def connectionJSON(self):
+        allAdvisors = []
+        try:
+            for each in self.advisor.all():
+                allAdvisors.append(unicode(each.firstName) + " " +  unicode(each.lastName))
+            to_be_formatted = '{"source":"' + allAdvisors[0] + '", "target":"' + unicode(self.student.firstName) + " " + unicode(self.student.lastName) + '"}'
+        except IndexError:
+            to_be_formatted = '{"source":"' + "Unknown" + '", "target":"' + unicode(self.student.firstName) + " " + unicode(self.student.lastName) + '"}'
+        return to_be_formatted.replace("None","Unknown")
+    def __unicode__(self):
+        return self.advisor_name() + "-->>" + self.student.firstName + " " + self.student.lastName + " (" + str(self.student.yearOfPhD) + ")"
+
+    class Meta:
+        db_table = "connection"
+        unique_together = ('student',)
+        ordering = ('student',)
