@@ -38,7 +38,7 @@ urlpatterns = [
     url(r'^submit/$', PreAddPhDView.as_view()),
     url(r'^submit_post_search/$', AddPhDView.as_view()),
     url(r'^suggest_change/(?P<pk>\d+)/$', SubmitPhDUpdateView.as_view()),
-    url(r'^suggested_change/$', PhDUpdateView.as_view()),
+    #url(r'^suggested_change/$', PhDUpdateView.as_view()),
     url(r'^random/', randomPerson),
     url(r'^validate/(?P<pk>\d+)/$', ValidateView.as_view()),
     url(r'^validate/$', checkValidateQueueView),

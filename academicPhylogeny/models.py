@@ -55,10 +55,15 @@ class PhD(models.Model):
 
     def save(self):  # custom save method for person to update detail URL
         self.URL_for_detail = (self.firstName + "_" + self.lastName).replace(" ", "_")
-        if self.submitter_user.userprofile:
-            profile = UserProfile.objects.get(pk=self.submitter_user.userprofile.id)
-            profile.reputation_points = profile.reputation_points + 10
-            profile.save()
+        if not self.pk: #only do this if object doesn't exist yet
+            try:
+                ob = self.submitter_user.userprofile
+                profile = UserProfile.objects.get(pk=ob.id)
+                profile.reputation_points = profile.reputation_points + 10
+                profile.save()
+            except:
+                pass
+
         # call the normal PhD save method
         super(PhD, self).save()
 
@@ -165,6 +170,15 @@ class PhDupdate(models.Model):
     class Meta:
         verbose_name = "Suggested Update"
         verbose_name_plural = "Suggested Updates"
+
+    def save(self):
+        if not self.pk: #only do this next part if self is not already in DB
+            if self.submitter_user.userprofile:
+                profile = UserProfile.objects.get(pk=self.submitter_user.userprofile.id)
+                profile.reputation_points = profile.reputation_points + 10
+                profile.save()
+        # call the normal save method
+        super(PhDupdate, self).save()
 
 class userContact(models.Model):
     email = models.EmailField(verbose_name="Your Email Address")

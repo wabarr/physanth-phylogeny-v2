@@ -54,20 +54,47 @@
             </form>
             <div class="row section">
                 <div class="col s12">
-                    <form method="post" action="/suggested_change/">
+                    <form method="post" action="/suggest_change/{{ selectedID }}/">
                     {% csrf_token %}
                     {% comment %}
                     This is the form that actually gets submitted, of form class PhDUpdateForm
                     {% endcomment %}
-                    <h4>A few more things...</h4>
-                    {{ form.as_p }}
+                        <div class="col s12">
+                            <h4>A few more things...</h4>
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% if request.user.is_authenticated %}
+                            <div class="col s12">
+                                {{ form.submitter_user.errors }}
+                                {{ form.submitter_user.label_tag }}
+                                {{ form.submitter_user }}
+                            </div>
+                            <div class="col s12">
+                                {{ form.submitter_email.errors }}
+                                {{ form.submitter_email.label_tag }}
+                                {{ form.submitter_email }}
+                            </div>
+                        {% else %}
+                            <div class="col s12">
+                                {{ form.submitter_email.errors }}
+                                {{ form.submitter_email.label_tag }}
+                                {{ form.submitter_email }}
+                            </div>
+                        {% endif %}
+                        <div class="col s12">
+                            {{ form.source_of_info.errors }}
+                            {{ form.source_of_info.label_tag }}
+                            {{ form.source_of_info }}
+                        </div>
+                        {{ form.suggested_update_fixture.errors }}
+                        {{ form.suggested_update_fixture }}
+                        {{ form.PhD.errors }}
+                        {{ form.PhD }}
+
                 <button id="suggest_change_submit" type="submit" class="waves-effect waves-light btn-large center-align btn-100-percent"><i class="material-icons left">input</i>Submit</button>
                 </form>
                 </div>
             </div>
-
-
-
             {% else %}
                 <h3>Whoops!</h3>
                 <p>You got here by mistake...try another page</p>
@@ -87,6 +114,8 @@ $(document).ready(function() {
     $("label[for='id_PhD']").hide();
     $("label[for='id_suggested_update_fixture']").hide();
     $('#id_specialization').material_select();
+    $('#id_submitter_user').hide();
+    $('label[for="id_submitter_user"]').hide();
     //$("#id_specialization").addClass("browser-default");
     $("#suggest_change_submit").on("click", function(){
         var ob = Object();

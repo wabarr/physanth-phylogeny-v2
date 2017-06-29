@@ -58,13 +58,31 @@ class PhDTemplateView(TemplateView):
         context["specializations"] = specialization.objects.all()
         return context
 
-class SubmitPhDUpdateView(TemplateView):
+#class PhDUpdateView(CreateView):
+#    # for unauthenticated users to suggest entries that require moderator validation
+#    model = PhDupdate
+#    form_class = PhDUpdateForm
+#    template_name = "unauthenticated_user_PhD_add.html"
+#    success_url = "/thanks/"
+
+class SubmitPhDUpdateView(CreateView):
     # This view is for users to submit suggested updates
     # it binds a specific PhD objet to be edited
     # template suggest_edit_phd.html actually submits a POST request to
     # PhDUpdateView to create the suggested update from the bound PhD object data
 
     template_name = "suggest_edit_phd.html"
+    model = PhDupdate
+    form_class = PhDUpdateForm
+    success_url = "/thanks/"
+
+    def get_initial(self):
+        thePerson = PhD.objects.get(pk=self.kwargs["pk"])
+        initial = {"PhD": thePerson.id}
+        if self.request.user.is_authenticated():
+            initial['submitter_user'] = self.request.user
+            initial['submitter_email'] = self.request.user.email
+        return initial
 
     def get_context_data(self, **kwargs):
         context = super(SubmitPhDUpdateView, self).get_context_data(**kwargs)
@@ -73,7 +91,6 @@ class SubmitPhDUpdateView(TemplateView):
             thePerson = PhD.objects.get(pk=self.kwargs["pk"])
             context["selectedID"] = thePerson.id
             context["selected_PhD_form"] = PhDAddForm(instance=thePerson)
-            context["form"] = PhDUpdateForm(initial={"PhD":thePerson.id})
             return context
         except:
             return context
@@ -107,7 +124,7 @@ class ClaimPhDView(CreateView):
             user_profile = UserProfile.objects.get(user=self.request.user)
             context["user_profile"] = user_profile
         except:
-            passx
+            pass
         return context
 
     @method_decorator(login_required)
@@ -124,12 +141,7 @@ class UserCreatedView(TemplateView):
     def dispatch(self, *args, **kwargs):
         return super(UserCreatedView, self).dispatch(*args, **kwargs)
 
-class PhDUpdateView(CreateView):
-    # for unauthenticated users to suggest entries that require moderator validation
-    model = PhDupdate
-    form_class = PhDUpdateForm
-    template_name = "unauthenticated_user_PhD_add.html"
-    success_url = "/thanks/"
+
 
 class PhD_EditView(UpdateView):
     ## for authenticated users to edit their own entries
@@ -335,3 +347,5 @@ def checkValidateQueueView(request):
         return HttpResponseRedirect("/validate/" + str(object.pk) + "/")
     except IndexError:
         return render(request, 'empty_validation_queue.html',)
+
+

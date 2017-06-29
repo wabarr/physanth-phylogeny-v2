@@ -40,7 +40,7 @@ class PhDUpdateForm(ModelForm):
     #for unauthenticated users to suggest entries that require moderator validation
     class Meta:
         model=PhDupdate
-        fields = ["suggested_update_fixture", "submitter_email", "source_of_info", "PhD"]
+        fields = ["suggested_update_fixture", "submitter_email", "source_of_info", "PhD",  "submitter_user"]
 
 #class suggestedPhDTextUpdateForm(ModelForm):
 
