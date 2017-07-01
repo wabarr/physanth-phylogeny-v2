@@ -212,6 +212,15 @@
     };
 
     $(".vis-up, .vis-down, .vis-right, .vis-left").remove();
-
+    {% if request.user.username != "wabarr"  %}
+        $(".vis-button").click(function(){
+            ga('send', {
+			hitType: 'event',
+			eventCategory: 'network-click',
+			eventAction: 'network-navigate-button',
+			eventLabel: $(this).attr("class")
+		    });
+        });
+    {% endif %}
     </script>
 {% endblock %}
