@@ -5,7 +5,7 @@
     {% if request.user.is_authenticated %}
         <div class="container">
             <div class="row">
-                <div class="col s12 m6">
+                <div class="col s12">
                     <div class="card amber lighten-5">
                         <div class="card-content">
                             <span class="card-title">{{ request.user }}</span>
@@ -14,25 +14,22 @@
                                 <br>
                                 <a href="/detail/{{ user_profile.associated_PhD.id }}"><button class="waves-effect waves-light btn-large">Go to your page</button></a>
                             {% else %}
-                                <p>You haven't claimed a page yet...</p>
+                                <h4>You haven't claimed a page yet...</h4>
+                            {% endif %}
+                            {% if not user_profile %}
+                            <p>Search for page to claim</p>
+                            {{ form.media }}
+                            <form action="/claim/" method="post" novalidate>
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <button class="waves-effect waves-light btn-large" type="submit">Claim</button>
+                            </form>
                             {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
-            {% if not user_profile %}
-            <div class="row">
-                <div class="col s12">
-                    <h5>Search for page to claim</h5>
-                    {{ form.media }}
-                    <form action="/claim/" method="post" novalidate>
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <button class="waves-effect waves-light btn-large" type="submit">Claim</button>
-                    </form>
-                </div>
-            </div>
-            {% endif %}
+
         </div>
     {% else %}
         <div class="container">
@@ -50,6 +47,7 @@
     <script>
         $(document).ready(function(){
             $("label[for='id_user']").hide();
+            $("label[for='id_associated_PhD_text']").hide();
         });
     </script>
 {% endblock %}

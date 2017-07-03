@@ -130,9 +130,11 @@ class ClaimPhDView(CreateView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         #redirect if user already has a profile
-        if self.request.user.userprofile:
-            return HttpResponseRedirect("/detail/" + self.request.user.userprofile.associated_PhD.URL_for_detail + "/")
-        return super(ClaimPhDView, self).dispatch(*args, **kwargs)
+        try:
+            existingUserProfile = self.request.user.userprofile
+            return HttpResponseRedirect("/detail/" + self.existingUserProfile.associated_PhD.URL_for_detail + "/")
+        except:
+            return super(ClaimPhDView, self).dispatch(*args, **kwargs)
 
 class UserCreatedView(TemplateView):
     template_name = "user_created.html"
