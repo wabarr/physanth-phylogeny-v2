@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.forms import ModelForm, CharField, EmailField, IntegerField
+from django.forms import ModelForm, CharField, EmailField
 from django.forms.widgets import PasswordInput
 from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultipleField
 from .models import *
@@ -71,6 +71,11 @@ class UserProfileForm(ModelForm):
         model = UserProfile
         fields=('user',"associated_PhD")
     associated_PhD = AutoCompleteSelectField("PhD", required=True, help_text=None, label="Search")
+
+class UserProfileEditForm(ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ('current_position','current_affiliation', "research_website", 'research_blurb')
 
 class PhDValidateForm(ModelForm):
     class Meta:

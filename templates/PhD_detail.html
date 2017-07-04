@@ -32,14 +32,52 @@
                                 </div>
                                 {% endif %}
                             </div>
+                            {% if user_profile %}
+                                    {% if user_profile.current_position %}
+                                        <div class="row">
+                                            <div class="col s12 ">
+                                             <b>Current position: </b>{{ user_profile.current_position }}
+                                            </div>
+                                        </div>
+
+                                    {% endif %}
+                                    {% if user_profile.current_affiliation %}
+                                        <div class="row">
+                                            <div class="col s12 ">
+                                            <b>Current affiliation: </b>{{ user_profile.current_affiliation }}
+                                            </div>
+                                        </div>
+
+                                    {% endif %}
+                                    {% if user_profile.research_website %}
+                                        <div class="row">
+                                            <div class="col s12 ">
+                                                <b>Research website:</b> <a target="_blank" href="{{ user_profile.research_website }}">Link</a>
+                                            </div>
+                                        </div>
+
+                                    {% endif %}
+                                    {% if user_profile.research_blurb %}
+                                    <div class="row">
+                                        <div class="col s12 ">
+                                         <b>Research description:</b> {{ user_profile.research_blurb }}
+                                        </div>
+                                    </div>
+                                    {% endif %}
+
+                                </div>
+
+                            {% endif %}
+
                         </div>
                     </div>
                 </div>
-            </div>
+
 
             {% comment %}
             Network
             {% endcomment %}
+    <div class="row">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.0/vis.min.js"></script>
 
         <div class="row section">
@@ -63,6 +101,7 @@
                 <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
             </div>
         </div>
+    </div>
     {% comment %}
     PhD Advisor section
     {% endcomment %}

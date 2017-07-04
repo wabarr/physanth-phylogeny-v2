@@ -348,3 +348,17 @@ def checkValidateQueueView(request):
         return HttpResponseRedirect("/validate/" + str(object.pk) + "/")
     except IndexError:
         return render(request, 'empty_validation_queue.html',)
+
+class PhD_profile_EditView(UpdateView):
+    template_name = "authenticated_user_PhD_profile_edit_form.html"
+    model = UserProfile
+    form_class = UserProfileEditForm
+
+    def get_success_url(self):
+        try:
+            return "/detail/" + str(self.object.associated_PhD.URL_for_detail) + "/"
+        except:
+            return "/"
+
+
+
