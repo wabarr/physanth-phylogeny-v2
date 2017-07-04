@@ -131,8 +131,7 @@ class ClaimPhDView(CreateView):
     def dispatch(self, *args, **kwargs):
         #redirect if user already has a profile
         try:
-            existingUserProfile = self.request.user.userprofile
-            return HttpResponseRedirect("/detail/" + self.existingUserProfile.associated_PhD.URL_for_detail + "/")
+            return HttpResponseRedirect("/detail/" + self.request.user.userprofile.associated_PhD.URL_for_detail + "/")
         except:
             return super(ClaimPhDView, self).dispatch(*args, **kwargs)
 
@@ -349,5 +348,3 @@ def checkValidateQueueView(request):
         return HttpResponseRedirect("/validate/" + str(object.pk) + "/")
     except IndexError:
         return render(request, 'empty_validation_queue.html',)
-
-
