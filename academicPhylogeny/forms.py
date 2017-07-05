@@ -5,6 +5,11 @@ from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultip
 from .models import *
 
 
+class SchoolAddForm(ModelForm):
+    class Meta:
+        model = school
+        fields = ('name',)
+
 class SchoolForm(ModelForm):
 
     class Meta:
