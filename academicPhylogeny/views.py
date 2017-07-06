@@ -91,6 +91,7 @@ class SubmitPhDUpdateView(CreateView):
             thePerson = PhD.objects.get(pk=self.kwargs["pk"])
             context["selectedID"] = thePerson.id
             context["selected_PhD_form"] = PhDAddForm(instance=thePerson)
+            context["school_add_form"] = SchoolAddForm()
             return context
         except:
             return context
