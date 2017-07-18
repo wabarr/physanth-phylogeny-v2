@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from models import frequently_asked_question, specialization, PhD, PhDupdate, school, userContact, UserProfile
 from django.db.models import Count, Value, F
 from django.db.models.functions import Concat
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, FormView
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.http import HttpResponse, HttpResponseRedirect
@@ -15,6 +15,8 @@ from django.template import RequestContext
 import random
 from forms import *
 import json
+from secrets import MAILCHIMP_API_KEY, MAILCHIMP_SUBSCRIBE_URL
+import requests
 
 # Create your views here.
 
@@ -398,3 +400,27 @@ class SchoolAddView(AjaxableResponseMixin, CreateView):
     success_url = "/"
 
 
+class MailingListOptInView(FormView):
+    key = MAILCHIMP_API_KEY
+    url = MAILCHIMP_SUBSCRIBE_URL
+    template_name = "mailing_list_optin.html"
+    form_class = MailingListOptInForm
+    success_url = "/thanks/"
+
+    def form_valid(self, form):
+        auth = ('physphylo', self.key )
+        post_url = self.url
+        data = {
+            "email_address": self.request.POST["email"],
+            "status": "subscribed",
+            "merge_fields": {
+                "FNAME": self.request.POST["first_name"],
+                "LNAME": self.request.POST["last_name"]
+            }
+        }
+
+        r=requests.post(post_url, auth=auth, json=data)
+        if r.status_code != 200:
+            form.add_error(None,'Something went wrong....maybe you are already signed up?')
+            return render(self.request, self.template_name, {'form': form})
+        return super(MailingListOptInView, self).form_valid(form)

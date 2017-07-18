@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.forms import ModelForm, CharField, EmailField
+from django.forms import ModelForm, CharField, EmailField, Form
 from django.forms.widgets import PasswordInput
 from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultipleField
 from .models import *
@@ -87,3 +87,8 @@ class PhDValidateForm(ModelForm):
         model = PhD
         fields = ["firstName", "lastName", "specialization", "year", "school", "advisor", "id"]
     #advisor = AutoCompleteSelectField("PhD", required=True, help_text=None)
+
+class MailingListOptInForm(Form):
+    first_name = CharField(required=True)
+    last_name = CharField(required=True)
+    email = EmailField(required=True)
