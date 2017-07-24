@@ -298,3 +298,17 @@ class connection(models.Model):
         db_table = "connection"
         unique_together = ('student',)
         ordering = ('student',)
+
+
+class socialMediaPosts(models.Model):
+    PhD = models.ForeignKey(PhD)
+    date_posted = models.DateTimeField(auto_now_add=True)
+    facebook = models.BooleanField(default=True)
+    twitter = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return str(self.PhD) + " " + str(self.date_posted.date())
+
+    class Meta:
+        verbose_name_plural = "social media posts"
+        verbose_name = "social media post"

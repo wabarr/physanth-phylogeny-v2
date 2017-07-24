@@ -62,6 +62,8 @@ class PhDUpdateAdmin(admin.ModelAdmin):
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ("user", "associated_PhD", "reputation_points", "moderator_approved")
 
+class SocialMediaPostsAdmin(admin.ModelAdmin):
+    list_display = ("PhD", "date_posted", "facebook", "twitter")
 
 admin.site.register(frequently_asked_question,FAQadmin)
 admin.site.register(school, SchoolAdmin)
@@ -70,3 +72,4 @@ admin.site.register(PhD, PhDAdmin)
 admin.site.register(userContact, UserContactAdmin)
 admin.site.register(PhDupdate, PhDUpdateAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
+admin.site.register(socialMediaPosts, SocialMediaPostsAdmin)
