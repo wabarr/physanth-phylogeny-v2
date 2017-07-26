@@ -12,25 +12,23 @@
     <div class="container">
 
         {% if thePhD %}
-            {% comment %}<div class="col s12"><h4>Details for {{ thePhD }}</h4></div>{% endcomment %}
             <div class="row section" style="margin-bottom:0px">
                 <div class="col s12">
                     <div class="card amber lighten-5">
                         <div class="card-content">
-                            <span class="card-title black-text">{{ thePhD }}{% if thePhD.year %} ({{ thePhD.year }}){% endif %}</span>
+                            <span class="card-title black-text">{{ thePhD }}{% if thePhD.year %} ({{ thePhD.year }}){% endif %}
+                                {%  if not user_profile.user == request.user %}
+                                    <a class="tooltipped" data-position="right" data-tooltip="Suggest a correction" href="/suggest_change/{{ thePhD.id }}">
+                                        <i class="material-icons">mode_edit</i>
+                                    </a>
+                                {% endif %}
+                            </span>
                             <div class="row">
-                                <div class="col s10">
+                                <div class="col s12">
                                     <div class='chip blue darken-1 white-text'>{{ thePhD.school }}</div>
                                     {% for special in thePhD.specialization.all %}<div class="chip">{{ special }}</div>{% endfor %}
-                                </div>
 
-                                {%  if not user_profile.user == request.user %}
-                                <div class="col s2">
-                                    <a class="btn-floating tooltipped" data-position="right" data-tooltip="Suggest a correction" href="/suggest_change/{{ thePhD.id }}">
-                                        <i class="large material-icons">mode_edit</i>
-                                    </a>
                                 </div>
-                                {% endif %}
                             </div>
                             {% if user_profile %}
                                     {% if user_profile.current_position %}
@@ -109,23 +107,21 @@
                 {% if thePhD.advisor.all %}<div class="col s12"><h5>Advisor{% if thePhD.advisor.all|length > 1 %}s{% endif %}</h5></div>{% endif %}
                 {% for each in thePhD.advisor.all %}
                     <div class="col s12 ">
-                        <a href="/detail/{{ each.URL_for_detail }}">
                             <div class="card amber lighten-5 hoverable">
                             <div class="card-content">
                                 <div class="row">
-                                    <div class="col s10">
-                                        <span class="card-title black-text">{{ each }}{% if each.year %} ({{ each.year }}){% endif %}</span>
+                                    <div class="col s12">
+                                        <span class="card-title black-text">
+                                            <a href="/detail/{{ each.URL_for_detail }}">{{ each }}</a>
+                                            {% if each.year %} ({{ each.year }}){% endif %}
+                                            <a class="tooltipped" data-position="right" data-tooltip="Suggest a correction" href="/suggest_change/{{ each.id }}"><i class="material-icons">mode_edit</i></a>
+                                        </span>
                                         <div class='chip blue darken-1 white-text'>{{ each.school }}</div>
                                         {% for special in each.specialization.all %}<div class="chip">{{ special }}</div>{% endfor %}
                                     </div>
-                                    <div class="col s2">
-                                        <a class="btn-floating tooltipped" data-position="right" data-tooltip="Suggest a correction" href="/suggest_change/{{ each.id }}"><i class="large material-icons">mode_edit</i></a>
-                                    </div>
                                 </div>
                             </div>
-
                         </div>
-                        </a>
                     </div>
 
                 {% endfor %}
@@ -137,24 +133,23 @@
             {% if students%}<div class="col s12"><h5>PhD Students</h5></div>{% endif %}
             {% for student in students %}
                 <div class="col s12">
-                    <a href="/detail/{{ student.URL_for_detail }}">
                         <div class="card amber lighten-5 hoverable">
                             <div class="card-content">
                                 <div class="row">
-                                    <div class="col s10">
-                                        <span class="card-title black-text">{{ student }}{% if student.year %} ({{ student.year }}){% endif %}</span>
+                                    <div class="col s12">
+                                        <span class="card-title black-text">
+                                            <a href="/detail/{{ student.URL_for_detail }}">{{ student }}</a>
+                                                {% if student.year %} ({{ student.year }}){% endif %}
+                                            <a class="tooltipped" data-position="right" data-tooltip="Suggest a correction" href="/suggest_change/{{ student.id }}">
+                                                <i class="material-icons">mode_edit</i>
+                                            </a>
+                                        </span>
                                         <div class='chip blue darken-1 white-text'>{{ student.school }}</div>
                                         {% for special in student.specialization.all %}<div class="chip">{{ special }}</div>{% endfor %}
-                                    </div>
-                                    <div class="col s1">
-                                        <a class="btn-floating tooltipped" data-position="right" data-tooltip="Suggest a correction" href="/suggest_change/{{ student.id }}">
-                                        <i class="large material-icons">mode_edit</i>
-                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </a>
                 </div>
             {% endfor %}
             </div>
