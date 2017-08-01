@@ -221,7 +221,11 @@ class UserProfile(models.Model):
                 send_mail(
                     'Your Phys Anth Phylogeny profile account has been approved',
                     '''Hi %s,
-Your account on physanthphylogeny.org has been approved by a moderator. You can now directly update the information that appears on the site using this link. http://physanthphylogeny.org/detail/%s/
+
+Your account on physanthphylogeny.org has been approved by a moderator. You can now directly update the information that appears on the site using this link.
+
+http://physanthphylogeny.org/detail/%s/
+
 Thanks,
 The physanthphylogeny.org team''' %(self.user,self.associated_PhD.URL_for_detail,),
                     'do-not-reply@physanthphylogeny.org',
