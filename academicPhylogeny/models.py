@@ -222,7 +222,7 @@ class UserProfile(models.Model):
                     'Your Phys Anth Phylogeny profile has been approved',
                     '''Your profile on physanthphylogeny.org has been approved by a moderator.
                     You can now directly update the information that appears on the site using <a href="http://physanthphylogeny.org/detail/%s/">this link</a>.''' %(self.associated_PhD.URL_for_detail,),
-                    'do-not-reply@physanthphylogeny.prg',
+                    'do-not-reply@physanthphylogeny.org',
                     [self.user.email,],
                     fail_silently=False,
                 )
