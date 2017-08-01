@@ -17,6 +17,7 @@ from forms import *
 import json
 from secrets import MAILCHIMP_API_KEY, MAILCHIMP_SUBSCRIBE_URL
 import requests
+from django.contrib.messages.views import SuccessMessageMixin
 
 # Create your views here.
 
@@ -98,10 +99,11 @@ class SubmitPhDUpdateView(CreateView):
         except:
             return context
 
-class UserCreateView(CreateView):
+class UserCreateView(SuccessMessageMixin,CreateView):
     model = User
     form_class = UserCreateForm
     success_url = "/user_created/"
+    success_message = "Success! Your account has been created. You can login now."
 
     def form_valid(self, form):
         response = super(UserCreateView, self).form_valid(form)

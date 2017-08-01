@@ -27,6 +27,19 @@
   {% block fb-SDK %}{% endblock %}
   {% include "navbar.html" %}
   {% include "login-strip.html" %}
+  {% block messages-strip %}
+      {% if messages %}
+          <div class="row teal white-text">
+            <div class="col s12 center-align">
+              <ul class="messages">
+                  {% for message in messages %}
+                      <span{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</span>
+                  {% endfor %}
+              </ul>
+            </div>
+          </div>
+      {% endif %}
+  {% endblock %}
   {% block content %}{% endblock %}
   {% include "footer.html" %}
 
