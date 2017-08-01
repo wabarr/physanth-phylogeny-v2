@@ -219,9 +219,11 @@ class UserProfile(models.Model):
         if self.moderator_approved:
             if not self.alert_email_sent:
                 send_mail(
-                    'Your Phys Anth Phylogeny profile has been approved',
-                    '''Your profile on physanthphylogeny.org has been approved by a moderator.
-                    You can now directly update the information that appears on the site using <a href="http://physanthphylogeny.org/detail/%s/">this link</a>.''' %(self.associated_PhD.URL_for_detail,),
+                    'Your Phys Anth Phylogeny profile account has been approved',
+                    '''Hi %s,
+Your account on physanthphylogeny.org has been approved by a moderator. You can now directly update the information that appears on the site using this link. http://physanthphylogeny.org/detail/%s/
+Thanks,
+The physanthphylogeny.org team''' %(self.user,self.associated_PhD.URL_for_detail,),
                     'do-not-reply@physanthphylogeny.org',
                     [self.user.email,],
                     fail_silently=False,
