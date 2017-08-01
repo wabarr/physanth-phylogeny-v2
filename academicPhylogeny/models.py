@@ -4,6 +4,7 @@ from django.shortcuts import reverse
 from django.db import models
 from django.contrib.auth.models import User
 import json
+from django.core.mail import send_mail
 
 class frequently_asked_question(models.Model):
     heading = models.CharField(max_length = 50)
@@ -202,6 +203,7 @@ class userContact(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(to=User)
     moderator_approved = models.BooleanField(default=False)
+    alert_email_sent = models.BooleanField(default=False)
     associated_PhD = models.OneToOneField(to=PhD)
     current_position = models.CharField(max_length=100, null=True, blank=True)
     current_affiliation = models.CharField(max_length=100, null=True, blank=True)
@@ -212,7 +214,34 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return "%s = %s" %(self.user, self.associated_PhD.firstName + " " + self.associated_PhD.lastName)
 
-    #########DEPRECATED###########
+    def save(self):
+        #custom save method to send email when moderator has approved the user profile
+        if self.moderator_approved:
+            if not self.alert_email_sent:
+                send_mail(
+                    'Your Phys Anth Phylogeny profile has been approved',
+                    '''Your profile on physanthphylogeny.org has been approved by a moderator.
+                    You can now directly update the information that appears on the site using <a href="http://physanthphylogeny.org/detail/%s/">this link</a>.''' %(self.associated_PhD.URL_for_detail,),
+                    'do-not-reply@physanthphylogeny.prg',
+                    [self.user.email,],
+                    fail_silently=False,
+                )
+                self.alert_email_sent = True
+        super(UserProfile, self).save()
+
+class socialMediaPosts(models.Model):
+    PhD = models.ForeignKey(PhD)
+    date_posted = models.DateTimeField(auto_now_add=True)
+    facebook = models.BooleanField(default=True)
+    twitter = models.BooleanField(default=True)
+    def __unicode__(self):
+        return str(self.PhD) + " " + str(self.date_posted.date())
+    class Meta:
+        verbose_name_plural = "social media posts"
+        verbose_name = "social media post"
+
+#######BELOW IS DEPRECATED###########
+############################
 CHOICES_editable_fields = [("firstName", "firstName"), ("lastName", "lastName"), ("year", "year")]
 
 class suggestedPhDTextUpdate(models.Model):
@@ -298,17 +327,5 @@ class connection(models.Model):
         db_table = "connection"
         unique_together = ('student',)
         ordering = ('student',)
-
-
-class socialMediaPosts(models.Model):
-    PhD = models.ForeignKey(PhD)
-    date_posted = models.DateTimeField(auto_now_add=True)
-    facebook = models.BooleanField(default=True)
-    twitter = models.BooleanField(default=True)
-
-    def __unicode__(self):
-        return str(self.PhD) + " " + str(self.date_posted.date())
-
-    class Meta:
-        verbose_name_plural = "social media posts"
-        verbose_name = "social media post"
+#######ABOVE IS DEPRECATED###########
+############################

@@ -60,7 +60,7 @@ class PhDUpdateAdmin(admin.ModelAdmin):
     #this action is much better done using the /validate/ url which hits ValidateView
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ("user", "associated_PhD", "reputation_points", "moderator_approved")
+    list_display = ("user", "associated_PhD", "reputation_points", "moderator_approved", "alert_email_sent")
 
 class SocialMediaPostsAdmin(admin.ModelAdmin):
     list_display = ("PhD", "date_posted", "facebook", "twitter")
