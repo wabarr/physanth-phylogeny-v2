@@ -6,14 +6,13 @@ class Command(BaseCommand):
     help = 'emails Admin with update on new submissions'
 
     def handle(self, *args, **options):
-        message = "There are no new submissions."
         submissionsToDo = PhD.objects.filter(validated=False)
         unvalidatedProfiles = UserProfile.objects.filter(moderator_approved=False)
         unvalidatedSuggestions = PhDupdate.objects.filter(moderator_approved=False)
         message=""
         if submissionsToDo.count() > 0:
             message += "There are %(submissionCount)s new submissions.\n"%{"submissionCount": submissionsToDo.count()}
-            message += "http://www.physanthphylogeny.org/validate/\n\n"
+            message += "http://www.physanthphylogeny.org/admin/academicPhylogeny/phd/?o=6.3\n\n"
         else:
             pass
 
@@ -26,7 +25,7 @@ class Command(BaseCommand):
         if unvalidatedSuggestions.count() > 0:
             message += "\nThere are %(suggestioncount)s unvalidated suggested changes.\n" % {
                 "suggestioncount": unvalidatedSuggestions.count()}
-            message += "http://www.physanthphylogeny.org/admin/academicPhylogeny/phdupdate/\n\n"
+            message += "http://www.physanthphylogeny.org/validate/\n\n"
 
         else:
             pass
