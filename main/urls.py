@@ -47,7 +47,7 @@ urlpatterns = [
     #url(r'^tree_JSON/(?P<pk>\d+)/$', tree_JSON),
     #url(r'^tree_JSON/$', tree_JSON),
     #url(r'^tree_nodes_JSON/$',tree_nodes_JSON),
-    #url(r'^tree/(?P<pk>\d+)/$', TreeView.as_view()),
+    url(r'^tree/', RedirectView.as_view(pattern_name="home", permanent=True)),
     url(r'^get_network_JSON/(?P<pk>\d+)/$', getNetworkJSONView),
     #url(r'^network/(?P<pk>\d+)/$', networkViewNumeric, name="individual-network-numeric"),
     #url(r'^network/$', RedirectView.as_view(pattern_name="people_search", permanent=False)),
