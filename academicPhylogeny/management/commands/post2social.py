@@ -69,4 +69,4 @@ class Command(BaseCommand):
         link)
 
         #self.debug(TWmsg, FBmsg)
-        self.post(selectedPhD=selectedPhD, FBmsg=None, TWmsg=TWmsg, link=link)
+        self.post(selectedPhD=selectedPhD, FBmsg=FBmsg, TWmsg=TWmsg, link=link)
