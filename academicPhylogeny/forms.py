@@ -1,4 +1,5 @@
-from django.contrib.auth.models import User
+from django.forms import ValidationError
+from django.contrib.auth.models import User as UserTable
 from django.forms import ModelForm, CharField, EmailField, Form
 from django.forms.widgets import PasswordInput
 from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultipleField
@@ -70,6 +71,14 @@ class UserCreateForm(ModelForm):
     last_name = CharField(required=True)
     email = EmailField(required=True)
     password = CharField(widget=PasswordInput, required=True)
+
+    def clean(self):
+        cleaned_data = super(UserCreateForm, self).clean()
+        theEmail = cleaned_data["email"]
+        existingUser = UserTable.objects.filter(email=theEmail)
+        if existingUser.count() > 0:
+            raise ValidationError("Error: This email address is already associated with a user account")
+
 
 class UserProfileForm(ModelForm):
     class Meta:
