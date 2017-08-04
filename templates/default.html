@@ -5,15 +5,14 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-  <meta property="og:url" content="https://www.physanthphylogeny.org"/>
+  <meta property="og:url" content={% block og-url %}"https://www.physanthphylogeny.org"{% endblock %}/>
   <meta property="og:type" content="website" />
   <meta property="fb:app_id" content="113773485932832">
   <meta property="og:description" content="Tracing the academic lineages of Biological Anthropology PhDs.">
   {% block fb-image %}
       <meta property="og:image" content="https://www.physanthphylogeny.org/{% static "images/fb_default_share_img.png" %}" />
   {% endblock %}
-
-  <meta property="og:title" content="Academic Phylogeny of Physical Anthropology">
+  <meta property="og:title" content={% block og-title %}"Academic Phylogeny of Physical Anthropology"{% endblock %}>
   <title>Academic Phylogeny of Physical Anthropology</title>
 
   <link rel="shortcut icon" href={% static "images/favicon.png" %} />

@@ -3,7 +3,8 @@
 {% block extrastyle %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.0/vis.min.css" type="text/css"/>
 {% endblock %}
-
+{% block og-url %}"https://www.physanthphylogeny.org/detail/{{ thePhD.URL_for_detail }}"{% endblock %}
+{% block og-title %}"{{ thePhD }}, PhD"{% endblock %}
 {% block content %}
     {%  if user_profile.user == request.user %}
         {% include "ownership-strip.html" %}
