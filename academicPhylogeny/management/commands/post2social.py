@@ -58,7 +58,7 @@ class Command(BaseCommand):
         link = "http://www.physanthphylogeny.org%s" % (selectedPhD.get_absolute_url(),)
 
         FBmsg = ("Congratulations to Dr. %s, who recently completed a PhD at %s with %s."
-                 " This information now appears in the academic genealogy newtwork on our website!"
+                 " This information now appears in the academic genealogy network on our website!"
                  " Submit your own information if it isn't already in the database!") % (
                 selectedPhD.firstName + " " + selectedPhD.lastName,
                 selectedPhD.school,
