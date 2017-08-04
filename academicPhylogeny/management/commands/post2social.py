@@ -53,6 +53,7 @@ class Command(BaseCommand):
         if unpostedCurrentYearPhDs.__len__() > 0:
             selectedPhD = unpostedCurrentYearPhDs[0]
         else:
+            self.stdout.write(self.style.SUCCESS('No new PhDs to post'))
             return
         link = "http://www.physanthphylogeny.org%s" % (selectedPhD.get_absolute_url(),)
 
