@@ -49,7 +49,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         prior_posts = socialMediaPosts.objects.all().values_list("PhD")
-        unpostedCurrentYearPhDs = PhD.objects.filter(year=date.today().year).exclude(id__in=prior_posts)
+        unpostedCurrentYearPhDs = PhD.objects.filter(year=date.today().year, validated=True).exclude(id__in=prior_posts)
         if unpostedCurrentYearPhDs.__len__() > 0:
             selectedPhD = unpostedCurrentYearPhDs[0]
         else:
