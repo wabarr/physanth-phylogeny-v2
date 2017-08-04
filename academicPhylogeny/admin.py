@@ -12,9 +12,10 @@ class UserContactAdmin(admin.ModelAdmin):
     list_display = ["last_name","first_name","date_sent",'dealt_with']
 
 class PhDAdmin(admin.ModelAdmin):
-    search_fields = ["lastName","firstName"]
-    list_filter = ["school"]
-    list_display = ["id","firstName", "lastName","year", "school", "validated"]
+    search_fields = ["lastName","firstName","id"]
+    list_filter = ["school", "validated"]
+    list_editable = ["validated"]
+    list_display = ["id",'__unicode__',"year", "school", "validated","submitter_email","source_of_info"]
     form = make_ajax_form(PhD, {
         'advisor': 'PhD',  # ManyToManyField
         'school': 'school',  # ForeignKeyField
