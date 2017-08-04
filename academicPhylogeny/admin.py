@@ -32,28 +32,28 @@ class FAQadmin(admin.ModelAdmin):
     list_editable = ("published","displayOrder")
 
 
-def updatePhDObject(modeladmin, request, queryset):
-    for obj in queryset:
-        dict = json.loads(obj.suggested_update_fixture)
-        PhD_obj = PhD.objects.get(pk=dict["id"])
-        PhD_obj.firstName = dict["firstName"]
-        PhD_obj.lastName = dict["lastName"]
-        PhD_obj.year = dict["year"]
-        PhD_obj.school = school.objects.get(pk=dict["school"])
-
-        PhD_obj.specialization.clear()
-        for special in dict["specialization"]:
-            PhD_obj.specialization.add(special)
-
-        PhD_obj.advisor.clear()
-        for advisor in dict["advisor"]:
-            PhD_obj.advisor.add(advisor)
-
-        PhD_obj.save()
-        messages.add_message(request, messages.INFO, "%s has been updated successfully" % (PhD_obj.__unicode__()))
-        obj.moderator_approved = True
-        obj.approver = request.user
-        obj.save()
+# def updatePhDObject(modeladmin, request, queryset):
+#     for obj in queryset:
+#         dict = json.loads(obj.suggested_update_fixture)
+#         PhD_obj = PhD.objects.get(pk=dict["id"])
+#         PhD_obj.firstName = dict["firstName"]
+#         PhD_obj.lastName = dict["lastName"]
+#         PhD_obj.year = dict["year"]
+#         PhD_obj.school = school.objects.get(pk=dict["school"])
+#
+#         PhD_obj.specialization.clear()
+#         for special in dict["specialization"]:
+#             PhD_obj.specialization.add(special)
+#
+#         PhD_obj.advisor.clear()
+#         for advisor in dict["advisor"]:
+#             PhD_obj.advisor.add(advisor)
+#
+#         PhD_obj.save()
+#         messages.add_message(request, messages.INFO, "%s has been updated successfully" % (PhD_obj.__unicode__()))
+#         obj.moderator_approved = True
+#         obj.approver = request.user
+#         obj.save()
 
 class PhDUpdateAdmin(admin.ModelAdmin):
     list_display = ("date_sent","moderator_approved", "submitter_user", "source_of_info")
