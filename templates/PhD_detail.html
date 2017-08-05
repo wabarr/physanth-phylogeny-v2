@@ -83,7 +83,7 @@
         <div class="row section">
             <div class="col s12 ">
                 <h5>Network
-                    <a href="#network-hints">
+                    <a href="#network-hints" id="network-hints-icon-link">
                         <i class="material-icons" style="font-size:18px;">help_outline</i>
                     </a>
                 </h5>
@@ -256,6 +256,14 @@
 			eventCategory: 'network-click',
 			eventAction: 'network-navigate-button',
 			eventLabel: $(this).attr("class")
+		    });
+        });
+        $("#network-hints-icon-link").click(function(){
+            ga('send', {
+			hitType: 'event',
+			eventCategory: 'network-hints',
+			eventAction: 'network-hints-trigger-modal',
+			eventLabel: 'network-hints-trigger-modal'
 		    });
         });
     {% endif %}
