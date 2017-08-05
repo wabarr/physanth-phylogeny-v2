@@ -100,7 +100,7 @@ class PhD(models.Model):
                       "size": 20})
         advisors = self.advisor.all()
         for advisor in advisors:
-            if PhD.objects.filter(advisor=advisor).count() > 1:
+            if PhD.objects.filter(advisor=advisor).count() > 0:
                 color = baseNodeColorHasNonVisibleAdvisees
             else:
                 color = baseNodeColor
