@@ -89,6 +89,7 @@ class PhD(models.Model):
     def network_nodes_formatted(self):
         selectedNodeColor = "#1e88e5"
         baseNodeColor = "#ffecb3"
+        baseNodeColorHasNonVisibleAdvisees = "#ffca28"
         nodes = []
 
         nodes.append({"id": self.pk,
@@ -99,19 +100,31 @@ class PhD(models.Model):
                       "size": 20})
         advisors = self.advisor.all()
         for advisor in advisors:
+            if PhD.objects.filter(advisor=advisor).count() > 1:
+                color = baseNodeColorHasNonVisibleAdvisees
+            else:
+                color = baseNodeColor
             nodes.append({"id": advisor.pk,
                           "label": " ".join((advisor.firstName, advisor.lastName)),
-                          "color":baseNodeColor})
+                          "color":color})
             for sibling in PhD.objects.filter(advisor=advisor).exclude(pk=self.pk):
+                if PhD.objects.filter(advisor=sibling).count() > 0:
+                    color = baseNodeColorHasNonVisibleAdvisees
+                else:
+                    color = baseNodeColor
                 nodes.append({"id": sibling.pk,
                               "label": " ".join((sibling.firstName, sibling.lastName)),
-                              "color":baseNodeColor})
+                              "color":color})
 
         children = PhD.objects.filter(advisor=self)
         for child in children:
+            if PhD.objects.filter(advisor=child).count() > 0:
+                color = baseNodeColorHasNonVisibleAdvisees
+            else:
+                color = baseNodeColor
             nodes.append({"id": child.pk,
                           "label": " ".join((child.firstName, child.lastName)),
-                          "color":baseNodeColor})
+                          "color":color})
 
         return json.dumps(nodes)
 
