@@ -227,6 +227,9 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return "%s = %s" %(self.user, self.associated_PhD.firstName + " " + self.associated_PhD.lastName)
 
+    def user_email(self):
+        return self.user.email
+
     def save(self):
         #custom save method to send email when moderator has approved the user profile
         if self.moderator_approved:
