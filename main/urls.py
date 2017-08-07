@@ -18,6 +18,8 @@ from django.contrib import admin
 from academicPhylogeny.views import *
 from ajax_select import urls as ajax_select_urls
 from django.views.generic import RedirectView
+from django.contrib.sitemaps.views import sitemap
+from academicPhylogeny.sitemaps import PhDSitemap
 
 urlpatterns = [
     url('^', include('academicPhylogeny.registration_authorization_urls')),
@@ -60,5 +62,7 @@ urlpatterns = [
     url(r'^detail/(?P<URL_for_detail>[\w\-\_\.]+)/$', PhDDetailView.as_view(), name="PhD-detail-view"),
     url(r'^add_school/$',SchoolAddView.as_view()),
     url(r'^signup/$',MailingListOptInView.as_view()),
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': {"PhD":PhDSitemap}},
+        name='django.contrib.sitemaps.views.sitemap'),
     url(r'^$', HomePageView.as_view(), name="home"),
 ]
