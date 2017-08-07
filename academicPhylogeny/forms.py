@@ -1,6 +1,6 @@
 from django.forms import ValidationError
 from django.contrib.auth.models import User as UserTable
-from django.forms import ModelForm, CharField, EmailField, Form
+from django.forms import ModelForm, CharField, EmailField, Form, ModelChoiceField
 from django.forms.widgets import PasswordInput
 from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultipleField
 from .models import *
@@ -101,3 +101,6 @@ class MailingListOptInForm(Form):
     first_name = CharField(required=True)
     last_name = CharField(required=True)
     email = EmailField(required=True)
+
+class SpecializationForm(Form):
+    specialization = ModelChoiceField(specialization.objects.all())

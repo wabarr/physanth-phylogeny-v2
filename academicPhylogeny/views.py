@@ -58,7 +58,7 @@ class PhDTemplateView(TemplateView):
         context=super(PhDTemplateView, self).get_context_data(**kwargs)
         context["SchoolForm"]=SchoolForm()
         context["PhD_form_for_ajax_selects_search"]=PhD_form_for_ajax_selects_search()
-        context["specializations"] = specialization.objects.all()
+        context["SpecializationForm"] = SpecializationForm()
         return context
 
 #class PhDUpdateView(CreateView):
