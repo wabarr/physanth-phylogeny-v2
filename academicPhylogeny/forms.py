@@ -4,6 +4,7 @@ from django.forms import ModelForm, CharField, EmailField, Form, ModelChoiceFiel
 from django.forms.widgets import PasswordInput
 from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultipleField
 from .models import *
+import re
 
 
 class SchoolAddForm(ModelForm):
@@ -75,6 +76,9 @@ class UserCreateForm(ModelForm):
     def clean(self):
         cleaned_data = super(UserCreateForm, self).clean()
         theEmail = cleaned_data["email"]
+        edu  = re.compile("\.edu$")
+        if not re.search(edu, theEmail):
+            raise ValidationError("Error: You must use an email address ending in .edu")
         existingUser = UserTable.objects.filter(email=theEmail)
         if existingUser.count() > 0:
             raise ValidationError("Error: This email address is already associated with a user account")
