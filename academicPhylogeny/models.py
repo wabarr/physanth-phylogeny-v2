@@ -240,7 +240,7 @@ class UserProfile(models.Model):
 
 Your account on physanthphylogeny.org has been approved by a moderator. You can now directly update the information that appears on the site using this link.
 
-https://www.physanthphylogeny.org/claim/
+https://www.physanthphylogeny.org/claim/?from=auto_admin_validation_email
 
 Thanks,
 The physanthphylogeny.org team''' %(self.user),
