@@ -243,7 +243,7 @@ Your account on physanthphylogeny.org has been approved by a moderator. You can 
 https://www.physanthphylogeny.org/claim/
 
 Thanks,
-The physanthphylogeny.org team''',
+The physanthphylogeny.org team''' %(self.user),
                     'do-not-reply@physanthphylogeny.org',
                     [self.user.email,],
                     fail_silently=False,
