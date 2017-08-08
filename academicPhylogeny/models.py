@@ -5,6 +5,8 @@ from django.db import models
 from django.contrib.auth.models import User
 import json
 from django.core.mail import send_mail
+from secrets import MAILCHIMP_API_KEY
+import requests
 
 class frequently_asked_question(models.Model):
     heading = models.CharField(max_length = 50)
@@ -234,21 +236,19 @@ class UserProfile(models.Model):
         #custom save method to send email when moderator has approved the user profile
         if self.moderator_approved:
             if not self.alert_email_sent:
-                send_mail(
-                    'Your Phys Anth Phylogeny profile account has been approved',
-                    '''Hi %s,
-
-Your account on physanthphylogeny.org has been approved by a moderator. You can now directly update the information that appears on the site using this link.
-
-https://www.physanthphylogeny.org/claim/?from=auto_admin_validation_email
-
-Thanks,
-The physanthphylogeny.org team''' %(self.user),
-                    'do-not-reply@physanthphylogeny.org',
-                    [self.user.email,],
-                    fail_silently=False,
-                )
-                self.alert_email_sent = True
+                auth = ("physphylo", MAILCHIMP_API_KEY)
+                post_url = 'https://us16.api.mailchimp.com/3.0/automations/02a3d24631/emails/54e7491337/queue'
+                data = {"email_address": self.user.email}
+                r = requests.post(post_url, auth=auth, json=data)
+                if r.status_code == 200:
+                    self.alert_email_sent = True
+                else:
+                    mess = "Trying to add %s to mailcimp automation queue post moderator admin of user profile\n" %(self.user.email,)
+                    mess += r._content
+                    send_mail(subject="physphylo error profile validation mailchimp email",
+                              message=mess,
+                              from_email="do-not-reply@physanthphylogeny.org",
+                              recipient_list=("wabarr@gmail.com",))
         super(UserProfile, self).save()
 
 class socialMediaPosts(models.Model):

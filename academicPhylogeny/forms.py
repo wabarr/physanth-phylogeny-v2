@@ -5,7 +5,9 @@ from django.forms.widgets import PasswordInput
 from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultipleField
 from .models import *
 import re
-
+import requests
+from secrets import MAILCHIMP_API_KEY, MAILCHIMP_REGISTEREDUSERS_SUBSCRIBE_URL
+import hashlib
 
 class SchoolAddForm(ModelForm):
     class Meta:
@@ -74,14 +76,42 @@ class UserCreateForm(ModelForm):
     password = CharField(widget=PasswordInput, required=True)
 
     def clean(self):
+        auth = ("physphylo", MAILCHIMP_API_KEY)
         cleaned_data = super(UserCreateForm, self).clean()
         theEmail = cleaned_data["email"]
-        edu  = re.compile("\.edu$")
+        edu  = re.compile("\.edu$|\.ca|\.au|\.uk$")
         if not re.search(edu, theEmail):
-            raise ValidationError("Error: You must use an email address ending in .edu")
+            raise ValidationError("Error: You must use an email ending in .edu, .ca, .au, or .uk. \nPlease contact admins if you need an exception.")
         existingUser = UserTable.objects.filter(email=theEmail)
         if existingUser.count() > 0:
             raise ValidationError("Error: This email address is already associated with a user account")
+
+        ## also double check the mailchimp list to be safe
+        get_URL = MAILCHIMP_REGISTEREDUSERS_SUBSCRIBE_URL + "/" + hashlib.md5(theEmail.lower()).hexdigest()
+        r = requests.get(get_URL,auth=auth)
+        if r.status_code == 200:
+            raise ValidationError("Error: This email address is already associated with a user account")
+
+    def save(self, commit=True):
+        m = super(UserCreateForm, self).save(commit=True)
+        auth = ("physphylo", MAILCHIMP_API_KEY)
+        post_url = MAILCHIMP_REGISTEREDUSERS_SUBSCRIBE_URL
+        data = {
+            "email_address": m.email,
+            "status": "subscribed",
+            "merge_fields": {
+                "FNAME": m.first_name,
+                "LNAME": m.last_name
+            }
+        }
+        r=requests.post(url=post_url,auth=auth, json=data)
+        return m
+
+
+
+
+
+
 
 
 class UserProfileForm(ModelForm):

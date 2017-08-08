@@ -15,7 +15,7 @@ from django.template import RequestContext
 import random
 from forms import *
 import json
-from secrets import MAILCHIMP_API_KEY, MAILCHIMP_SUBSCRIBE_URL
+from secrets import MAILCHIMP_API_KEY, MAILCHIMP_UPDATESLIST_SUBSCRIBE_URL
 import requests
 from django.contrib.messages.views import SuccessMessageMixin
 
@@ -404,7 +404,7 @@ class SchoolAddView(AjaxableResponseMixin, CreateView):
 
 class MailingListOptInView(FormView):
     key = MAILCHIMP_API_KEY
-    url = MAILCHIMP_SUBSCRIBE_URL
+    url = MAILCHIMP_UPDATESLIST_SUBSCRIBE_URL
     template_name = "mailing_list_optin.html"
     form_class = MailingListOptInForm
     success_url = "/thanks/"
