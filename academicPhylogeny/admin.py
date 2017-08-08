@@ -68,6 +68,9 @@ class UserProfileAdmin(admin.ModelAdmin):
 class SocialMediaPostsAdmin(admin.ModelAdmin):
     list_display = ("PhD", "date_posted", "facebook", "twitter")
 
+class SpecializationAdmin(admin.ModelAdmin):
+    list_display = ("id", "name")
+
 admin.site.register(frequently_asked_question,FAQadmin)
 admin.site.register(school, SchoolAdmin)
 #admin.site.register(person, admin.ModelAdmin)
@@ -76,3 +79,4 @@ admin.site.register(userContact, UserContactAdmin)
 admin.site.register(PhDupdate, PhDUpdateAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(socialMediaPosts, SocialMediaPostsAdmin)
+admin.site.register(specialization, SpecializationAdmin)
