@@ -4,13 +4,19 @@
     {% if request.user.is_authenticated %}
         {% if object.user == request.user %}
             {% if  request.user.userprofile.moderator_approved %}
-                {% include "ownership-strip.html" %}
                 {{ form.media }}
                 <div class="container">
-                    <div class="row">
+                    <div class="row right-align" >
                         <div class="col s12">
-                            <h4>Remember, changes you make here will immediately be visible on the website.</h4>
+                            You can also correct basic details
                         </div>
+                        <div class="col s12">
+                            <a href="/edit/{{ user.userprofile.associated_PhD.pk }}/">
+                                <button class="btn amber lighten-5 black-text">Edit basic info</button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row">
 
                         <div class="col s12">
                             <div class="card">
