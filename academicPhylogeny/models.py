@@ -76,13 +76,13 @@ class PhD(models.Model):
         arrowSettings = {"from":{"scaleFactor":1.3}}
         edge_list = []
 
-        for child in PhD.objects.filter(advisor=self):
+        for child in PhD.objects.filter(advisor=self, validated=True):
             for advisor in child.advisor.all():
                 edge_list.append({"to":advisor.pk, "from":child.pk, "arrows":arrowSettings})
 
         for advisor in self.advisor.all():
             edge_list.append({"to":advisor.pk, "from":self.pk, "arrows":arrowSettings})
-            for sibling in PhD.objects.filter(advisor=advisor).exclude(pk=self.pk):
+            for sibling in PhD.objects.filter(advisor=advisor,validated=True).exclude(pk=self.pk):
                 edge_list.append({"to": advisor.pk, "from": sibling.pk, "arrows": arrowSettings})
 
         return json.dumps(edge_list)
@@ -102,15 +102,15 @@ class PhD(models.Model):
                       "size": 20})
         advisors = self.advisor.all()
         for advisor in advisors:
-            if PhD.objects.filter(advisor=advisor).count() > 0:
+            if PhD.objects.filter(advisor=advisor,validated=True).count() > 0:
                 color = baseNodeColorHasNonVisibleAdvisees
             else:
                 color = baseNodeColor
             nodes.append({"id": advisor.pk,
                           "label": " ".join((advisor.firstName, advisor.lastName)),
                           "color":color})
-            for sibling in PhD.objects.filter(advisor=advisor).exclude(pk=self.pk):
-                if PhD.objects.filter(advisor=sibling).count() > 0:
+            for sibling in PhD.objects.filter(advisor=advisor, validated=True).exclude(pk=self.pk):
+                if PhD.objects.filter(advisor=sibling, validated=True).count() > 0:
                     color = baseNodeColorHasNonVisibleAdvisees
                 else:
                     color = baseNodeColor
@@ -118,9 +118,9 @@ class PhD(models.Model):
                               "label": " ".join((sibling.firstName, sibling.lastName)),
                               "color":color})
 
-        children = PhD.objects.filter(advisor=self)
+        children = PhD.objects.filter(advisor=self, validated=True)
         for child in children:
-            if PhD.objects.filter(advisor=child).count() > 0:
+            if PhD.objects.filter(advisor=child, validated=True).count() > 0:
                 color = baseNodeColorHasNonVisibleAdvisees
             else:
                 color = baseNodeColor
@@ -158,7 +158,7 @@ class PhD(models.Model):
         theDict = {}
         theDict["name"]=self.__unicode__()
         theDict["children"]=[]
-        for each in PhD.objects.filter(advisor=self):
+        for each in PhD.objects.filter(advisor=self, validated=True):
             theDict["children"].append(each.get_nested_tree_dict)
         if len(theDict["children"])==0:
             del theDict["children"]
