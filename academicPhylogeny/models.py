@@ -241,7 +241,7 @@ class UserProfile(models.Model):
                 post_url = 'https://us16.api.mailchimp.com/3.0/automations/02a3d24631/emails/54e7491337/queue'
                 data = {"email_address": self.user.email}
                 r = requests.post(post_url, auth=auth, json=data)
-                if r.status_code == 200:
+                if r.status_code == 204:
                     pass
                 else:
                     mess = "Trying to add %s to mailchimp automation queue post moderator admin of user profile\n" %(self.user.email,)
