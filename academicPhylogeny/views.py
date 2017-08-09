@@ -339,6 +339,14 @@ class ValidateView(UpdateView):
         ob = PhD.objects.get(pk=dict["id"])
         return ob
 
+    def get_success_url(self):
+        ## when successful, set the moderator approved flag to true then go to /validate/
+        PhDUpdateObject = PhDupdate.objects.get(pk=self.kwargs["pk"])
+        PhDUpdateObject.moderator_approved = True
+        PhDUpdateObject.approver = self.request.user
+        PhDUpdateObject.save()
+        return "/validate/"
+
     def get_context_data(self, **kwargs):
         PhDUpdateObject = PhDupdate.objects.get(pk=self.kwargs["pk"])
         context = super(ValidateView, self).get_context_data(**kwargs)
