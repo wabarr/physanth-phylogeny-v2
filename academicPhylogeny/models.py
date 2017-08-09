@@ -236,14 +236,15 @@ class UserProfile(models.Model):
         #custom save method to send email when moderator has approved the user profile
         if self.moderator_approved:
             if not self.alert_email_sent:
+                self.alert_email_sent = True
                 auth = ("physphylo", MAILCHIMP_API_KEY)
                 post_url = 'https://us16.api.mailchimp.com/3.0/automations/02a3d24631/emails/54e7491337/queue'
                 data = {"email_address": self.user.email}
                 r = requests.post(post_url, auth=auth, json=data)
                 if r.status_code == 200:
-                    self.alert_email_sent = True
+                    pass
                 else:
-                    mess = "Trying to add %s to mailcimp automation queue post moderator admin of user profile\n" %(self.user.email,)
+                    mess = "Trying to add %s to mailchimp automation queue post moderator admin of user profile\n" %(self.user.email,)
                     mess += r._content
                     send_mail(subject="physphylo error profile validation mailchimp email",
                               message=mess,
