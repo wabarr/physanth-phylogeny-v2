@@ -25,9 +25,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = secrets.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['v2.physanthphylogeny.org', '127.0.0.1',"debug.physanthphylogeny.org",'www.physanthphylogeny.org']
+ALLOWED_HOSTS = ['127.0.0.1','www.physanthphylogeny.org']
 
 
 # Application definition
@@ -126,11 +126,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/wabarr/webapps/phys_phylo_v2_static'
 
-#EMAIL_HOST = "localhost"
-#EMAIL_PORT = 1025
-EMAIL_HOST_PASSWORD = secrets.EMAIL_HOST_PASSWORD
-EMAIL_HOST_USER = secrets.EMAIL_HOST_USER
-EMAIL_HOST = secrets.EMAIL_HOST
+EMAIL_HOST = "localhost"
+EMAIL_PORT = 1025
+#EMAIL_HOST_PASSWORD = secrets.EMAIL_HOST_PASSWORD
+#EMAIL_HOST_USER = secrets.EMAIL_HOST_USER
+#EMAIL_HOST = secrets.EMAIL_HOST
 DEFAULT_FROM_EMAIL = secrets.DEFAULT_FROM_EMAIL
 
 LOGIN_URL = '/login/'

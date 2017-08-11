@@ -215,6 +215,16 @@ class userContact(models.Model):
 )
         return display
 
+    def save(self):
+        ##only do it on the first save
+        if not self.pk:
+            send_mail(subject="User contact on physanthphylogeny.org",
+                      message=self.message,
+                      from_email=self.email,
+                      recipient_list=("physphylo@gmail.com",))
+            super(userContact, self).save()
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(to=User)
     moderator_approved = models.BooleanField(default=False)
