@@ -219,7 +219,7 @@ class userContact(models.Model):
         ##only do it on the first save
         if not self.pk:
             send_mail(subject="User contact on physanthphylogeny.org",
-                      message=self.email + " wrote:\n" + self.message,
+                      message=self.email + " wrote:\n\n" + self.message,
                       from_email="do-not-reply@physanthphylogeny.org",
                       recipient_list=("physphylo@gmail.com",))
             super(userContact, self).save()
