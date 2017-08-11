@@ -34,4 +34,4 @@ class Command(BaseCommand):
             pass
         else:
             send_mail("Submissions report physanthphylogeny.org", message, "do-not-reply@physanthphylogeny.org",
-                  ["wabarr@gmail.com"], fail_silently=False)
+                  ["physphylo@gmail.com"], fail_silently=False)

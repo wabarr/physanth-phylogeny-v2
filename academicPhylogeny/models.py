@@ -249,7 +249,7 @@ class UserProfile(models.Model):
                     send_mail(subject="physphylo error profile validation mailchimp email",
                               message=mess,
                               from_email="do-not-reply@physanthphylogeny.org",
-                              recipient_list=("wabarr@gmail.com",))
+                              recipient_list=("physphylo@gmail.com",))
         super(UserProfile, self).save()
 
 class socialMediaPosts(models.Model):
