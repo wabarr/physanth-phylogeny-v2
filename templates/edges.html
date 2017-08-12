@@ -1,0 +1,10 @@
+[
+{% for PhD in PhDs %}
+    {% if PhD.advisor.all|length == 0 %}
+        { "advisor": "none", "student": "{{ PhD }}"},
+    {% else %}
+        { "advisor": "{{ PhD.advisor.all|random }}", "student": "{{ PhD }}"},
+    {% endif %}
+{% endfor %}
+{"advisor":"", "student":"none"}
+]

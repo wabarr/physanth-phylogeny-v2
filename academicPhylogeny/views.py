@@ -434,3 +434,15 @@ class MailingListOptInView(FormView):
             form.add_error(None,'Something went wrong....maybe you are already signed up?')
             return render(self.request, self.template_name, {'form': form})
         return super(MailingListOptInView, self).form_valid(form)
+
+class EdgesView(TemplateView):
+
+    template_name = "edges.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(EdgesView, self).get_context_data(**kwargs)
+        context["PhDs"] = PhD.objects.all()
+        return context
+
+class TreeView(TemplateView):
+    template_name = "tree-skeleton.html"
