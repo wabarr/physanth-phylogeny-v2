@@ -2,7 +2,16 @@
 
 
 {% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <h3>Tree View</h3>
+                <p>Warning: this tree is extremely large.  It takes a long time to load only works on large screens.</p>
+                <p>The tree is also incomplete. To force a network structure into a hierarchical tree, people with more than one advisor are shown under only one of their advisors. The advisor is chosen at random from the available co-advisors each time the tree is drawn. Coadvised students are labeled in red text.  You can search for them on the main site to see their full network.</p>
+            </div>
+        </div>
+    </div>
     <div class="row">
-        {% include "tree.html" %}
+            {% include "tree.html" %}
     </div>
 {% endblock  %}

@@ -2,6 +2,8 @@
 {% for PhD in PhDs %}
     {% if PhD.advisor.all|length == 0 %}
         { "advisor": "none", "student": "{{ PhD }}"},
+    {% elif PhD.advisor.all|length > 1 %}
+        { "advisor": "{{ PhD.advisor.all|random }}", "student": "{{ PhD }}", "coadvisee":"yes"},
     {% else %}
         { "advisor": "{{ PhD.advisor.all|random }}", "student": "{{ PhD }}"},
     {% endif %}
