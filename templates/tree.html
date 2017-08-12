@@ -82,7 +82,8 @@ d3.json("/edges/", function(error, data) {
       .style("fill",function(d) {
           if(d.data.coadvisee === "yes") {return "red";} else {return "black";};
       })
-      .text(function(d) { return d.id.substring(d.id.lastIndexOf(".") + 1); });
+      .text(function(d) { return d.id.substring(d.id.lastIndexOf(".") + 1); })
+      .on("click",link2detail);
 });
 
   function getLinkColor(d){
@@ -92,6 +93,10 @@ d3.json("/edges/", function(error, data) {
 		return "#1565c0";
 	}
   }
+
+  function link2detail(d){
+    window.open("/detail/" + String(d.data.id));
+}
 
 
 </script>

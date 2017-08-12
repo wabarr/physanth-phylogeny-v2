@@ -1,11 +1,11 @@
 [
 {% for PhD in PhDs %}
     {% if PhD.advisor.all|length == 0 %}
-        { "advisor": "none", "student": "{{ PhD }}"},
+        { "id":{{ PhD.pk }}, "advisor": "none", "student": "{{ PhD }}"},
     {% elif PhD.advisor.all|length > 1 %}
-        { "advisor": "{{ PhD.advisor.all|random }}", "student": "{{ PhD }}", "coadvisee":"yes"},
+        { "id":{{ PhD.pk }}, "advisor": "{{ PhD.advisor.all|random }}", "student": "{{ PhD }}", "coadvisee":"yes"},
     {% else %}
-        { "advisor": "{{ PhD.advisor.all|random }}", "student": "{{ PhD }}"},
+        { "id":{{ PhD.pk }}, "advisor": "{{ PhD.advisor.all|random }}", "student": "{{ PhD }}"},
     {% endif %}
 {% endfor %}
 {"advisor":"", "student":"none"}
