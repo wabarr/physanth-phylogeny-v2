@@ -446,3 +446,8 @@ class EdgesView(TemplateView):
 
 class TreeView(TemplateView):
     template_name = "tree-skeleton.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(TreeView, self).get_context_data(**kwargs)
+        context["PhD_count"] = PhD.objects.all().count()
+        return context
