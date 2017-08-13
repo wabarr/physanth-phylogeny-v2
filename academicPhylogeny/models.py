@@ -7,6 +7,7 @@ import json
 from django.core.mail import send_mail
 from secrets import MAILCHIMP_API_KEY
 import requests
+import re
 
 class frequently_asked_question(models.Model):
     heading = models.CharField(max_length = 50)
@@ -57,7 +58,9 @@ class PhD(models.Model):
         return reverse('PhD-detail-view', kwargs={'URL_for_detail': self.URL_for_detail})
 
     def save(self):  # custom save method for person to update detail URL
-        self.URL_for_detail = (self.firstName + "_" + self.lastName).replace(" ", "_")
+        #matches the charachters (, ), ', " to replace them below
+        regex = r"\(|\)|\'|\""
+        self.URL_for_detail = re.sub(regex,"", (self.firstName + "_" + self.lastName).replace(" ", "_"))
         if not self.pk: #only do this if object doesn't exist yet
             try:
                 ob = self.submitter_user.userprofile
