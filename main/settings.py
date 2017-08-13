@@ -25,9 +25,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = secrets.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['www.physanthphylogeny.org']
+ALLOWED_HOSTS = ["127.0.0.1",'www.physanthphylogeny.org']
 
 
 # Application definition
