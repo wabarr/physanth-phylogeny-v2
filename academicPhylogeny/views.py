@@ -301,32 +301,32 @@ def networkViewNumeric(request, pk):
         return HttpResponseRedirect("/people/")
     return HttpResponseRedirect("/network/" + requestedPerson.URL_for_detail)
 
-def tree_nodes_JSON(request):
-    nodes = PhD.objects.all().filter(validated=True).annotate(name=Concat("firstName", Value(" "), "lastName")).values_list("id","name")
-    return JsonResponse(list(nodes), safe=False)
-
-def tree_JSON(request, pk=None):
-    if pk is not None:
-        thePerson=PhD.objects.get(pk=pk)
-        theRoots = thePerson.find_root_ancestors
-        if len(theRoots) > 1:
-            rootNode = {"name":"root_node", "children":[]}
-            for root in theRoots:
-                rootNode["children"].append(root.get_nested_tree_dict)
-            return JsonResponse(rootNode)
-        else:
-            return JsonResponse(theRoots[0].get_nested_tree_dict)
-    else:
-        allRoots = []
-        for eachPhD in PhD.objects.all():
-            if len(eachPhD.advisor.all()) > 0:
-                pass
-            else:
-                allRoots.append(eachPhD)
-        rootNode = {"name": "root_node", "children": []}
-        for root in allRoots[0:15]:
-            rootNode["children"].append(root.get_nested_tree_dict)
-        return JsonResponse(rootNode)
+# def tree_nodes_JSON(request):
+#     nodes = PhD.objects.all().filter(validated=True).annotate(name=Concat("firstName", Value(" "), "lastName")).values_list("id","name")
+#     return JsonResponse(list(nodes), safe=False)
+#
+# def tree_JSON(request, pk=None):
+#     if pk is not None:
+#         thePerson=PhD.objects.get(pk=pk)
+#         theRoots = thePerson.find_root_ancestors
+#         if len(theRoots) > 1:
+#             rootNode = {"name":"root_node", "children":[]}
+#             for root in theRoots:
+#                 rootNode["children"].append(root.get_nested_tree_dict)
+#             return JsonResponse(rootNode)
+#         else:
+#             return JsonResponse(theRoots[0].get_nested_tree_dict)
+#     else:
+#         allRoots = []
+#         for eachPhD in PhD.objects.all():
+#             if len(eachPhD.advisor.all()) > 0:
+#                 pass
+#             else:
+#                 allRoots.append(eachPhD)
+#         rootNode = {"name": "root_node", "children": []}
+#         for root in allRoots[0:15]:
+#             rootNode["children"].append(root.get_nested_tree_dict)
+#         return JsonResponse(rootNode)
 
 class ValidateView(UpdateView):
     model = PhD
@@ -441,7 +441,7 @@ class EdgesView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(EdgesView, self).get_context_data(**kwargs)
-        context["PhDs"] = PhD.objects.all()
+        context["PhDs"] = PhD.objects.filter(validated=True)
         return context
 
 class TreeView(TemplateView):
@@ -449,5 +449,5 @@ class TreeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(TreeView, self).get_context_data(**kwargs)
-        context["PhD_count"] = PhD.objects.all().count()
+        context["PhD_count"] = PhD.objects.filter(validated=True).count()
         return context
