@@ -1,5 +1,8 @@
 {% extends "default.html" %}
-
+{% load static %}
+  {% block fb-image %}
+      <meta property="og:image" content="https://www.physanthphylogeny.org/{% static "images/tree-fb.png" %}" />
+  {% endblock %}
 
 {% block content %}
     <div class="container">
