@@ -96,6 +96,7 @@ class PhD(models.Model):
         baseNodeColor = "#ffecb3"
         baseNodeColorHasNonVisibleAdvisees = "#ffca28"
         nodes = []
+        node_ids = []
 
         nodes.append({"id": self.pk,
                       "label": " ".join((self.firstName, self.lastName)),
@@ -103,23 +104,28 @@ class PhD(models.Model):
                       "shape": "ellipse",
                       "font" : {"color":"white"},
                       "size": 20})
+        node_ids.append(self.pk)
         advisors = self.advisor.all()
         for advisor in advisors:
             if PhD.objects.filter(advisor=advisor,validated=True).count() > 0:
                 color = baseNodeColorHasNonVisibleAdvisees
             else:
                 color = baseNodeColor
-            nodes.append({"id": advisor.pk,
-                          "label": " ".join((advisor.firstName, advisor.lastName)),
-                          "color":color})
+            if not advisor.pk in node_ids:
+                nodes.append({"id": advisor.pk,
+                              "label": " ".join((advisor.firstName, advisor.lastName)),
+                              "color":color})
+                node_ids.append(advisor.pk)
             for sibling in PhD.objects.filter(advisor=advisor, validated=True).exclude(pk=self.pk):
                 if PhD.objects.filter(advisor=sibling, validated=True).count() > 0:
                     color = baseNodeColorHasNonVisibleAdvisees
                 else:
                     color = baseNodeColor
-                nodes.append({"id": sibling.pk,
-                              "label": " ".join((sibling.firstName, sibling.lastName)),
-                              "color":color})
+                if not sibling.pk in node_ids:
+                    nodes.append({"id": sibling.pk,
+                                  "label": " ".join((sibling.firstName, sibling.lastName)),
+                                  "color":color})
+                    node_ids.append(sibling.pk)
 
         children = PhD.objects.filter(advisor=self, validated=True)
         for child in children:
@@ -127,9 +133,11 @@ class PhD(models.Model):
                 color = baseNodeColorHasNonVisibleAdvisees
             else:
                 color = baseNodeColor
-            nodes.append({"id": child.pk,
-                          "label": " ".join((child.firstName, child.lastName)),
-                          "color":color})
+            if not child.pk in node_ids:
+                nodes.append({"id": child.pk,
+                              "label": " ".join((child.firstName, child.lastName)),
+                              "color":color})
+                node_ids.append(child.pk)
 
         return json.dumps(nodes)
 
