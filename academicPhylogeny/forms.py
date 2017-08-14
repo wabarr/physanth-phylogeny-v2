@@ -81,7 +81,7 @@ class UserCreateForm(ModelForm):
         theEmail = cleaned_data["email"]
         edu  = re.compile("\.edu$|\.ca$|\.au$|\.uk$|\.nz$|\.za$|\.gov$")
         if not re.search(edu, theEmail):
-            raise ValidationError("Error: You must use an email ending in .edu, .ca, .au, .uk, .za, or .nz. \nPlease contact admins if you need an exception.")
+            raise ValidationError("Error: You must use an email ending in .edu, .gov, .ca, .au, .uk, .za, or .nz. \nPlease contact admins if you need an exception.")
         existingUser = UserTable.objects.filter(email=theEmail)
         if existingUser.count() > 0:
             raise ValidationError("Error: This email address is already associated with a user account")
