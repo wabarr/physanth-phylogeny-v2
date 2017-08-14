@@ -79,7 +79,7 @@ class UserCreateForm(ModelForm):
         auth = ("physphylo", MAILCHIMP_API_KEY)
         cleaned_data = super(UserCreateForm, self).clean()
         theEmail = cleaned_data["email"]
-        edu  = re.compile("\.edu$|\.ca|\.au|\.uk$|\.nz$|\.za$")
+        edu  = re.compile("\.edu$|\.ca$|\.au$|\.uk$|\.nz$|\.za$|\.gov$")
         if not re.search(edu, theEmail):
             raise ValidationError("Error: You must use an email ending in .edu, .ca, .au, .uk, .za, or .nz. \nPlease contact admins if you need an exception.")
         existingUser = UserTable.objects.filter(email=theEmail)
