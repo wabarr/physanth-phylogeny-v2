@@ -11,8 +11,8 @@ class Command(BaseCommand):
 
 
     def debug(self, TWmsg, FBmsg):
-        self.stdout.write(TWmsg)
-        self.stdout.write(FBmsg)
+        self.stdout.write("Tweet:" + TWmsg)
+        self.stdout.write("\nFacebook:" + FBmsg)
 
     def post(self, selectedPhD, TWmsg=None, FBmsg=None, link=None):
         newPostDB = None
@@ -50,24 +50,43 @@ class Command(BaseCommand):
 
         prior_posts = socialMediaPosts.objects.all().values_list("PhD")
         unpostedCurrentYearPhDs = PhD.objects.filter(year=date.today().year, validated=True).exclude(id__in=prior_posts)
+        legacyPhDs = PhD.objects.filter(validated=True, year__isnull=False, year__lte=2000).order_by("year").exclude(id__in=prior_posts)
+
         if unpostedCurrentYearPhDs.__len__() > 0:
             selectedPhD = unpostedCurrentYearPhDs[0]
-        else:
-            self.stdout.write(self.style.SUCCESS('No new PhDs to post'))
-            return
-        link = "http://www.physanthphylogeny.org%s" % (selectedPhD.get_absolute_url(),)
-
-        FBmsg = ("Congratulations to Dr. %s, who recently completed a PhD at %s with %s."
-                 " This information now appears in the academic genealogy network on our website!"
-                 " Submit your own information if it isn't already in the database!") % (
+            link = "https://www.physanthphylogeny.org%s" % (selectedPhD.get_absolute_url(),)
+            FBmsg = ("Congratulations to Dr. %s, who recently completed a PhD at %s with %s."
+                     " This information now appears in the academic genealogy network on our website!"
+                     " Submit your own information if it isn't already in the database!") % (
+                        selectedPhD.firstName + " " + selectedPhD.lastName,
+                        selectedPhD.school,
+                        (" and ").join(
+                            [advisor.firstName + " " + advisor.lastName for advisor in selectedPhD.advisor.all()])
+                    )
+            TWmsg = "Congrats to Dr. %s for completing a PhD at %s! #bioanthphd %s" % (
                 selectedPhD.firstName + " " + selectedPhD.lastName,
                 selectedPhD.school,
-                (" and ").join([advisor.firstName + " " + advisor.lastName for advisor in selectedPhD.advisor.all()])
+                link)
+        else:
+            selectedPhD = legacyPhDs[0]
+            link = "https://www.physanthphylogeny.org%s" % (selectedPhD.get_absolute_url(),)
+            advisorPhrase = ""
+            if(len(selectedPhD.advisor.all()) > 0):
+                advisorPhrase = "with " + (" and ").join(
+                            [advisor.firstName + " " + advisor.lastName for advisor in selectedPhD.advisor.all()]
                 )
-        TWmsg = "Congrats to Dr. %s for completing a PhD at %s! #bioanthphd %s" % (
-        selectedPhD.firstName + " " + selectedPhD.lastName,
-        selectedPhD.school,
-        link)
+            FBmsg = ("Did you know? \n\n%s completed a PhD at %s in %s %s\n\nYou can see MUCH more information on our website...come join the fun!") % (
+                        selectedPhD.firstName + " " + selectedPhD.lastName,
+                        selectedPhD.school,
+                        selectedPhD.year,
+                        advisorPhrase
+                    )
+            TWmsg = "%s completed a PhD at %s in %s #bioanthphd %s" % (
+                selectedPhD.firstName + " " + selectedPhD.lastName,
+                selectedPhD.school,
+                selectedPhD.year,
+                link)
+
 
         #self.debug(TWmsg, FBmsg)
         self.post(selectedPhD=selectedPhD, FBmsg=FBmsg, TWmsg=TWmsg, link=link)
