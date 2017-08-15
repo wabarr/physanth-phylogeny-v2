@@ -175,6 +175,10 @@ class PhD(models.Model):
             del theDict["children"]
         return theDict
 
+    @property
+    def name_for_big_tree(self):
+        return self.__unicode__().replace(".","")
+
     class Meta:
         db_table = 'PhD'
         unique_together = (("firstName", "lastName"),)
