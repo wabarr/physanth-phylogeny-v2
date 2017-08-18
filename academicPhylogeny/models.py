@@ -237,7 +237,7 @@ class userContact(models.Model):
                       message=self.email + " wrote:\n\n" + self.message,
                       from_email="do-not-reply@physanthphylogeny.org",
                       recipient_list=("physphylo@gmail.com",))
-            super(userContact, self).save()
+        super(userContact, self).save()
 
 
 class UserProfile(models.Model):
