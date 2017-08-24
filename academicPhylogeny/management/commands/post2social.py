@@ -75,7 +75,7 @@ class Command(BaseCommand):
                 advisorPhrase = "with " + (" and ").join(
                             [advisor.firstName + " " + advisor.lastName for advisor in selectedPhD.advisor.all()]
                 )
-            FBmsg = ("Did you know? \n\n%s completed a PhD at %s in %s %s\n\nYou can see MUCH more information on our website...come join the fun!") % (
+            FBmsg = ("%s completed a PhD at %s in %s %s\n\nFind out more information on our website...") % (
                         selectedPhD.firstName + " " + selectedPhD.lastName,
                         selectedPhD.school,
                         selectedPhD.year,
