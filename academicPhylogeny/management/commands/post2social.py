@@ -50,7 +50,7 @@ class Command(BaseCommand):
 
         prior_posts = socialMediaPosts.objects.all().values_list("PhD")
         unpostedCurrentYearPhDs = PhD.objects.filter(year=date.today().year, validated=True).exclude(id__in=prior_posts)
-        legacyPhDs = PhD.objects.filter(validated=True, year__isnull=False, year__lte=2000).order_by("year").exclude(id__in=prior_posts)
+        legacyPhDs = PhD.objects.filter(validated=True, school__isnull=False, year__isnull=False, year__lte=2000).order_by("year").exclude(id__in=prior_posts)
 
         if unpostedCurrentYearPhDs.__len__() > 0:
             selectedPhD = unpostedCurrentYearPhDs[0]
@@ -71,18 +71,31 @@ class Command(BaseCommand):
             selectedPhD = legacyPhDs[0]
             link = "https://www.physanthphylogeny.org%s" % (selectedPhD.get_absolute_url(),)
             advisorPhrase = ""
+            advisorPeriodOrNot = "."
             if(len(selectedPhD.advisor.all()) > 0):
-                advisorPhrase = "with " + (" and ").join(
+                advisorsAnd = (" and ").join(
                             [advisor.firstName + " " + advisor.lastName for advisor in selectedPhD.advisor.all()]
                 )
-            FBmsg = ("%s completed a PhD at %s in %s %s\n\nFind out more information on our website...") % (
-                        selectedPhD.firstName + " " + selectedPhD.lastName,
+                advisorPhrase = "with " + advisorsAnd + "."
+                advisorPeriodOrNot = ""
+            studentsPhrase = ""
+            students = PhD.objects.filter(validated=True, advisor = selectedPhD)
+            if len(students) > 0:
+                studentsPhrase = "%s advised at least %d PhD students including: %s." %(
+                    selectedPhD.lastName,
+                    len(students),
+                    ", ".join([student.__unicode__().strip() for student in students])
+                )
+            FBmsg = ("%s completed a PhD at %s in %s%s %s %s\n\nLearn more on our website...") % (
+                        selectedPhD.__unicode__().strip(),
                         selectedPhD.school,
                         selectedPhD.year,
-                        advisorPhrase
+                        advisorPeriodOrNot,
+                        advisorPhrase,
+                        studentsPhrase
                     )
             TWmsg = "%s completed a PhD at %s in %s #bioanthphd %s" % (
-                selectedPhD.firstName + " " + selectedPhD.lastName,
+                selectedPhD.__unicode__().strip(),
                 selectedPhD.school,
                 selectedPhD.year,
                 link)
