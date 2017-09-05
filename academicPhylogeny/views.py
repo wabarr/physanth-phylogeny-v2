@@ -226,9 +226,13 @@ class PhDDetailView(TemplateView):
         try:
             thePhD = PhD.objects.exclude(validated=False).get(URL_for_detail__exact=URL_for_detail)
             students = PhD.objects.filter(advisor__id=thePhD.id).order_by("year")
+            nodes = thePhD.network_nodes_formatted
+            edges = thePhD.network_nodes_formatted
         except:
             thePhD = None
             students = None
+            nodes = None
+            edges = None
         try:
             theUserProfile=UserProfile.objects.get(associated_PhD=thePhD)
         except:
@@ -239,9 +243,8 @@ class PhDDetailView(TemplateView):
         context["thePhD"] = thePhD
         context["students"] = students
         context["user_profile"] = theUserProfile
-        context["nodes"]= thePhD.network_nodes_formatted
-        context["edges"]= thePhD.network_edges_formatted
-
+        context["nodes"]= nodes
+        context["edges"]= edges
         return context
 
 class AboutView(TemplateView):
