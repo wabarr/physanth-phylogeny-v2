@@ -227,7 +227,7 @@ class PhDDetailView(TemplateView):
             thePhD = PhD.objects.exclude(validated=False).get(URL_for_detail__exact=URL_for_detail)
             students = PhD.objects.filter(advisor__id=thePhD.id).order_by("year")
             nodes = thePhD.network_nodes_formatted
-            edges = thePhD.network_nodes_formatted
+            edges = thePhD.network_edges_formatted
         except:
             thePhD = None
             students = None
