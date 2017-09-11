@@ -96,10 +96,9 @@ class Command(BaseCommand):
                         (" and ").join(
                             [advisor.firstName + " " + advisor.lastName for advisor in selectedPhD.advisor.all()])
                     )
-            TWmsg = "Congrats to Dr. %s for completing a PhD at %s! #bioanthphd %s" % (
+            TWmsg = "Congrats to Dr. %s for completing a PhD at %s! #bioanthphd" % (
                 selectedPhD.firstName + " " + selectedPhD.lastName,
-                selectedPhD.school,
-                link)
+                selectedPhD.school)
         else:
             selectedPhD = legacyPhDs[0]
             link = "https://www.physanthphylogeny.org%s" % (selectedPhD.get_absolute_url(),)
