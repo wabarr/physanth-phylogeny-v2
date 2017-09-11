@@ -37,7 +37,38 @@ class Command(BaseCommand):
             auth = tweepy.OAuthHandler(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_KEY_SECRET)
             auth.set_access_token(TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_TOKEN_SECRET)
             api = tweepy.API(auth)
-            api.update_status(TWmsg)
+
+            ## all URLS are 23 characters
+            if len(TWmsg) < 116:
+                # need room for a space, then 23 character link, so max length for a single tweet is 116 (116 + 1 space + 23 char link = 140 chars)
+                t = api.update_status(TWmsg + " " + link)
+            else:
+                # leave 10 characters for ... and the tweet number marker with a space in front e.g. ... (1/20)
+                # first tweet is thus 107 chars max (link in first tweet)
+                # subsequent reply tweets are 130 max
+
+                n = 110
+                tweets = [TWmsg[i:i + n] for i in range(0, len(TWmsg), n)]
+
+                ## add ellipses
+                for i in range(0, len(tweets) - 1):
+                    tweets[i] = tweets[i] + "..."
+
+                ## add link to final tweet
+                tweets[len(tweets) - 1] = tweets[len(tweets) - 1] + " " + link
+
+                ## add tweet number
+                for i in range(0, len(tweets)):
+                    tweets[i] = tweets[i] + " (%d/%d)" % (i + 1, len(tweets))
+
+                for i in range(0, len(tweets)):
+                    if i == 0:
+                        # first tweet stands alone
+                        t = api.update_status(tweets[i])
+                    else:
+                        # subsequent tweets are in reply to previous tweet
+                        t = api.update_status(tweets[i], in_reply_to_status_id=t.id)
+
             if not newPostDB:
                 newPostDB = socialMediaPosts(PhD=selectedPhD, facebook=False, twitter=True)
                 newPostDB.save()
@@ -88,7 +119,7 @@ class Command(BaseCommand):
                     len(students),
                     ", ".join([student.__unicode__().strip() for student in students])
                 )
-            FBmsg = ("%s completed a PhD at %s in %s%s %s %s\n\nLearn more on our website...") % (
+            FBmsg = TWmsg =  ("%s completed a PhD at %s in %s%s %s %s\n\nLearn more on our website...") % (
                         selectedPhD.__unicode__().strip(),
                         selectedPhD.school,
                         selectedPhD.year,
@@ -96,11 +127,6 @@ class Command(BaseCommand):
                         advisorPhrase,
                         studentsPhrase
                     )
-            TWmsg = "%s completed a PhD at %s in %s #bioanthphd %s" % (
-                selectedPhD.__unicode__().strip(),
-                selectedPhD.school,
-                selectedPhD.year,
-                link)
 
 
         #self.debug(TWmsg, FBmsg)
