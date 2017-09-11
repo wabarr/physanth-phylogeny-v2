@@ -63,6 +63,7 @@ class PhDUpdateAdmin(admin.ModelAdmin):
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ("id","user_email","associated_PhD","moderator_approved", "current_position","current_affiliation","research_website")
     list_editable = ("moderator_approved",)
+    search_fields = ("user__email","associated_PhD__firstName","associated_PhD__lastName")
 
 class SocialMediaPostsAdmin(admin.ModelAdmin):
     list_display = ("PhD", "date_posted", "facebook", "twitter")
