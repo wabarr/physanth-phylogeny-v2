@@ -113,9 +113,14 @@ class Command(BaseCommand):
             studentsPhrase = ""
             students = PhD.objects.filter(validated=True, advisor = selectedPhD)
             if len(students) > 0:
-                studentsPhrase = "%s advised at least %d PhD students including: %s." %(
+                if len(students) == 1:
+                    plural_or_not=""
+                else:
+                    plural_or_not="s"
+                studentsPhrase = "%s advised at least %d PhD student%s including: %s." %(
                     selectedPhD.lastName,
                     len(students),
+                    plural_or_not,
                     ", ".join([student.__unicode__().strip() for student in students])
                 )
             FBmsg = TWmsg =  ("%s completed a PhD at %s in %s%s %s %s\n\nLearn more on our website...") % (
@@ -128,5 +133,5 @@ class Command(BaseCommand):
                     )
 
 
-        #self.debug(TWmsg, FBmsg)
-        self.post(selectedPhD=selectedPhD, FBmsg=FBmsg, TWmsg=TWmsg, link=link)
+        self.debug(TWmsg, FBmsg)
+        #self.post(selectedPhD=selectedPhD, FBmsg=FBmsg, TWmsg=TWmsg, link=link)
