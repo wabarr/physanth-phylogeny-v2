@@ -133,5 +133,5 @@ class Command(BaseCommand):
                     )
 
 
-        self.debug(TWmsg, FBmsg)
-        #self.post(selectedPhD=selectedPhD, FBmsg=FBmsg, TWmsg=TWmsg, link=link)
+        #self.debug(TWmsg, FBmsg)
+        self.post(selectedPhD=selectedPhD, FBmsg=FBmsg, TWmsg=TWmsg, link=link)
