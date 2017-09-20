@@ -18,6 +18,7 @@ import json
 from secrets import MAILCHIMP_API_KEY, MAILCHIMP_UPDATESLIST_SUBSCRIBE_URL
 import requests
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 
@@ -454,3 +455,47 @@ class TreeView(TemplateView):
         context = super(TreeView, self).get_context_data(**kwargs)
         context["PhD_count"] = PhD.objects.filter(validated=True).count()
         return context
+
+class UserProfilePictureUploadView(CreateView):
+    model = UserProfilePicture
+    form_class = UserProfilePictureForm
+    template_name = "upload_profile_pic.html"
+    success_url = "/claim/"
+
+    def get_initial(self):
+        initial = super(UserProfilePictureUploadView, self).get_initial()
+        initial["associated_UserProfile"] = self.request.user.userprofile
+        return initial
+
+    def form_valid(self, form):
+        response = super(UserProfilePictureUploadView, self).form_valid(form)
+        return response
+
+    @method_decorator(login_required())
+    def dispatch(self, *args, **kwargs):
+        return super(UserProfilePictureUploadView, self).dispatch(*args, **kwargs)
+
+class UserProfilePictureChangeView(UpdateView):
+    model = UserProfilePicture
+    form_class = UserProfilePictureForm
+    template_name = "change_profile_pic.html"
+    success_url = "/claim/"
+
+    def get_initial(self):
+        initial = super(UserProfilePictureChangeView, self).get_initial()
+        initial["associated_UserProfile"] = self.request.user.userprofile
+        return initial
+
+    def get_object(self, queryset=None):
+        try:
+            pic = UserProfilePicture.objects.get(associated_UserProfile=self.request.user.userprofile)
+            return pic
+        except:
+            raise ObjectDoesNotExist
+
+    @method_decorator(login_required())
+    def dispatch(self, *args, **kwargs):
+        try:
+            return super(UserProfilePictureChangeView, self).dispatch(*args, **kwargs)
+        except ObjectDoesNotExist:
+            return HttpResponseRedirect("/upload_profile_pic/")

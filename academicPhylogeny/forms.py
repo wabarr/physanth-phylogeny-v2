@@ -111,7 +111,10 @@ class UserCreateForm(ModelForm):
 
 
 
-
+class UserProfilePictureForm(ModelForm):
+    class Meta:
+        model = UserProfilePicture
+        fields = ("associated_UserProfile", "photo")
 
 
 class UserProfileForm(ModelForm):

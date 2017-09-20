@@ -20,6 +20,8 @@ from ajax_select import urls as ajax_select_urls
 from django.views.generic import RedirectView
 from django.contrib.sitemaps.views import sitemap
 from academicPhylogeny.sitemaps import PhDSitemap
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     url('^', include('academicPhylogeny.registration_authorization_urls')),
@@ -57,5 +59,7 @@ urlpatterns = [
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': {"PhD":PhDSitemap}},
         name='django.contrib.sitemaps.views.sitemap'),
     url(r'^edges/$',EdgesView.as_view()),
+    url(r'^upload_profile_pic/$',UserProfilePictureUploadView.as_view()),
+    url(r'^change_profile_pic/$',UserProfilePictureChangeView.as_view()),
     url(r'^$', HomePageView.as_view(), name="home"),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -126,6 +126,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/wabarr/webapps/phys_phylo_v2_static'
 
+MEDIA_ROOT = "/home/wabarr/webapps/phys_phylo_v2_media"
+#MEDIA_ROOT = "/Users/wabarr/Desktop/phys_phylo_v2_media/"
+MEDIA_URL = "/media/"
+
 #EMAIL_HOST = "localhost"
 #EMAIL_PORT = 1025
 EMAIL_HOST_PASSWORD = secrets.EMAIL_HOST_PASSWORD

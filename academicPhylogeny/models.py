@@ -288,6 +288,17 @@ class socialMediaPosts(models.Model):
         verbose_name_plural = "social media posts"
         verbose_name = "social media post"
 
+class UserProfilePicture(models.Model):
+    photo = models.ImageField()
+    associated_UserProfile = models.OneToOneField(UserProfile)
+
+    class Meta:
+        verbose_name_plural = "User Profile Pictures"
+        verbose_name = "User Profile Picture"
+
+    def __unicode__(self):
+            return self.associated_UserProfile.associated_PhD.firstName + " " + self.associated_UserProfile.associated_PhD.lastName
+
 #######BELOW IS DEPRECATED###########
 ############################
 CHOICES_editable_fields = [("firstName", "firstName"), ("lastName", "lastName"), ("year", "year")]

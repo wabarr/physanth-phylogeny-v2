@@ -32,40 +32,60 @@
                                 </div>
                             </div>
                             {% if user_profile %}
-                                    {% if user_profile.current_position %}
+
                                         <div class="row">
-                                            <div class="col s12 ">
-                                             <b>Current position: </b>{{ user_profile.current_position }}
+                                            <div class="col s12 m4 l3">
+                                                {% if user_profile.userprofilepicture %}
+                                                    <img src="{% get_media_prefix %}{{ user_profile.userprofilepicture.photo }}" style="width:100%;">
+                                                    {%  if user_profile.user == request.user %}
+                                                        <div class="center-align">
+                                                            <a href="/change_profile_pic/">change photo</a>
+                                                        </div>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <div class="center-align">
+                                                        <img src="{% static 'images/ic_person_black_24px.svg' %}" style="width:70%">
+                                                    </div>
+                                                    <div class="center-align">
+                                                        <a href="/upload_profile_pic/">add a photo</a>
+                                                    </div>
+
+                                                {% endif %}
+                                            </div>
+                                            <div class="col s12 m8 l9">
+                                                {% if user_profile.current_position %}
+                                                    <div class="row">
+                                                        <div class="col s12 ">
+                                                            <b>Current position: </b>{{ user_profile.current_position }}
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                                {% if user_profile.current_affiliation %}
+                                                    <div class="row">
+                                                        <div class="col s12 ">
+                                                        <b>Current affiliation: </b>{{ user_profile.current_affiliation }}
+                                                        </div>
+                                                    </div>
+
+                                                {% endif %}
+                                                {% if user_profile.research_website %}
+                                                    <div class="row">
+                                                        <div class="col s12 ">
+                                                            <b>Research website:</b> <a target="_blank" href="{{ user_profile.research_website }}">Link</a>
+                                                        </div>
+                                                    </div>
+
+                                                {% endif %}
+                                                {% if user_profile.research_blurb %}
+                                                <div class="row">
+                                                    <div class="col s12 ">
+                                                     <b>Research description:</b> {{ user_profile.research_blurb }}
+                                                    </div>
+                                                </div>
+                                                {% endif %}
                                             </div>
                                         </div>
-
-                                    {% endif %}
-                                    {% if user_profile.current_affiliation %}
-                                        <div class="row">
-                                            <div class="col s12 ">
-                                            <b>Current affiliation: </b>{{ user_profile.current_affiliation }}
-                                            </div>
-                                        </div>
-
-                                    {% endif %}
-                                    {% if user_profile.research_website %}
-                                        <div class="row">
-                                            <div class="col s12 ">
-                                                <b>Research website:</b> <a target="_blank" href="{{ user_profile.research_website }}">Link</a>
-                                            </div>
-                                        </div>
-
-                                    {% endif %}
-                                    {% if user_profile.research_blurb %}
-                                    <div class="row">
-                                        <div class="col s12 ">
-                                         <b>Research description:</b> {{ user_profile.research_blurb }}
-                                        </div>
-                                    </div>
-                                    {% endif %}
-
                                 </div>
-
                             {% endif %}
 
                         </div>
