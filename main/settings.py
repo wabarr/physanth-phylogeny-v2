@@ -139,7 +139,7 @@ DEFAULT_FROM_EMAIL = secrets.DEFAULT_FROM_EMAIL
 SERVER_EMAIL = "django@physanthphylogeny.org"
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/claim/"
 
 ADMINS = (
   ('webmaster_or_webmistress', 'physphylo@gmail.com'),
