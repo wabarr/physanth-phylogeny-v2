@@ -31,6 +31,8 @@ class FAQadmin(admin.ModelAdmin):
     list_filter = ("published",)
     list_editable = ("published","displayOrder")
 
+class UserProfilePictureAdmin(admin.ModelAdmin):
+    list_display = ("photo", "associated_UserProfile")
 
 # def updatePhDObject(modeladmin, request, queryset):
 #     for obj in queryset:
@@ -80,4 +82,4 @@ admin.site.register(PhDupdate, PhDUpdateAdmin)
 admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(socialMediaPosts, SocialMediaPostsAdmin)
 admin.site.register(specialization, SpecializationAdmin)
-admin.site.register(UserProfilePicture, admin.ModelAdmin)
+admin.site.register(UserProfilePicture, UserProfilePictureAdmin)
