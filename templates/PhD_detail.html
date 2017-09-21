@@ -40,7 +40,7 @@
                             {% if user_profile %}
 
                                         <div class="row">
-                                            <div class="col s12 m4 l3">
+                                            <div class="col s12 m6">
                                                 {% if user_profile.userprofilepicture %}
                                                     <img class="materialboxed" src="{% get_media_prefix %}{{ user_profile.userprofilepicture.photo }}" style="width:100%;">
                                                     {%  if user_profile.user == request.user %}
@@ -60,7 +60,7 @@
 
                                                 {% endif %}
                                             </div>
-                                            <div class="col s12 m8 l9">
+                                            <div class="col s12 m6 ">
                                                 {% if user_profile.current_position %}
                                                     <div class="row">
                                                         <div class="col s12 ">
