@@ -11,8 +11,12 @@
                     <div class="card">
                         <div class="card-content">
                             <span class="card-title">Change Your Profile Picture</span>
-                            <p>Square photos work best. You should crop your photo before trying to upload it. </p>
-                            <div class="row section">
+                            <div class="row red white-text">
+                                        <div class="col s12">
+                                            We are currently experiencing technical issues with image uploads. Please try back later.  We will remove this warning when the problem is solved. Sorry for the inconvenience!
+                                        </div>
+                                    </div>
+                            {% comment %}<div class="row section">
                                 <div class="col s12">
                                     {{ form.photo.errors }}
                                     {{ form.photo.label_tag }}
@@ -28,7 +32,7 @@
                                     </p>
 
                                 </div>
-                            </div>
+                            </div>{% endcomment %}
                         </div>
                     </div>
                 </form>
