@@ -468,7 +468,16 @@ class UserProfilePictureUploadView(CreateView):
         return initial
 
     def form_valid(self, form):
-        response = super(UserProfilePictureUploadView, self).form_valid(form)
+        #in otherwise valid form, double check that request.user
+        #matches the user in associated_UserProfile to prevent people uploading other pics
+        UserProfileID = form.data["associated_UserProfile"]
+        associatedUser = UserProfile.objects.get(pk=UserProfileID).user
+        if self.request.user == associatedUser:
+            response = super(UserProfilePictureUploadView, self).form_valid(form)
+        else:
+            form.add_error("You can only upload pics for your own user profile")
+            response = super(UserProfilePictureUploadView, self).form_invalid(form)
+
         return response
 
     @method_decorator(login_required())
@@ -492,6 +501,19 @@ class UserProfilePictureChangeView(UpdateView):
             return pic
         except:
             raise ObjectDoesNotExist
+
+    def form_valid(self, form):
+        #in otherwise valid form, double check that request.user
+        #matches the user in associated_UserProfile to prevent people changing other pics
+        UserProfileID = form.data["associated_UserProfile"]
+        associatedUser = UserProfile.objects.get(pk=UserProfileID).user
+        if self.request.user == associatedUser:
+            response = super(UserProfilePictureChangeView, self).form_valid(form)
+        else:
+            form.add_error("You can only upload pics for your own user profile")
+            response = super(UserProfilePictureChangeView, self).form_invalid(form)
+
+        return response
 
     @method_decorator(login_required())
     def dispatch(self, *args, **kwargs):
