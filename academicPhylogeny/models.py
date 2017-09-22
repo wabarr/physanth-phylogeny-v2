@@ -292,7 +292,7 @@ class socialMediaPosts(models.Model):
 def make_thumbnail(filename):
     from PIL import Image
     size = (1800, 1800)
-    pic = Image.open(filename)
+    pic = Image.open(filename).convert("RGB")
     pic.thumbnail(size, Image.ANTIALIAS)
     pic.save(filename + ".THUMBNAIL", "JPEG")
 
