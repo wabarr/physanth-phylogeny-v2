@@ -1,0 +1,20 @@
+{% extends "default.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        {% for object in object_list %}
+            <div class="col s4">
+                <div class="card">
+                    <div class="card-image">
+                        <img src="/media/{{ object.photo }}">
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

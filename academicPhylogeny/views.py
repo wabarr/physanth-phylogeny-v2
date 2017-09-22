@@ -521,3 +521,12 @@ class UserProfilePictureChangeView(UpdateView):
             return super(UserProfilePictureChangeView, self).dispatch(*args, **kwargs)
         except ObjectDoesNotExist:
             return HttpResponseRedirect("/upload_profile_pic/")
+
+class ProfilePicListView(ListView):
+    template_name = "users_with_profile_pics.html"
+    model = UserProfilePicture
+
+    def get_queryset(self):
+        return UserProfilePicture.objects.all()
+
+
