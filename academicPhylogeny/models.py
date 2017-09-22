@@ -288,6 +288,14 @@ class socialMediaPosts(models.Model):
         verbose_name_plural = "social media posts"
         verbose_name = "social media post"
 
+
+def make_thumbnail(filename):
+    from PIL import Image
+    size = (1800, 1800)
+    pic = Image.open(filename)
+    pic.thumbnail(size, Image.ANTIALIAS)
+    pic.save(filename + ".THUMBNAIL", "JPEG")
+
 class UserProfilePicture(models.Model):
     photo = models.ImageField()
     associated_UserProfile = models.OneToOneField(UserProfile)
@@ -298,6 +306,11 @@ class UserProfilePicture(models.Model):
 
     def __unicode__(self):
             return self.associated_UserProfile.associated_PhD.firstName + " " + self.associated_UserProfile.associated_PhD.lastName
+
+    def save(self):
+        super(UserProfilePicture, self).save()
+        make_thumbnail(self.photo.path)
+
 
 #######BELOW IS DEPRECATED###########
 ############################
