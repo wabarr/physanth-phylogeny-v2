@@ -6,14 +6,14 @@
     <div class="row">
         {% for object in object_list %}
             <div class="col s6 offset-s3">
-                <div class="card">
+                <div class="card horizontal">
                     <div class="card-image">
                         <img src="/media/{{ object.photo }}.THUMBNAIL">
                     </div>
-                <div class="card-content">
-                    <a href="/detail/{{ object.associated_UserProfile.associated_PhD.URL_for_detail }}">{{ object.associated_UserProfile.associated_PhD }}</a>
-                </div>
 
+                    <div class="card-content">
+                        <a href="/detail/{{ object.associated_UserProfile.associated_PhD.URL_for_detail }}">{{ object.associated_UserProfile.associated_PhD }}</a>
+                    </div>
                 </div>
             </div>
         {% endfor %}
