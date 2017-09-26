@@ -4,6 +4,7 @@ from academicPhylogeny.models import PhD, socialMediaPosts
 from academicPhylogeny.secrets import FACEBOOK_PHYSPHYLO_PAGE_ID,FACEBOOK_PHYSPHYLO_PAGE_ACCESS_TOKEN, TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_KEY_SECRET, TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_TOKEN_SECRET
 import requests
 import tweepy
+import re
 from datetime import date
 
 class Command(BaseCommand):
@@ -48,7 +49,17 @@ class Command(BaseCommand):
                 # subsequent reply tweets are 130 max
 
                 n = 110
-                tweets = [TWmsg[i:i + n] for i in range(0, len(TWmsg), n)]
+                tweets = ['']  # list with empty string in postion zero
+                currentTweet = 0
+
+                for word in re.findall(r'\S+', TWmsg):
+                    proposed = " ".join([tweets[currentTweet], word]).lstrip()
+                    if len(proposed) <= n:
+                        tweets[currentTweet] = proposed
+                    else:
+                        tweets.append("")
+                        currentTweet += 1
+                        tweets[currentTweet] = " ".join([tweets[currentTweet], word]).lstrip()
 
                 ## add ellipses
                 for i in range(0, len(tweets) - 1):
