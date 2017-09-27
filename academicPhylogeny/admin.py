@@ -73,6 +73,11 @@ class SocialMediaPostsAdmin(admin.ModelAdmin):
 class SpecializationAdmin(admin.ModelAdmin):
     list_display = ("id", "name")
 
+class LegacyPictureAdmin(admin.ModelAdmin):
+    form = make_ajax_form(LegacyPicture,
+                          {'associated_PhD':'PhD'}
+                          )
+
 admin.site.register(frequently_asked_question,FAQadmin)
 admin.site.register(school, SchoolAdmin)
 #admin.site.register(person, admin.ModelAdmin)
@@ -83,3 +88,4 @@ admin.site.register(UserProfile, UserProfileAdmin)
 admin.site.register(socialMediaPosts, SocialMediaPostsAdmin)
 admin.site.register(specialization, SpecializationAdmin)
 admin.site.register(UserProfilePicture, UserProfilePictureAdmin)
+admin.site.register(LegacyPicture, LegacyPictureAdmin)

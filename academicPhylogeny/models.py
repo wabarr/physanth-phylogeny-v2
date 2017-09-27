@@ -311,6 +311,20 @@ class UserProfilePicture(models.Model):
         super(UserProfilePicture, self).save()
         make_thumbnail(self.photo.path)
 
+class LegacyPicture(models.Model):
+    #pictures uploaded by Admins, not by users
+    photo = models.ImageField()
+    associated_PhD = models.OneToOneField(PhD)
+
+
+    def __unicode__(self):
+        return self.associated_PhD.firstName + " " + self.associated_PhD.lastName
+
+
+    def save(self):
+        super(LegacyPicture, self).save()
+        make_thumbnail(self.photo.path)
+
 
 #######BELOW IS DEPRECATED###########
 ############################

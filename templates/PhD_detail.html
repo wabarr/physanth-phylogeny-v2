@@ -38,7 +38,6 @@
 
                             </div>
                             {% if user_profile %}
-
                                         <div class="row">
                                             <div class="col s12 m6">
                                                 {% if user_profile.userprofilepicture %}
@@ -57,7 +56,6 @@
                                                         <a href="/upload_profile_pic/">add a photo</a>
                                                     {% endif %}
                                                     </div>
-
                                                 {% endif %}
                                             </div>
                                             <div class="col s12 m6 ">
@@ -126,6 +124,8 @@
 
                                 </div>
                             </div>
+                            {% elif thePhD.legacypicture %}
+                                <img class="materialboxed" src="{% get_media_prefix %}{{ thePhD.legacypicture.photo }}.THUMBNAIL" style="width:100%;">
                             {% endif %}
 
                         </div>
