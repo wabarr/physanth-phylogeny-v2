@@ -17,7 +17,7 @@
                                 <h4>You haven't claimed a page yet...</h4>
                             {% endif %}
                             {% if not user_profile %}
-                            <p>Search for page to claim</p>
+                            <p>Search for your name to claim an existing entry in the database.</p>
                             {{ form.media }}
                             <form action="/claim/" method="post" novalidate>
                                 {% csrf_token %}

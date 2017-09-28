@@ -5,19 +5,9 @@
 <div class="container">
     <div class="row">
         {% for object in object_list %}
-            <div class="col s8 offset-s2">
-                <a href="/detail/{{ object.associated_UserProfile.associated_PhD.URL_for_detail }}">
-                    <div class="card horizontal">
-                        <div class="card-image">
-                            <img src="/media/{{ object.photo }}.THUMBNAIL">
-                        </div>
-
-                        <div class="card-content">
-                            <span class="card-title">{{ object.associated_UserProfile.associated_PhD }}</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
+            {% with object.associated_UserProfile.associated_PhD as thePhD %}
+                {% include "PhD_detail.html" %}
+            {% endwith %}
         {% endfor %}
     </div>
 </div>

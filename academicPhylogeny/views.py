@@ -220,7 +220,7 @@ def PhD_numeric_detail_view(request, pk):
     return HttpResponseRedirect("/detail/" + requestedPerson.URL_for_detail)
 
 class PhDDetailView(TemplateView):
-    template_name = "PhD_detail.html"
+    template_name = "PhD_detail_skeleton.html"
 
     def get_context_data(self, **kwargs):
         URL_for_detail = self.kwargs["URL_for_detail"]
