@@ -34,14 +34,14 @@
                     </div>
                 </div>
                     {% if user_profile.user == request.user %}
-                        <div class="row section">
+                    <div class="row section">
                         <div class="col s12">
                         <a href="/change_profile_pic/"><button class="btn">Change Photo</button></a>
                         </div>
                     {% endif %}
                     </div>
-                </div>
-            </div>
+
+
             {% endif %}
 
 
@@ -60,6 +60,7 @@
             </div>
 
             <div id="advisor{{ thePhD.id }}">
+
                 <div class="row section">
                     <div class="col s12">
                         {% for advisor in thePhD.advisor.all %}
