@@ -24,7 +24,7 @@
             {% if user_profile.userprofilepicture or thePhD.legacypicture %}
             <div id="photo{{ thePhD.id }}">
                 <div class="row section">
-                    <div class="col s12">
+                    <div class="col s12 l8 offset-l2">
                         <img class="materialboxed" style="margin:auto; max-width: 100%;"
                              src="{% get_media_prefix %}{% if user_profile.userprofilepicture %}{{ user_profile.userprofilepicture.photo }}{% else %}{{ thePhD.legacypicture.photo }}{% endif %}.THUMBNAIL"
                         >
