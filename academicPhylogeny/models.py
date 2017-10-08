@@ -141,6 +141,13 @@ class PhD(models.Model):
 
         return json.dumps(nodes)
 
+    def find_children(self, descendants):
+        ##pass an empty list when calling the first time
+        for child in PhD.objects.filter(advisor=self, validated=True):
+            descendants.append(child.__unicode__())
+            child.find_children(descendants)
+        return set(descendants)
+
     @property
     def find_root_ancestors(self):
         parents = []
