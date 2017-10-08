@@ -7,7 +7,7 @@
             </span>
             <div class="card-tabs">
                 <ul class="tabs tabs-fixed-width">
-                    {% if user_profile.userprofilepicture or thePhD.legacypicture %}
+                    {% if thePhD.userprofile.userprofilepicture or thePhD.legacypicture %}
                         <li class="tab"><a class="active" href="#photo{{ thePhD.id }}">Photo</a></li>
                         <li class="tab"><a href="#profile{{ thePhD.id }}">Profile</a></li>
                     {% else %}
@@ -21,16 +21,16 @@
                 </ul>
             </div>
 
-            {% if user_profile.userprofilepicture or thePhD.legacypicture %}
+            {% if thePhD.userprofile.userprofilepicture or thePhD.legacypicture %}
             <div id="photo{{ thePhD.id }}">
                 <div class="row section">
                     <div class="col s12 l8 offset-l2">
                         <img class="materialboxed" style="margin:auto; max-width: 100%;"
-                             src="{% get_media_prefix %}{% if user_profile.userprofilepicture %}{{ user_profile.userprofilepicture.photo }}{% else %}{{ thePhD.legacypicture.photo }}{% endif %}.THUMBNAIL"
+                             src="{% get_media_prefix %}{% if thePhD.userprofile.userprofilepicture %}{{ thePhD.userprofile.userprofilepicture.photo }}{% else %}{{ thePhD.legacypicture.photo }}{% endif %}.THUMBNAIL"
                         >
                     </div>
                 </div>
-                    {% if user_profile.user == request.user %}
+                    {% if thePhD.userprofile.user == request.user %}
                     <div class="row section">
                         <div class="col s12">
                         <a href="/change_profile_pic/"><button class="btn">Change Photo</button></a>
@@ -42,7 +42,7 @@
 
 
 
-            {% if not user_profile.userprofilepicture and not thePhD.legacypicture and user_profile.user == request.user %}
+            {% if not thePhD.userprofile.userprofilepicture and not thePhD.legacypicture and thePhD.userprofile.user == request.user %}
                 <div id="upload{{ thePhD.id }}">
                     <div class="row section">
                         <div class="col s12 center-align">

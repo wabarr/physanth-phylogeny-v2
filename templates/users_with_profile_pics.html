@@ -6,8 +6,16 @@
     <div class="row">
         {% for object in object_list %}
             {% with object.associated_UserProfile.associated_PhD as thePhD %}
+                <div class="col s12 m6">
                 {% include "PhD_detail.html" %}
+                </div>
             {% endwith %}
+            {% if not forloop.last %}
+                {% if forloop.counter|divisibleby:2 %}
+                    </div>
+                    <div class="row">
+                {% endif %}
+            {% endif %}
         {% endfor %}
     </div>
 </div>
