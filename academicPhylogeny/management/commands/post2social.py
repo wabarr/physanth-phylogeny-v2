@@ -46,10 +46,9 @@ class Command(BaseCommand):
             else:
                 # leave 10 characters for ... and the tweet number marker with a space in front e.g. ... (1/20)
                 # first tweet is thus 107 chars max (link in first tweet)
-                # subsequent reply tweets are 130 max
 
-                n = 110
-                tweets = ['']  # list with empty string in postion zero
+                n = 107
+                tweets = [''] 
                 currentTweet = 0
 
                 for word in re.findall(r'\S+', TWmsg):
@@ -65,8 +64,8 @@ class Command(BaseCommand):
                 for i in range(0, len(tweets) - 1):
                     tweets[i] = tweets[i] + "..."
 
-                ## add link to final tweet
-                tweets[len(tweets) - 1] = tweets[len(tweets) - 1] + " " + link
+                ## add link to first tweet
+                tweets[0] = tweets[0] + " " + link
 
                 ## add tweet number
                 for i in range(0, len(tweets)):
