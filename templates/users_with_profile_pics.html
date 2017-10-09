@@ -5,7 +5,7 @@
 <div class="container">
     <div class="row">
         {% for object in object_list %}
-            {% with object.associated_UserProfile.associated_PhD as thePhD %}
+            {% with object as thePhD %}
                 <div class="col s12 m6">
                 {% include "PhD_detail.html" %}
                 </div>

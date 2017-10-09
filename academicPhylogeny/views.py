@@ -524,9 +524,9 @@ class UserProfilePictureChangeView(UpdateView):
 
 class ProfilePicListView(ListView):
     template_name = "users_with_profile_pics.html"
-    model = UserProfilePicture
+    model = PhD
 
     def get_queryset(self):
-        return UserProfilePicture.objects.all()
+        return PhD.objects.filter(userprofile__userprofilepicture__isnull=False) | PhD.objects.filter(legacypicture__isnull=False)
 
 
