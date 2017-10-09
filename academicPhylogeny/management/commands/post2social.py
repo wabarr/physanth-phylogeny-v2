@@ -133,14 +133,21 @@ class Command(BaseCommand):
                     plural_or_not,
                     ", ".join([student.__unicode__().strip() for student in students])
                 )
-            FBmsg = TWmsg =  ("%s completed a PhD at %s in %s%s %s %s\n\nLearn more on our website...") % (
+            total_descendant_count = len(selectedPhD.find_children([]))
+            if total_descendant_count > 5 and total_descendant_count > len(students):
+                totalDescendantPhrase = "In total, %d PhDs in our database are academic descendants of %s." % (total_descendant_count, selectedPhD.lastName)
+            else:
+                totalDescendantPhrase = ""
+
+            FBmsg = TWmsg =  re.sub(" +"," ", "%s completed a PhD at %s in %s%s %s %s %s\n\nLearn more on our website..." % (
                         selectedPhD.__unicode__().strip(),
                         selectedPhD.school,
                         selectedPhD.year,
                         advisorPeriodOrNot,
                         advisorPhrase,
-                        studentsPhrase
-                    )
+                        studentsPhrase,
+                        totalDescendantPhrase
+                    ))
 
 
         #self.debug(TWmsg, FBmsg)
