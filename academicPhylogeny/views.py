@@ -527,6 +527,10 @@ class ProfilePicListView(ListView):
     model = PhD
 
     def get_queryset(self):
-        return PhD.objects.filter(userprofile__userprofilepicture__isnull=False) | PhD.objects.filter(legacypicture__isnull=False)
+        queryset = PhD.objects.filter(userprofile__userprofilepicture__isnull=False) | PhD.objects.filter(legacypicture__isnull=False)
+        return queryset.order_by('?')
 
-
+    def get_context_data(self, **kwargs):
+        context = super(ProfilePicListView, self).get_context_data(**kwargs)
+        context["PhDsPerColumn"] = self.get_queryset().count()/2
+        return context

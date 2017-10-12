@@ -5,22 +5,24 @@
 
 <div class="container">
     <div class="row">
-        {% for object in object_list %}
-            {% with object as thePhD %}
-                <div class="col s12 m8 offset-m2 l6 offset-l3">
-                    <div class="card horizontal">
-                        <div class="card-image">
-                            <img class="gallery-img" src="{% get_media_prefix %}{% if thePhD.userprofile.userprofilepicture %}{{ thePhD.userprofile.userprofilepicture.photo }}{% else %}{{ thePhD.legacypicture.photo }}{% endif %}.THUMBNAIL"/>
-
+        <div class="col s12 m6">
+            {% for object in object_list %}
+                {% with object as thePhD%}
+                        <div class="card horizontal">
+                            <div class="card-image">
+                                <img class="gallery-img" src="{% get_media_prefix %}{% if thePhD.userprofile.userprofilepicture %}{{ thePhD.userprofile.userprofilepicture.photo }}{% else %}{{ thePhD.legacypicture.photo }}{% endif %}.THUMBNAIL"/>
+                            </div>
+                            <div class="card-content">
+                                <a href="/detail/{{ thePhD.URL_for_detail }}"><span class="card-title">{{ thePhD }}</span></a>
+                            </div>
                         </div>
-                        <div class="card-content">
-                            <a href="/detail/{{ thePhD.URL_for_detail }}"><span class="card-title">{{ thePhD }}</span></a>
-
-                        </div>
-                    </div>
+                {% endwith %}
+            {% if forloop.counter|divisibleby:PhDsPerColumn %}
                 </div>
-            {% endwith %}
-        {% endfor %}
+                <div class="col s12 m6">
+            {% endif %}
+            {% endfor %}
+        </div>
     </div>
 </div>
 
