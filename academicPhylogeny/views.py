@@ -52,6 +52,12 @@ class ThanksView(TemplateView):
 class HomePageView(TemplateView):
     template_name = "splash.html"
 
+    def get_context_data(self, **kwargs):
+        context = super(HomePageView, self).get_context_data(**kwargs)
+        queryset = PhD.objects.filter(userprofile__userprofilepicture__isnull=False) | PhD.objects.filter(legacypicture__isnull=False).order_by("?")
+        context["object_list"] = queryset
+        return context
+
 class PhDTemplateView(TemplateView):
     template_name = "PhD_search_skeleton.html"
 
