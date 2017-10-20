@@ -17,9 +17,6 @@
                         <li class="tab"><a class="active" href="#profile{{ thePhD.id }}">Profile</a></li>
                     {% endif %}
 
-                    {% if not user_profile.userprofilepicture and not thePhD.legacypicture and user_profile.user == request.user %}
-                    <li class="tab"><a href="#upload{{ thePhD.id }}">Upload Photo</a></li>
-                    {% endif %}
                     <li class="tab"><a href="#connections{{ thePhD.id }}">Connections</a></li>
                 </ul>
             </div>
@@ -45,18 +42,14 @@
 
 
 
-            {% if not thePhD.userprofile.userprofilepicture and not thePhD.legacypicture and thePhD.userprofile.user == request.user %}
-                <div id="upload{{ thePhD.id }}">
-                    <div class="row section">
-                        <div class="col s12 center-align">
-                            <a href="/upload_profile_pic"><button class="btn">Upload Photo</button></a>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
 
             <div id="profile{{ thePhD.id }}">
                 {% include "PhD_profile_details.html" %}
+                {% if not thePhD.userprofile.userprofilepicture and not thePhD.legacypicture and thePhD.userprofile.user == request.user %}
+                            <div class="col s12 section">
+                                <a href="/upload_profile_pic"><button class="btn">Upload Profile Photo</button></a>
+                            </div>
+                {% endif %}
             </div>
 
 
