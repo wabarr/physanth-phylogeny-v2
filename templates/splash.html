@@ -63,9 +63,9 @@
 
       </div>
 
-      <div class="row section">
-          <div class="col s12 carousel center">
+      <div class="row section center">
           <h4>Featured Biological Anthropologists</h4>
+          <div class="col s12 carousel">
               {% for object in object_list %}
                   {% with object as thePhD%}
                       <a class="carousel-item" href="/detail/{{ thePhD.URL_for_detail }}">
@@ -83,7 +83,7 @@
     {% block javascript_doc_ready %}
         <script>
             $(document).ready(function(){
-                $('.carousel').carousel();
+                $('.carousel').carousel({fullWidth: true});
             });
         </script>
     {% endblock %}
