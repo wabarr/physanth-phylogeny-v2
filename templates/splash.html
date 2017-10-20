@@ -33,53 +33,40 @@
      {% endcomment %}
       <!--   Icon Section   -->
       <div class="row">
-           <div class="col s12 m6">
-            <div class="card grey lighten-4 hoverable ">
-                <div class="card-content">
+           <div class="col s2 offset-s1">
                     <a href="/people/" class="black-text">
                         <div class="icon-block">
-                            <h2 class="center light-blue-text"><i class="material-icons">search</i></h2>
-                            <h5 class="center">Find People</h5>
+                            <h2 class="center light-blue-text"><i class="material-icons tooltipped" data-tooltip="Find people">search</i></h2>
                         </div>
                     </a>
-                </div>
-            </div>
         </div>
-        <div class="col s12 m6">
-            <div class="card grey lighten-4 hoverable ">
-                <div class="card-content">
+        <div class="col s2">
                     <a href="/about/" class="black-text">
                         <div class="icon-block">
-                            <h2 class="center light-blue-text"><i class="material-icons">help</i></h2>
-                            <h5 class="center">What's This About</h5>
+                            <h2 class="center light-blue-text"><i class="material-icons tooltipped" data-tooltip="What's this all about?">help</i></h2>
                         </div>
                     </a>
-                </div>
-            </div>
         </div>
-        <div class="col s12 m6">
-            <div class="card grey lighten-4 hoverable ">
-                <div class="card-content">
+        <div class="col s2">
                     <a href="/trends/" class="black-text">
                     <div class="icon-block">
-                        <h2 class="center light-blue-text"><i class="material-icons">trending_up</i></h2>
-                        <h5 class="center">Explore Trends</h5>
+                        <h2 class="center light-blue-text"><i class="material-icons tooltipped" data-tooltip="Explore trends">trending_up</i></h2>
                     </div>
                     </a>
-                </div>
-            </div>
         </div>
-        <div class="col s12 m6">
-            <div class="card grey lighten-4 hoverable ">
-                <div class="card-content">
+        <div class="col s2">
                     <a href="/claim/" class="black-text">
                     <div class="icon-block">
-                        <h2 class="center light-blue-text"><i class="material-icons">person</i></h2>
-                        <h5 class="center">Your profile</h5>
+                        <h2 class="center light-blue-text"><i class="material-icons tooltipped" data-tooltip="Your profile">person</i></h2>
                     </div>
                     </a>
-                </div>
-            </div>
+        </div>
+        <div class="col s2">
+                    <a href="/tree/" class="black-text">
+                    <div class="icon-block">
+                        <h2 class="center light-blue-text"><i class="fa fa-tree tooltipped" data-tooltip="View full tree" aria-hidden="true"></i></h2>
+                    </div>
+                    </a>
         </div>
 
 
@@ -104,8 +91,10 @@
   </div>
 
     {% block javascript_doc_ready %}
-        <script>$(document).ready(function(){
-      $('.carousel').carousel();
-    });</script>
+        <script>
+            $(document).ready(function(){
+                $('.carousel').carousel();
+            });
+        </script>
     {% endblock %}
 {% endblock %}
