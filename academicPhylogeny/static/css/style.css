@@ -137,3 +137,7 @@ rect:hover {
 .mainpageicon {
     font-size:40px;
 }
+
+.carousel {
+min-height: 330px;
+}
