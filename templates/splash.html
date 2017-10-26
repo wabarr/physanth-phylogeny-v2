@@ -82,7 +82,9 @@
     {% block javascript_doc_ready %}
         <script>
             $(document).ready(function(){
-                $('.carousel').carousel({fullWidth: true});
+                $(window).load(function(){
+                    $('.carousel').carousel({fullWidth: true});
+                });
             });
         </script>
     {% endblock %}
