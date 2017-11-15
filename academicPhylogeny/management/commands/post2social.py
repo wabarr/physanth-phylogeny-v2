@@ -39,15 +39,15 @@ class Command(BaseCommand):
             auth.set_access_token(TWITTER_ACCESS_TOKEN, TWITTER_ACCESS_TOKEN_SECRET)
             api = tweepy.API(auth)
 
-            ## all URLS are 23 characters
-            if len(TWmsg) < 116:
-                # need room for a space, then 23 character link, so max length for a single tweet is 116 (116 + 1 space + 23 char link = 140 chars)
+            ## all URLS are 23 characters, total max chars is 280
+            if len(TWmsg) < 256:
+                # need room for a space, then 23 character link, so max length for a single tweet is 256 (256 + 1 space + 23 char link = 280 chars)
                 t = api.update_status(TWmsg + " " + link)
             else:
                 # leave 10 characters for ... and the tweet number marker with a space in front e.g. ... (1/20)
                 # first tweet is thus 107 chars max (link in first tweet)
 
-                n = 107
+                n = 246
                 tweets = [''] 
                 currentTweet = 0
 
