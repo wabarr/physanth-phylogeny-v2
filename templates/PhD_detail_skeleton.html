@@ -3,6 +3,15 @@
 {% block extrastyle %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.0/vis.min.css" type="text/css"/>
 {% endblock %}
+{% block fb-image %}
+    {% if thePhD.userprofile.userprofilepicture %}
+        <meta property="og:image" content="https://www.physanthphylogeny.org{% get_media_prefix %}{{ thePhD.userprofile.userprofilepicture.photo }}" />
+    {% elif thePhD.legacypicture %}
+        <meta property="og:image" content="https://www.physanthphylogeny.org{% get_media_prefix %}{{ thePhD.legacypicture.photo }}" />
+    {% else %}
+        <meta property="og:image" content="https://www.physanthphylogeny.org{% static "images/fb_default_share_img-BUIKSTRA.png" %}" />
+    {% endif %}
+{% endblock %}
 {% block og-url %}"https://www.physanthphylogeny.org/detail/{{ thePhD.URL_for_detail }}"{% endblock %}
 {% block og-title %}"{{ thePhD }}, PhD"{% endblock %}
 {% block content %}
