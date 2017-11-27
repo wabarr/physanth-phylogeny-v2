@@ -415,6 +415,7 @@ class AjaxableResponseMixin(object):
             return response
 
 class SchoolAddView(AjaxableResponseMixin, CreateView):
+    #an ajax form to add school
     model = school
     form_class = SchoolAddForm
     success_url = "/"
