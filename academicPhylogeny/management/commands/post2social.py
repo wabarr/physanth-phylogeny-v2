@@ -10,10 +10,27 @@ from datetime import date
 class Command(BaseCommand):
     help = 'posts to facebook'
 
+    def add_arguments(self, parser):
+
+        parser.add_argument(
+            '--showupcoming',
+            action='store_true',
+            dest='showupcoming',
+            help='show queue of upcoming social media posts rather than posting any',
+        )
 
     def debug(self, TWmsg, FBmsg):
         self.stdout.write("Tweet:" + TWmsg)
         self.stdout.write("\nFacebook:" + FBmsg)
+
+    def showupcoming(self):
+        prior_posts = socialMediaPosts.objects.all().values_list("PhD")
+        unpostedCurrentYearPhDs = PhD.objects.filter(year=date.today().year, validated=True).exclude(id__in=prior_posts)
+        DONOTPOST = [48, 638, 99, 90]
+        legacyPhDs = PhD.objects.filter(validated=True, school__isnull=False, year__isnull=False,
+                                        year__lte=2000).order_by("year").exclude(id__in=prior_posts).exclude(id__in=DONOTPOST)
+        for each in legacyPhDs[0:99]:
+            self.stdout.write(each.__unicode__())
 
     def post(self, selectedPhD, TWmsg=None, FBmsg=None, link=None):
         newPostDB = None
@@ -88,67 +105,70 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-
-        prior_posts = socialMediaPosts.objects.all().values_list("PhD")
-        unpostedCurrentYearPhDs = PhD.objects.filter(year=date.today().year, validated=True).exclude(id__in=prior_posts)
-        DONOTPOST = [48,638,99,90]
-        legacyPhDs = PhD.objects.filter(validated=True, school__isnull=False, year__isnull=False, year__lte=2000).order_by("year").exclude(id__in=prior_posts).exclude(id__in=DONOTPOST)
-
-
-        if unpostedCurrentYearPhDs.__len__() > 0:
-            selectedPhD = unpostedCurrentYearPhDs[0]
-            link = "https://www.physanthphylogeny.org%s" % (selectedPhD.get_absolute_url(),)
-            FBmsg = ("Congratulations to Dr. %s, who recently completed a PhD at %s with %s."
-                     " This information now appears in the academic genealogy network on our website!"
-                     " Submit your own information if it isn't already in the database!") % (
-                        selectedPhD.firstName + " " + selectedPhD.lastName,
-                        selectedPhD.school,
-                        (" and ").join(
-                            [advisor.firstName + " " + advisor.lastName for advisor in selectedPhD.advisor.all()])
-                    )
-            TWmsg = "Congrats to Dr. %s for completing a PhD at %s! #bioanthphd" % (
-                selectedPhD.firstName + " " + selectedPhD.lastName,
-                selectedPhD.school)
+        if options['showupcoming']:
+            self.showupcoming()
         else:
-            selectedPhD = legacyPhDs[0]
-            link = "https://www.physanthphylogeny.org%s" % (selectedPhD.get_absolute_url(),)
-            advisorPhrase = ""
-            advisorPeriodOrNot = "."
-            if(len(selectedPhD.advisor.all()) > 0):
-                advisorsAnd = (" and ").join(
-                            [advisor.firstName + " " + advisor.lastName for advisor in selectedPhD.advisor.all()]
-                )
-                advisorPhrase = "with " + advisorsAnd + "."
-                advisorPeriodOrNot = ""
-            studentsPhrase = ""
-            students = PhD.objects.filter(validated=True, advisor = selectedPhD)
-            if len(students) > 0:
-                if len(students) == 1:
-                    plural_or_not=""
-                else:
-                    plural_or_not="s"
-                studentsPhrase = "%s advised at least %d PhD student%s including: %s." %(
-                    selectedPhD.lastName,
-                    len(students),
-                    plural_or_not,
-                    ", ".join([student.__unicode__().strip() for student in students])
-                )
-            total_descendant_count = len(selectedPhD.find_children([]))
-            if total_descendant_count > 5 and total_descendant_count > len(students):
-                totalDescendantPhrase = "In total, %d PhDs in our database are academic descendants of %s." % (total_descendant_count, selectedPhD.lastName)
+
+            prior_posts = socialMediaPosts.objects.all().values_list("PhD")
+            unpostedCurrentYearPhDs = PhD.objects.filter(year=date.today().year, validated=True).exclude(id__in=prior_posts)
+            DONOTPOST = [48,638,99,90]
+            legacyPhDs = PhD.objects.filter(validated=True, school__isnull=False, year__isnull=False, year__lte=2000).order_by("year").exclude(id__in=prior_posts).exclude(id__in=DONOTPOST)
+
+
+            if unpostedCurrentYearPhDs.__len__() > 0:
+                selectedPhD = unpostedCurrentYearPhDs[0]
+                link = "https://www.physanthphylogeny.org%s" % (selectedPhD.get_absolute_url(),)
+                FBmsg = ("Congratulations to Dr. %s, who recently completed a PhD at %s with %s."
+                         " This information now appears in the academic genealogy network on our website!"
+                         " Submit your own information if it isn't already in the database!") % (
+                            selectedPhD.firstName + " " + selectedPhD.lastName,
+                            selectedPhD.school,
+                            (" and ").join(
+                                [advisor.firstName + " " + advisor.lastName for advisor in selectedPhD.advisor.all()])
+                        )
+                TWmsg = "Congrats to Dr. %s for completing a PhD at %s! #bioanthphd" % (
+                    selectedPhD.firstName + " " + selectedPhD.lastName,
+                    selectedPhD.school)
             else:
-                totalDescendantPhrase = ""
+                selectedPhD = legacyPhDs[0]
+                link = "https://www.physanthphylogeny.org%s" % (selectedPhD.get_absolute_url(),)
+                advisorPhrase = ""
+                advisorPeriodOrNot = "."
+                if(len(selectedPhD.advisor.all()) > 0):
+                    advisorsAnd = (" and ").join(
+                                [advisor.firstName + " " + advisor.lastName for advisor in selectedPhD.advisor.all()]
+                    )
+                    advisorPhrase = "with " + advisorsAnd + "."
+                    advisorPeriodOrNot = ""
+                studentsPhrase = ""
+                students = PhD.objects.filter(validated=True, advisor = selectedPhD)
+                if len(students) > 0:
+                    if len(students) == 1:
+                        plural_or_not=""
+                    else:
+                        plural_or_not="s"
+                    studentsPhrase = "%s advised at least %d PhD student%s including: %s." %(
+                        selectedPhD.lastName,
+                        len(students),
+                        plural_or_not,
+                        ", ".join([student.__unicode__().strip() for student in students])
+                    )
+                total_descendant_count = len(selectedPhD.find_children([]))
+                if total_descendant_count > 5 and total_descendant_count > len(students):
+                    totalDescendantPhrase = "In total, %d PhDs in our database are academic descendants of %s." % (total_descendant_count, selectedPhD.lastName)
+                else:
+                    totalDescendantPhrase = ""
 
-            FBmsg = TWmsg =  re.sub(" +"," ", "%s completed a PhD at %s in %s%s %s %s %s\n\nLearn more on our website..." % (
-                        selectedPhD.__unicode__().strip(),
-                        selectedPhD.school,
-                        selectedPhD.year,
-                        advisorPeriodOrNot,
-                        advisorPhrase,
-                        studentsPhrase,
-                        totalDescendantPhrase
-                    ))
+                FBmsg = TWmsg =  re.sub(" +"," ", "%s completed a PhD at %s in %s%s %s %s %s\n\nLearn more on our website..." % (
+                            selectedPhD.__unicode__().strip(),
+                            selectedPhD.school,
+                            selectedPhD.year,
+                            advisorPeriodOrNot,
+                            advisorPhrase,
+                            studentsPhrase,
+                            totalDescendantPhrase
+                        ))
 
 
-        #self.debug(TWmsg, FBmsg)
-        self.post(selectedPhD=selectedPhD, FBmsg=FBmsg, TWmsg=TWmsg, link=link)
+            #self.debug(TWmsg, FBmsg)
+            self.post(selectedPhD=selectedPhD, FBmsg=FBmsg, TWmsg=TWmsg, link=link)
