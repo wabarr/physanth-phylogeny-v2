@@ -9,7 +9,7 @@
     {% elif thePhD.legacypicture %}
         <meta property="og:image" content="https://www.physanthphylogeny.org{% get_media_prefix %}{{ thePhD.legacypicture.photo }}" />
     {% else %}
-        <meta property="og:image" content="https://www.physanthphylogeny.org{% static "images/fb_default_share_img-BUIKSTRA.png" %}" />
+        <meta property="og:image" content="https://www.physanthphylogeny.org/{% static "images/default_fb_share.jpg" %}" />
     {% endif %}
 {% endblock %}
 {% block og-url %}"https://www.physanthphylogeny.org/detail/{{ thePhD.URL_for_detail }}"{% endblock %}
