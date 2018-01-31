@@ -211,10 +211,12 @@ class PhDupdate(models.Model):
 
     def save(self):
         if not self.pk: #only do this next part if self is not already in DB
-            if self.submitter_user.userprofile:
+            try:
                 profile = UserProfile.objects.get(pk=self.submitter_user.userprofile.id)
                 profile.reputation_points = profile.reputation_points + 10
                 profile.save()
+            except AttributeError:
+                pass
         # call the normal save method
         super(PhDupdate, self).save()
 
