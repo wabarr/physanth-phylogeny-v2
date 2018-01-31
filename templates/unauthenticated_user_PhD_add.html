@@ -38,7 +38,7 @@
                                     {{ form.school.label_tag }}
                                     {{ form.school }}
                                     <!-- Modal Trigger -->
-                                    <a href="#add_school"><i class="material-icons">add</i>Add missing school to database</a>
+                                    <a href="#add_school" class="modal-trigger"><i class="material-icons">add</i>Add missing school to database</a>
                                 </div>
                             </div>
                             <div class="row section">
@@ -113,7 +113,8 @@
 <script>
 $(document).ready(function() {
     $('select').material_select();
-    $(".modal").modal();
+    $("#add_school").modal();
+
 
 
     var frm = $('#ajax_school_add_form');
@@ -123,7 +124,7 @@ $(document).ready(function() {
             url: "/add_school/",
             data: frm.serialize(),
             success: function (data) {
-                $("#ajax-form-messages").html("Success! The school has been added to the database!");
+                $("#ajax-form-messages").html("Success! The school has been added to the database! <br>Please close this pop-up search for the school you just added.");
             },
             error: function(data) {
                 $("#ajax-form-messages").html("Error!" + data["responseText"]);
