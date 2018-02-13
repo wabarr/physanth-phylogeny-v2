@@ -8,6 +8,8 @@ from django.core.mail import send_mail, EmailMessage
 from secrets import MAILCHIMP_API_KEY
 import requests
 import re
+from datetime import datetime
+
 
 class frequently_asked_question(models.Model):
     heading = models.CharField(max_length = 50)
@@ -244,7 +246,7 @@ class userContact(models.Model):
         if not self.pk:
             theEmail = EmailMessage(
                 subject="User contact on physanthphylogeny.org",
-                body="On %s at %s %s wrote:\n\n%s" %(self.date_sent.strftime("%h %d %Y"), self.date_sent.strftime("%I:%M% %p"), self.email, self.message),
+                body="On %s at %s %s wrote:\n\n%s" %(datetime.now().strftime("%h %d %Y"), datetime.now().strftime("%I:%M% %p"), self.email, self.message),
                 from_email="do-not-reply@physanthphylogeny.org",
                 to=["physphylo@gmail.com"],
                 reply_to=[self.email]
