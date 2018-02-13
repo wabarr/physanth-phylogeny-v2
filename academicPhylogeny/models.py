@@ -246,7 +246,7 @@ class userContact(models.Model):
         if not self.pk:
             theEmail = EmailMessage(
                 subject="User contact on physanthphylogeny.org",
-                body="On %s at %s %s wrote:\n\n%s" %(datetime.now().strftime("%h %d %Y"), datetime.now().strftime("%I:%M% %p"), self.email, self.message),
+                body="On %s at %s %s wrote:\n\n%s" %(datetime.now().strftime("%h %d %Y"), datetime.now().strftime("%I:%M %p"), self.email, self.message),
                 from_email="do-not-reply@physanthphylogeny.org",
                 to=["physphylo@gmail.com"],
                 reply_to=[self.email]
