@@ -4,7 +4,7 @@ from django.shortcuts import reverse
 from django.db import models
 from django.contrib.auth.models import User
 import json
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from secrets import MAILCHIMP_API_KEY
 import requests
 import re
@@ -242,10 +242,14 @@ class userContact(models.Model):
     def save(self):
         ##only do it on the first save
         if not self.pk:
-            send_mail(subject="User contact on physanthphylogeny.org",
-                      message=self.email + " wrote:\n\n" + self.message,
-                      from_email="do-not-reply@physanthphylogeny.org",
-                      recipient_list=("physphylo@gmail.com",))
+            theEmail = EmailMessage(
+                subject="User contact on physanthphylogeny.org",
+                body="On %s at %s %s wrote:\n\n%s" %(self.date_sent.strftime("%h %d %Y"), self.date_sent.strftime("%I:%M% %p"), self.email, self.message),
+                from_email="do-not-reply@physanthphylogeny.org",
+                to=["physphylo@gmail.com"],
+                reply_to=[self.email]
+                )
+            theEmail.send()
         super(userContact, self).save()
 
 
