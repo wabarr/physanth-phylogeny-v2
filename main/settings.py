@@ -25,9 +25,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = secrets.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['www.physanthphylogeny.org']
+ALLOWED_HOSTS = ['127.0.0.1','www.physanthphylogeny.org']
 
 
 # Application definition
@@ -126,8 +126,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/wabarr/webapps/phys_phylo_v2_static'
 
-MEDIA_ROOT = "/home/wabarr/webapps/phys_phylo_v2_media"
-#MEDIA_ROOT = "/Users/wabarr/Desktop/phys_phylo_v2_media/"
+#MEDIA_ROOT = "/home/wabarr/webapps/phys_phylo_v2_media"
+MEDIA_ROOT = "/Users/wabarr/Desktop/phys_phylo_v2_media/"
 MEDIA_URL = "/media/"
 
 #EMAIL_HOST = "localhost"

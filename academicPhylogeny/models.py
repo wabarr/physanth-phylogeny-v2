@@ -50,6 +50,7 @@ class PhD(models.Model):
     validated = models.NullBooleanField(default=False, blank=True)
     submitter_email = models.EmailField(verbose_name="Your Email Address")
     submitter_user = models.ForeignKey(User, null=True, blank=True, verbose_name="Submitter username")
+    submitter_emailed_after_approval = models.BooleanField(default=False)
     source_of_info = models.CharField(max_length=300, verbose_name="What's the source of this info?")
 
     def __unicode__(self):
