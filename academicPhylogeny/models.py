@@ -73,6 +73,17 @@ class PhD(models.Model):
             except:
                 pass
 
+        ## email submitter when this has been vaildated
+        if self.validated and not self.submitter_emailed_after_approval:
+            theEmail = EmailMessage(
+                subject="Your submission to physanthphylogeny.org has been approved!",
+                body="Hi there,\n\nThis is just a quick note to let you know your submission has been approved. You can see the new entry at this link - https://www.physanthphylogeny.org/detail/%s/\n\nThanks for contributing,\n\nThe team at physanthphylogeny.org" %(self.URL_for_detail,),
+                from_email="admin@physanthphylogeny.org",
+                to=[self.submitter_email],
+                reply_to=["physphylo@gmail.com"]
+            )
+            theEmail.send()
+            self.submitter_emailed_after_approval = True
         # call the normal PhD save method
         super(PhD, self).save()
 
