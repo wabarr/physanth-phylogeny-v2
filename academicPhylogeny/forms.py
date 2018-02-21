@@ -67,11 +67,16 @@ class UserContactAddForm(ModelForm):
 
     def clean(self):
         if self.data['g-recaptcha-response']:
-            r = requests.post("https://www.google.com/recaptcha/api/siteverify",
+            try:
+                r = requests.post("https://www.google.com/recaptcha/api/siteverify",
                               data={"secret":RECAPTCHA_SECRET,
                                     "response":self.data['g-recaptcha-response']}, timeout=5)
+            except:
+                raise ValidationError("Something went wrong with the recaptcha. Try another one please!")
+
             if not r.status_code == 200:
                 raise ValidationError("Something went wrong with the recaptcha")
+
             if r.json()["success"] == True:
                 return super(UserContactAddForm, self).clean()
             else:
