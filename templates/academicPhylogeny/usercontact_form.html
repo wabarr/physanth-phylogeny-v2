@@ -1,5 +1,7 @@
 {% extends "default.html" %}
-
+{% block recaptcha %}
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+{% endblock %}
 {% block content %}
     {{ form.media }}
     <div class="container">
@@ -38,6 +40,8 @@
                                 </div>
                             </div>
                             <button type="submit" class="waves-effect waves-light btn-large" ><i class="material-icons left">mail</i>Submit</button>
+                            <div class="g-recaptcha" data-sitekey="6LdMj0cUAAAAAEoEw83WR6YC8oVebA6JCuP-uDRa"></div>
+                            <a id="reload-recaptcha">Try another Recaptcha</a>
                         </form>
                     </div>
                 </div>
@@ -65,7 +69,12 @@
 $(document).ready(function() {
     $('textarea').addClass("materialize-textarea");
     $('.modal').modal();
-    $('#modal1').modal('open');
+    {% if not form.errors %}
+        $('#modal1').modal('open');
+    {% endif %}
+    $("#reload-recaptcha").click(function(){
+        grecaptcha.reset()
+    })
   });
 
 </script>

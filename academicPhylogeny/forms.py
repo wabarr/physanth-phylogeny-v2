@@ -6,7 +6,7 @@ from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultip
 from .models import *
 import re
 import requests
-from secrets import MAILCHIMP_API_KEY, MAILCHIMP_REGISTEREDUSERS_SUBSCRIBE_URL
+from secrets import MAILCHIMP_API_KEY, MAILCHIMP_REGISTEREDUSERS_SUBSCRIBE_URL, RECAPTCHA_SECRET
 import hashlib
 
 class SchoolAddForm(ModelForm):
@@ -64,6 +64,20 @@ class UserContactAddForm(ModelForm):
     class Meta:
         model=userContact
         exclude=["dealt_with","admin_notes","date_last_modified","date_sent"]
+
+    def clean(self):
+        if self.data['g-recaptcha-response']:
+            r = requests.post("https://www.google.com/recaptcha/api/siteverify",
+                              data={"secret":RECAPTCHA_SECRET,
+                                    "response":self.data['g-recaptcha-response']}, timeout=0.1)
+            if not r.status_code == 200:
+                raise ValidationError("Something went wrong with the recaptcha")
+            if r.json()["success"] == True:
+                return super(UserContactAddForm, self).clean()
+            else:
+                raise ValidationError("We can't determine that you aren't a robot.")
+        else:
+            raise ValidationError("You must prove you are not a robot before you can submit.")
 
 class UserCreateForm(ModelForm):
     class Meta:
