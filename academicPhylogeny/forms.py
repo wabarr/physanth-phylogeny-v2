@@ -75,7 +75,7 @@ class UserContactAddForm(ModelForm):
                 raise ValidationError("Something went wrong with the recaptcha. Try another one please!")
 
             if not r.status_code == 200:
-                raise ValidationError("Something went wrong with the recaptcha")
+                raise ValidationError("Something went wrong with the recaptcha. Try another one please!")
 
             if r.json()["success"] == True:
                 return super(UserContactAddForm, self).clean()
