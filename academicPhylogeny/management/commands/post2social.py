@@ -147,7 +147,7 @@ class Command(BaseCommand):
                         plural_or_not=""
                     else:
                         plural_or_not="s"
-                    studentsPhrase = "%s advised at least %d PhD student%s including: %s." %(
+                    studentsPhrase = "%s advised/has advised at least %d PhD student%s including: %s." %(
                         selectedPhD.lastName,
                         len(students),
                         plural_or_not,
