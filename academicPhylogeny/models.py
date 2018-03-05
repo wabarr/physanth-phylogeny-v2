@@ -290,7 +290,7 @@ class UserProfile(models.Model):
             if not self.alert_email_sent:
                 self.alert_email_sent = True
                 auth = ("physphylo", MAILCHIMP_API_KEY)
-                post_url = 'https://us16.api.mailchimp.com/3.0/automations/02a3d24631/emails/54e7491337/queue'
+                post_url = "https://us16.api.mailchimp.com/3.0/automations/c83a95694a/emails/9062c6526d/queue"
                 data = {"email_address": self.user.email}
                 r = requests.post(post_url, auth=auth, json=data)
                 if r.status_code == 204:

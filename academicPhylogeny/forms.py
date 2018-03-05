@@ -6,7 +6,7 @@ from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultip
 from .models import *
 import re
 import requests
-from secrets import MAILCHIMP_API_KEY, MAILCHIMP_REGISTEREDUSERS_SUBSCRIBE_URL, RECAPTCHA_SECRET
+from secrets import MAILCHIMP_API_KEY, MAILCHIMP_URL, RECAPTCHA_SECRET
 import hashlib
 
 class SchoolAddForm(ModelForm):
@@ -106,7 +106,7 @@ class UserCreateForm(ModelForm):
             raise ValidationError("Error: This email address is already associated with a user account")
 
         ## also double check the mailchimp list to be safe
-        get_URL = MAILCHIMP_REGISTEREDUSERS_SUBSCRIBE_URL + "/" + hashlib.md5(theEmail.lower()).hexdigest()
+        get_URL = MAILCHIMP_URL + "/" + hashlib.md5(theEmail.lower()).hexdigest()
         r = requests.get(get_URL,auth=auth)
         if r.status_code == 200:
             raise ValidationError("Error: This email address is already associated with a user account")
@@ -114,13 +114,14 @@ class UserCreateForm(ModelForm):
     def save(self, commit=True):
         m = super(UserCreateForm, self).save(commit=True)
         auth = ("physphylo", MAILCHIMP_API_KEY)
-        post_url = MAILCHIMP_REGISTEREDUSERS_SUBSCRIBE_URL
+        post_url = MAILCHIMP_URL
         data = {
             "email_address": m.email,
             "status": "subscribed",
             "merge_fields": {
                 "FNAME": m.first_name,
-                "LNAME": m.last_name
+                "LNAME": m.last_name,
+                "REGISTERED":"True"
             }
         }
         r=requests.post(url=post_url,auth=auth, json=data)
