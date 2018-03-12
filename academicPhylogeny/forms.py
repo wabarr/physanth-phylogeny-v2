@@ -105,11 +105,11 @@ class UserCreateForm(ModelForm):
         if existingUser.count() > 0:
             raise ValidationError("Error: This email address is already associated with a user account")
 
-        ## also double check the mailchimp list to be safe
-        get_URL = MAILCHIMP_URL + "/" + hashlib.md5(theEmail.lower()).hexdigest()
-        r = requests.get(get_URL,auth=auth)
-        if r.status_code == 200:
-            raise ValidationError("Error: This email address is already associated with a user account")
+        ### also double check the mailchimp list to be safe
+        #get_URL = MAILCHIMP_URL + "/" + hashlib.md5(theEmail.lower()).hexdigest()
+        #r = requests.get(get_URL,auth=auth)
+        #if r.status_code == 200:
+        #    raise ValidationError("Error: This email address is already associated with a user account")
 
     def save(self, commit=True):
         m = super(UserCreateForm, self).save(commit=True)
