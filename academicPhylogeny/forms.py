@@ -1,4 +1,5 @@
 from django.forms import ValidationError
+from django.utils.datastructures import MultiValueDictKeyError
 from django.contrib.auth.models import User as UserTable
 from django.forms import ModelForm, CharField, EmailField, Form, ModelChoiceField
 from django.forms.widgets import PasswordInput
@@ -66,23 +67,27 @@ class UserContactAddForm(ModelForm):
         exclude=["dealt_with","admin_notes","date_last_modified","date_sent"]
 
     def clean(self):
-        if self.data['g-recaptcha-response']:
-            try:
-                r = requests.post("https://www.google.com/recaptcha/api/siteverify",
-                              data={"secret":RECAPTCHA_SECRET,
-                                    "response":self.data['g-recaptcha-response']}, timeout=5)
-            except:
-                raise ValidationError("Something went wrong with the recaptcha. Try another one please!")
+        try:
+            if self.data['g-recaptcha-response']:
+                try:
+                    r = requests.post("https://www.google.com/recaptcha/api/siteverify",
+                                  data={"secret":RECAPTCHA_SECRET,
+                                        "response":self.data['g-recaptcha-response']}, timeout=5)
+                except:
+                    raise ValidationError("Something went wrong with the recaptcha. Try another one please!")
 
-            if not r.status_code == 200:
-                raise ValidationError("Something went wrong with the recaptcha. Try another one please!")
+                if not r.status_code == 200:
+                    raise ValidationError("Something went wrong with the recaptcha. Try another one please!")
 
-            if r.json()["success"] == True:
-                return super(UserContactAddForm, self).clean()
+                if r.json()["success"] == True:
+                    return super(UserContactAddForm, self).clean()
+                else:
+                    raise ValidationError("We can't determine that you aren't a robot.")
             else:
-                raise ValidationError("We can't determine that you aren't a robot.")
-        else:
+                raise ValidationError("You must prove you are not a robot before you can submit.")
+        except MultiValueDictKeyError:
             raise ValidationError("You must prove you are not a robot before you can submit.")
+
 
 class UserCreateForm(ModelForm):
     class Meta:
