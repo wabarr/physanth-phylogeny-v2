@@ -62,5 +62,7 @@ urlpatterns = [
     url(r'^upload_profile_pic/$',UserProfilePictureUploadView.as_view()),
     url(r'^change_profile_pic/$',UserProfilePictureChangeView.as_view()),
     url(r'^photos/$', ProfilePicListView.as_view()),
+    url(r'^relationship/$', RelationshipView.as_view()),
+    url(r'^phdcsv/$', phdcsv),
     url(r'^$', HomePageView.as_view(), name="home"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
