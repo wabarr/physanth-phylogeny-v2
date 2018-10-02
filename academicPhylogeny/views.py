@@ -12,62 +12,17 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 from django.shortcuts import render
 from django.template import RequestContext
-import cStringIO
-import codecs
 import random
 from forms import *
 import json
-import csv
 from secrets import MAILCHIMP_URL, MAILCHIMP_API_KEY
 import requests
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import ObjectDoesNotExist
 
-class UnicodeWriter:
-    """
-    A CSV writer which will write rows to CSV file "f",
-    which is encoded in the given encoding.
-    """
+# Create your views here.
 
-    def __init__(self, f, dialect=csv.excel, encoding="utf-8", **kwds):
-        # Redirect output to a queue
-        self.queue = cStringIO.StringIO()
-        self.writer = csv.writer(self.queue, dialect=dialect, **kwds)
-        self.stream = f
-        self.encoder = codecs.getincrementalencoder(encoding)()
 
-    def writerow(self, row):
-        self.writer.writerow([s.encode("utf-8") for s in row])
-        # Fetch UTF-8 output from the queue ...
-        data = self.queue.getvalue()
-        data = data.decode("utf-8")
-        # ... and reencode it into the target encoding
-        data = self.encoder.encode(data)
-        # write to the target stream
-        self.stream.write(data)
-        # empty queue
-        self.queue.truncate(0)
-
-    def writerows(self, rows):
-        for row in rows:
-            self.writerow(row)
-
-@permission_required("PhD.can_add", raise_exception=True)
-def phdcsv(request):
-    # Create the HttpResponse object with the appropriate CSV header.
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="bianthPhDs.csv"'
-    writer = UnicodeWriter(response)
-    writer.writerow(['Student', 'Advisor', 'Specialization', 'Year', 'School'])
-    for each in PhD.objects.all():
-        for advisor in each.advisor.all():
-            specializations=each.specialization.all()
-            if len(specializations)==0:
-                writer.writerow([each.name_for_big_tree, advisor.name_for_big_tree, "None", str(each.year),each.school.name])
-            else:
-                for specialization in specializations:
-                    writer.writerow([each.name_for_big_tree,advisor.name_for_big_tree, specialization.name, str(each.year), each.school.name])
-    return response
 
 def randomPerson(request):
     nRecords = PhD.objects.count()
@@ -586,26 +541,4 @@ class ProfilePicListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(ProfilePicListView, self).get_context_data(**kwargs)
         context["PhDsPerColumn"] = self.get_queryset().count()/2
-        return context
-
-class RelationshipView(TemplateView):
-    template_name = "relationship.html"
-    def get_context_data(self, **kwargs):
-        context = super(RelationshipView, self).get_context_data(**kwargs)
-        personA = self.request.GET["A"]
-        personB = self.request.GET["B"]
-        try:
-            personA=PhD.objects.get(pk=personA)
-        except ObjectDoesNotExist:
-            context["missingperson"] = personA
-        try:
-            personB=PhD.objects.get(pk=personB)
-        except ObjectDoesNotExist:
-            context["missingperson"] = personB
-
-
-
-        context["personA"] = personA
-        context["personB"] = personB
-
         return context
