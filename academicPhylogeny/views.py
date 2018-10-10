@@ -148,7 +148,7 @@ class SubmitPhDUpdateView(CreateView):
 
         try:
             thePerson = PhD.objects.get(pk=self.kwargs["pk"])
-            context["selectedID"] = thePerson.id
+            context["selectedPhD"] = thePerson
             context["selected_PhD_form"] = PhDAddForm(instance=thePerson)
             context["school_add_form"] = SchoolAddForm()
             return context
@@ -591,3 +591,12 @@ class ProfilePicListView(ListView):
         context = super(ProfilePicListView, self).get_context_data(**kwargs)
         context["PhDsPerColumn"] = self.get_queryset().count()/2
         return context
+
+class MissingData(ListView):
+
+    model = PhD
+    template_name = "missing_data.html"
+
+    def get_queryset(self):
+        queryset = PhD.objects.filter(year=None)
+        return queryset

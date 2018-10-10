@@ -8,7 +8,7 @@
             <div class="col s12">
             {% if selected_PhD_form %}
             {{ selected_PhD_form.media }}
-            <h3>Suggest a change</h3>
+            <h3>Suggest a change for {{ selectedPhD }} </h3>
             <p>Your changes will appear after a moderator approves your submission. </p>
             <form id="suggested-edits-form">
                 {{ selected_PhD_form.non_field_errors }}
@@ -50,7 +50,7 @@
                         {{ selected_PhD_form.advisor.label_tag }}
                         {{ selected_PhD_form.advisor }}
                     </div>
-                    <input id="selected_person_id" name="selected_person_id" value="{{ selectedID }}" style="display:none;">
+                    <input id="selected_person_id" name="selected_person_id" value="{{ selectedPhD.id }}" style="display:none;">
                 </div>
 
             </form>
@@ -71,7 +71,7 @@
                 </div>
             <div class="row section">
                 <div class="col s12">
-                    <form method="post" action="/suggest_change/{{ selectedID }}/">
+                    <form method="post" action="/suggest_change/{{ selectedPhD.id }}/">
                     {% csrf_token %}
                     {% comment %}
                     This is the form that actually gets submitted, of form class PhDUpdateForm
