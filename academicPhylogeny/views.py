@@ -20,9 +20,58 @@ import requests
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import ObjectDoesNotExist
 
+import cStringIO
+import codecs
+import csv
+
 # Create your views here.
 
 
+class UnicodeWriter:
+    """
+    A CSV writer which will write rows to CSV file "f",
+    which is encoded in the given encoding.
+    """
+
+    def __init__(self, f, dialect=csv.excel, encoding="utf-8", **kwds):
+        # Redirect output to a queue
+        self.queue = cStringIO.StringIO()
+        self.writer = csv.writer(self.queue, dialect=dialect, **kwds)
+        self.stream = f
+        self.encoder = codecs.getincrementalencoder(encoding)()
+
+    def writerow(self, row):
+        self.writer.writerow([s.encode("utf-8") for s in row])
+        # Fetch UTF-8 output from the queue ...
+        data = self.queue.getvalue()
+        data = data.decode("utf-8")
+        # ... and reencode it into the target encoding
+        data = self.encoder.encode(data)
+        # write to the target stream
+        self.stream.write(data)
+        # empty queue
+        self.queue.truncate(0)
+
+    def writerows(self, rows):
+        for row in rows:
+            self.writerow(row)
+
+@permission_required("PhD.can_add", raise_exception=True)
+def phdcsv(request):
+    # Create the HttpResponse object with the appropriate CSV header.
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="bianthPhDs.csv"'
+    writer = UnicodeWriter(response)
+    writer.writerow(['Student', 'Advisor', 'Specialization', 'Year', 'School'])
+    for each in PhD.objects.all():
+        for advisor in each.advisor.all():
+            specializations=each.specialization.all()
+            if len(specializations)==0:
+                writer.writerow([each.name_for_big_tree, advisor.name_for_big_tree, "None", str(each.year),each.school.name])
+            else:
+                for specialization in specializations:
+                    writer.writerow([each.name_for_big_tree,advisor.name_for_big_tree, specialization.name, str(each.year), each.school.name])
+    return response
 
 def randomPerson(request):
     nRecords = PhD.objects.count()
