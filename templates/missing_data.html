@@ -11,8 +11,8 @@
         </div>
     </div>
 
-    {% for object in object_list %}
     <div class="row">
+    {% for object in object_list %}
     <div class="col s12 l8 offset-l2">
         <div class="card amber lighten-5 hoverable person-card">
                 <div class="card-content">
@@ -30,16 +30,17 @@
                 </div>
         </div>
     </div>
-    </div>
 {% empty %}
     <div class="col s12 16">
         <div class="card amber lighten-5">
             <div class="card-content">
-                <span class="card-title">Woohoo!  We seem to have years for everyone in the database!</span>
+                <span class="card-title">Woohoo!  Thanks for your help. We seem to have years for everyone in the database!</span>
             </div>
         </div>
     </div>
-{% endfor %}
+    {% endfor %}
+
+</div>
 </div>
 
 {% endblock %}
