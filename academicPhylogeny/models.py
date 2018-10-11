@@ -231,6 +231,16 @@ class PhDupdate(models.Model):
                 profile.save()
             except AttributeError:
                 pass
+        if self.moderator_approved == True:
+            theEmail = EmailMessage(
+                subject="Your suggested update to physanthphylogeny.org has been approved!",
+                body="Hi there,\n\nThis is just a quick note to let you know your suggested update has been approved. You can see the updated entry at this link - https://www.physanthphylogeny.org/detail/%s/\n\nThanks for contributing,\n\nThe team at physanthphylogeny.org" % (
+                self.PhD.URL_for_detail,),
+                from_email="admin@physanthphylogeny.org",
+                to=[self.submitter_email],
+                reply_to=["physphylo@gmail.com"]
+            )
+            theEmail.send()
         # call the normal save method
         super(PhDupdate, self).save()
 
