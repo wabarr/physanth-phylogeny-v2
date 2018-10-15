@@ -38,7 +38,7 @@ class Command(BaseCommand):
             token = FACEBOOK_PHYSPHYLO_PAGE_ACCESS_TOKEN
             pageID = FACEBOOK_PHYSPHYLO_PAGE_ID
             dataDict = {"message": FBmsg, "link": link, "access_token": token}
-            post_url = "https://graph.facebook.com/v2.10/%d/feed" % (pageID,)
+            post_url = "https://graph.facebook.com/v3.1/%d/feed" % (pageID,)
             r = requests.post(url=post_url, data=dataDict)
             if r.status_code == 200:
                 self.stdout.write(self.style.SUCCESS('Successfully posted to facebook!'))
