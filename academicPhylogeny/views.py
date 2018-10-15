@@ -56,7 +56,7 @@ class UnicodeWriter:
         for row in rows:
             self.writerow(row)
 
-@permission_required("PhD.can_add", raise_exception=True)
+@permission_required("academicPhylogeny.add_phd", raise_exception=True)
 def phdcsv(request):
     # Create the HttpResponse object with the appropriate CSV header.
     response = HttpResponse(content_type='text/csv')
