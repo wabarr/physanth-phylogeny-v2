@@ -27,7 +27,7 @@ SECRET_KEY = secrets.SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = secrets.DEBUG
 
-ALLOWED_HOSTS = ['127.0.0.1','www.physanthphylogeny.org']
+ALLOWED_HOSTS = ['127.0.0.1','www.physanthphylogeny.org', 'www.bioanthtree.org','bioanthtree.org']
 
 
 # Application definition
