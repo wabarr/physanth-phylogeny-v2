@@ -5,14 +5,14 @@
 {% endblock %}
 {% block fb-image %}
     {% if thePhD.userprofile.userprofilepicture %}
-        <meta property="og:image" content="https://www.physanthphylogeny.org{% get_media_prefix %}{{ thePhD.userprofile.userprofilepicture.photo }}" />
+        <meta property="og:image" content="https://www.bioanthtree.org{% get_media_prefix %}{{ thePhD.userprofile.userprofilepicture.photo }}" />
     {% elif thePhD.legacypicture %}
-        <meta property="og:image" content="https://www.physanthphylogeny.org{% get_media_prefix %}{{ thePhD.legacypicture.photo }}" />
+        <meta property="og:image" content="https://www.bioanthtree.org{% get_media_prefix %}{{ thePhD.legacypicture.photo }}" />
     {% else %}
-        <meta property="og:image" content="https://www.physanthphylogeny.org/{% static "images/default_fb_share.jpg" %}" />
+        <meta property="og:image" content="https://www.bioanthtree.org/{% static "images/default_fb_share.jpg" %}" />
     {% endif %}
 {% endblock %}
-{% block og-url %}"https://www.physanthphylogeny.org/detail/{{ thePhD.URL_for_detail }}"{% endblock %}
+{% block og-url %}"https://www.bioanthtree.org/detail/{{ thePhD.URL_for_detail }}"{% endblock %}
 {% block og-title %}"{{ thePhD }}, PhD"{% endblock %}
 {% block content %}
 

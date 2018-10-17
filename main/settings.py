@@ -135,7 +135,7 @@ EMAIL_HOST_PASSWORD = secrets.EMAIL_HOST_PASSWORD
 EMAIL_HOST_USER = secrets.EMAIL_HOST_USER
 EMAIL_HOST = secrets.EMAIL_HOST
 DEFAULT_FROM_EMAIL = secrets.DEFAULT_FROM_EMAIL
-SERVER_EMAIL = "django@physanthphylogeny.org"
+SERVER_EMAIL = "django@bioanthtree.org"
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = "/claim/"

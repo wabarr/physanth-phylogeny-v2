@@ -12,20 +12,20 @@ class Command(BaseCommand):
         message=""
         if submissionsToDo.count() > 0:
             message += "There are %(submissionCount)s new submissions.\n"%{"submissionCount": submissionsToDo.count()}
-            message += "http://www.physanthphylogeny.org/admin/academicPhylogeny/phd/?o=6.3\n\n"
+            message += "http://www.bioanthtree.org/admin/academicPhylogeny/phd/?o=6.3\n\n"
         else:
             pass
 
         if unvalidatedProfiles.count() > 0:
             message += "\nThere are %(profilecount)s unvalidated profiles.\n"%{"profilecount": unvalidatedProfiles.count()}
-            message += "http://www.physanthphylogeny.org/admin/academicPhylogeny/userprofile/\n\n"
+            message += "http://www.bioanthtree.org/admin/academicPhylogeny/userprofile/\n\n"
         else:
             pass
 
         if unvalidatedSuggestions.count() > 0:
             message += "\nThere are %(suggestioncount)s unvalidated suggested changes.\n" % {
                 "suggestioncount": unvalidatedSuggestions.count()}
-            message += "http://www.physanthphylogeny.org/validate/\n\n"
+            message += "http://www.bioanthtree.org/validate/\n\n"
 
         else:
             pass
@@ -33,5 +33,5 @@ class Command(BaseCommand):
         if message == "":
             pass
         else:
-            send_mail("Submissions report physanthphylogeny.org", message, "do-not-reply@physanthphylogeny.org",
+            send_mail("Submissions report bioanthtree.org", message, "do-not-reply@bioanthtree.org",
                   ["physphylo@gmail.com"], fail_silently=False)

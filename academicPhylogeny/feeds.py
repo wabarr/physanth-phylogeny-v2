@@ -16,4 +16,4 @@ class PhDFeed(Feed):
         return "%s received a PhD from %s in %s." % (item, item.school, item.year)
 
     def item_link(self, item):
-        return "https://www.physanthphylogeny.org/detail/%s" %(item.URL_for_detail,)
+        return "https://www.bioanthtree.org/detail/%s" %(item.URL_for_detail,)

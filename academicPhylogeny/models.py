@@ -76,9 +76,9 @@ class PhD(models.Model):
         ## email submitter when this has been vaildated
         if self.validated and not self.submitter_emailed_after_approval:
             theEmail = EmailMessage(
-                subject="Your submission to physanthphylogeny.org has been approved!",
-                body="Hi there,\n\nThis is just a quick note to let you know your submission has been approved. You can see the new entry at this link - https://www.physanthphylogeny.org/detail/%s/\n\nThanks for contributing,\n\nThe team at physanthphylogeny.org" %(self.URL_for_detail,),
-                from_email="admin@physanthphylogeny.org",
+                subject="Your submission to bioanthtree.org has been approved!",
+                body="Hi there,\n\nThis is just a quick note to let you know your submission has been approved. You can see the new entry at this link - https://www.bioanthtree.org/detail/%s/\n\nThanks for contributing,\n\nThe team at bioanthtree.org" %(self.URL_for_detail,),
+                from_email="admin@bioanthtree.org",
                 to=[self.submitter_email],
                 reply_to=["physphylo@gmail.com"]
             )
@@ -234,10 +234,10 @@ class PhDupdate(models.Model):
         if self.moderator_approved == True:
             try:
                 theEmail = EmailMessage(
-                    subject="Your suggested update to physanthphylogeny.org has been approved!",
-                    body="Hi there,\n\nThis is just a quick note to let you know your suggested update has been approved. You can see the updated entry at this link - https://www.physanthphylogeny.org/detail/%s/\n\nThanks for contributing,\n\nThe team at physanthphylogeny.org" % (
+                    subject="Your suggested update to bioanthtree.org has been approved!",
+                    body="Hi there,\n\nThis is just a quick note to let you know your suggested update has been approved. You can see the updated entry at this link - https://www.bioanthtree.org/detail/%s/\n\nThanks for contributing,\n\nThe team at bioanthtree.org" % (
                     self.PhD.URL_for_detail,),
-                    from_email="admin@physanthphylogeny.org",
+                    from_email="admin@bioanthtree.org",
                     to=[self.submitter_email],
                     reply_to=["physphylo@gmail.com"]
                 )
@@ -270,9 +270,9 @@ class userContact(models.Model):
         ##only do it on the first save
         if not self.pk:
             theEmail = EmailMessage(
-                subject="User contact on physanthphylogeny.org",
+                subject="User contact on bioanthtree.org",
                 body="On %s at %s %s wrote:\n\n%s" %(datetime.now().strftime("%h %d %Y"), datetime.now().strftime("%I:%M %p"), self.email, self.message),
-                from_email="do-not-reply@physanthphylogeny.org",
+                from_email="do-not-reply@bioanthtree.org",
                 to=["physphylo@gmail.com"],
                 reply_to=[self.email]
                 )
@@ -313,7 +313,7 @@ class UserProfile(models.Model):
                     mess += r._content
                     send_mail(subject="physphylo error profile validation mailchimp email",
                               message=mess,
-                              from_email="do-not-reply@physanthphylogeny.org",
+                              from_email="do-not-reply@bioanthtree.org",
                               recipient_list=("physphylo@gmail.com",))
         super(UserProfile, self).save()
 
