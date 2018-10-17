@@ -141,5 +141,5 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = "/claim/"
 
 ADMINS = (
-  ('webmaster_or_webmistress', 'physphylo@gmail.com'),
+  ('webmaster_or_webmistress', 'bioanthtree@gmail.com'),
 )

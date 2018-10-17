@@ -80,7 +80,7 @@ class PhD(models.Model):
                 body="Hi there,\n\nThis is just a quick note to let you know your submission has been approved. You can see the new entry at this link - https://www.bioanthtree.org/detail/%s/\n\nThanks for contributing,\n\nThe team at bioanthtree.org" %(self.URL_for_detail,),
                 from_email="admin@bioanthtree.org",
                 to=[self.submitter_email],
-                reply_to=["physphylo@gmail.com"]
+                reply_to=["bioanthtree@gmail.com"]
             )
             theEmail.send()
             self.submitter_emailed_after_approval = True
@@ -239,7 +239,7 @@ class PhDupdate(models.Model):
                     self.PhD.URL_for_detail,),
                     from_email="admin@bioanthtree.org",
                     to=[self.submitter_email],
-                    reply_to=["physphylo@gmail.com"]
+                    reply_to=["bioanthtree@gmail.com"]
                 )
                 theEmail.send()
             except:
@@ -273,7 +273,7 @@ class userContact(models.Model):
                 subject="User contact on bioanthtree.org",
                 body="On %s at %s %s wrote:\n\n%s" %(datetime.now().strftime("%h %d %Y"), datetime.now().strftime("%I:%M %p"), self.email, self.message),
                 from_email="do-not-reply@bioanthtree.org",
-                to=["physphylo@gmail.com"],
+                to=["bioanthtree@gmail.com"],
                 reply_to=[self.email]
                 )
             theEmail.send()
@@ -314,7 +314,7 @@ class UserProfile(models.Model):
                     send_mail(subject="physphylo error profile validation mailchimp email",
                               message=mess,
                               from_email="do-not-reply@bioanthtree.org",
-                              recipient_list=("physphylo@gmail.com",))
+                              recipient_list=("bioanthtree@gmail.com",))
         super(UserProfile, self).save()
 
 class socialMediaPosts(models.Model):
