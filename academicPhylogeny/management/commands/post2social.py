@@ -38,7 +38,7 @@ class Command(BaseCommand):
             token = FACEBOOK_PHYSPHYLO_PAGE_ACCESS_TOKEN
             pageID = FACEBOOK_PHYSPHYLO_PAGE_ID
             dataDict = {"message": FBmsg, "link": link, "access_token": token}
-            post_url = "https://graph.facebook.com/v3.1/%d/feed" % (pageID,)
+            post_url = "https://graph.facebook.com/v2.10/%d/feed" % (pageID,)
             r = requests.post(url=post_url, data=dataDict)
             if r.status_code == 200:
                 self.stdout.write(self.style.SUCCESS('Successfully posted to facebook!'))
@@ -117,7 +117,7 @@ class Command(BaseCommand):
 
             if unpostedCurrentYearPhDs.__len__() > 0:
                 selectedPhD = unpostedCurrentYearPhDs[0]
-                link = "https://www.physanthphylogeny.org%s" % (selectedPhD.get_absolute_url(),)
+                link = "https://www.bioanthtree.org%s" % (selectedPhD.get_absolute_url(),)
                 FBmsg = ("Congratulations to Dr. %s, who recently completed a PhD at %s with %s."
                          " This information now appears in the academic genealogy network on our website!"
                          " Submit your own information if it isn't already in the database!") % (
@@ -131,7 +131,7 @@ class Command(BaseCommand):
                     selectedPhD.school)
             else:
                 selectedPhD = legacyPhDs[0]
-                link = "https://www.physanthphylogeny.org%s" % (selectedPhD.get_absolute_url(),)
+                link = "https://www.bioanthtree.org%s" % (selectedPhD.get_absolute_url(),)
                 advisorPhrase = ""
                 advisorPeriodOrNot = "."
                 if(len(selectedPhD.advisor.all()) > 0):
