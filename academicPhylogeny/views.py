@@ -600,3 +600,6 @@ class MissingData(ListView):
     def get_queryset(self):
         queryset = PhD.objects.filter(year=None)
         return queryset
+
+class CookiePolicy(TemplateView):
+    template_name = "cookie-policy.html"

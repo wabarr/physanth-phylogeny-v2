@@ -64,5 +64,6 @@ urlpatterns = [
     url(r'^photos/$', ProfilePicListView.as_view()),
     url(r'^phdcsv/$', phdcsv),
     url(r'^missing/$', MissingData.as_view(), name='missing-data'),
+    url(r'^cookie-policy/$', CookiePolicy.as_view(), name='cookie-policy'),
     url(r'^$', HomePageView.as_view(), name="home"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
