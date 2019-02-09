@@ -34,22 +34,22 @@ class Command(BaseCommand):
 
     def post(self, selectedPhD, TWmsg=None, FBmsg=None, link=None):
         newPostDB = None
-        if FBmsg:
-            token = FACEBOOK_PHYSPHYLO_PAGE_ACCESS_TOKEN
-            pageID = FACEBOOK_PHYSPHYLO_PAGE_ID
-            dataDict = {"message": FBmsg, "link": link, "access_token": token}
-            post_url = "https://graph.facebook.com/v2.10/%d/feed" % (pageID,)
-            r = requests.post(url=post_url, data=dataDict)
-            if r.status_code == 200:
-                self.stdout.write(self.style.SUCCESS('Successfully posted to facebook!'))
-                if not newPostDB:
-                    newPostDB = socialMediaPosts(PhD=selectedPhD,facebook=True,twitter=False)
-                    newPostDB.save()
-                else:
-                    newPostDB.facebook = True
-                    newPostDB.save()
-            else:
-               self.stdout.write(self.style.ERROR("Facebook post failure."))
+        # if FBmsg:
+        #     token = FACEBOOK_PHYSPHYLO_PAGE_ACCESS_TOKEN
+        #     pageID = FACEBOOK_PHYSPHYLO_PAGE_ID
+        #     dataDict = {"message": FBmsg, "link": link, "access_token": token}
+        #     post_url = "https://graph.facebook.com/v2.10/%d/feed" % (pageID,)
+        #     r = requests.post(url=post_url, data=dataDict)
+        #     if r.status_code == 200:
+        #         self.stdout.write(self.style.SUCCESS('Successfully posted to facebook!'))
+        #         if not newPostDB:
+        #             newPostDB = socialMediaPosts(PhD=selectedPhD,facebook=True,twitter=False)
+        #             newPostDB.save()
+        #         else:
+        #             newPostDB.facebook = True
+        #             newPostDB.save()
+        #     else:
+        #        self.stdout.write(self.style.ERROR("Facebook post failure."))
 
         if TWmsg:
             auth = tweepy.OAuthHandler(TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_KEY_SECRET)
@@ -126,9 +126,12 @@ class Command(BaseCommand):
                             (" and ").join(
                                 [advisor.firstName + " " + advisor.lastName for advisor in selectedPhD.advisor.all()])
                         )
-                TWmsg = "Congrats to Dr. %s for completing a PhD at %s! #bioanthphd" % (
+
+                TWmsg = "Congrats to Dr. %s for completing a PhD at %s with %s! #bioanthphd" % (
                     selectedPhD.firstName + " " + selectedPhD.lastName,
-                    selectedPhD.school)
+                    selectedPhD.school,
+                    " and ".join([advisor.firstName + " " + advisor.lastName for advisor in selectedPhD.advisor.all()]).replace("  ", " ")
+                )
             else:
                 selectedPhD = legacyPhDs[0]
                 link = "https://www.bioanthtree.org%s" % (selectedPhD.get_absolute_url(),)
