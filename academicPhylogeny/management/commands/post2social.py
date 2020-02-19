@@ -110,7 +110,7 @@ class Command(BaseCommand):
         else:
 
             prior_posts = socialMediaPosts.objects.all().values_list("PhD")
-            unpostedCurrentYearPhDs = PhD.objects.filter(year=date.today().year, validated=True).exclude(id__in=prior_posts)
+            unpostedCurrentYearPhDs = PhD.objects.filter(year__in=[date.today().year,date.today().year - 1], validated=True).exclude(id__in=prior_posts)
             DONOTPOST = [48,638,99,90]
             legacyPhDs = PhD.objects.filter(validated=True, school__isnull=False, year__isnull=False, year__lte=2000).order_by("year").exclude(id__in=prior_posts).exclude(id__in=DONOTPOST)
 
