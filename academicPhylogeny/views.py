@@ -136,8 +136,11 @@ class SubmitPhDUpdateView(CreateView):
     success_url = "/thanks/"
 
     def get_initial(self):
-        thePerson = PhD.objects.get(pk=self.kwargs["pk"])
-        initial = {"PhD": thePerson.id}
+        try:
+            thePerson = PhD.objects.get(pk=self.kwargs["pk"])
+            initial = {"PhD": thePerson.id}
+        except:
+            initial = {}
         if self.request.user.is_authenticated():
             initial['submitter_user'] = self.request.user
             initial['submitter_email'] = self.request.user.email
@@ -153,7 +156,7 @@ class SubmitPhDUpdateView(CreateView):
             context["school_add_form"] = SchoolAddForm()
             return context
         except:
-            return context
+            return {}
 
 class UserCreateView(SuccessMessageMixin,CreateView):
     model = User
