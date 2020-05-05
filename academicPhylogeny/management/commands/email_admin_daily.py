@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from academicPhylogeny.models import PhD, UserProfile, PhDupdate
 from django.core.mail import send_mail
+import json
 
 class Command(BaseCommand):
     help = 'emails Admin with update on new submissions'
@@ -22,6 +23,15 @@ class Command(BaseCommand):
         else:
             pass
 
+        for sugg in unvalidatedSuggestions:
+            try:
+                json.loads(sugg.suggested_update_fixture)
+                # automatically delete any that don't have valid JSON
+                # since the suggest update template creates valid JSON,
+                # this will weed out spam...little risky maybe since they are gone forever
+            except ValueError:
+                sugg.delete()
+        unvalidatedSuggestions.update() #update queryset to get accurate count
         if unvalidatedSuggestions.count() > 0:
             message += "\nThere are %(suggestioncount)s unvalidated suggested changes.\n" % {
                 "suggestioncount": unvalidatedSuggestions.count()}
